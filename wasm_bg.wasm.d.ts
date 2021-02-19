@@ -11,6 +11,7 @@ export function authenticatedassetrecord_is_valid(a: number, b: number, c: numbe
 export function authenticatedassetrecord_from_json_record(a: number): number;
 export function __wbg_clientassetrecord_free(a: number): void;
 export function clientassetrecord_from_json(a: number): number;
+export function clientassetrecord_to_json(a: number): number;
 export function __wbg_assettracerkeypair_free(a: number): void;
 export function assettracerkeypair_new(): number;
 export function __wbg_ownermemo_free(a: number): void;
@@ -81,6 +82,7 @@ export function __wbg_feeinputs_free(a: number): void;
 export function feeinputs_new(): number;
 export function feeinputs_append(a: number, b: number, c: number, d: number, e: number, f: number): void;
 export function transactionbuilder_add_fee_relative_auto(a: number, b: number, c: number, d: number): number;
+export function transactionbuilder_get_relative_outputs(a: number, b: number): void;
 export function transactionbuilder_add_fee(a: number, b: number): number;
 export function transactionbuilder_check_fee(a: number): number;
 export function transactionbuilder_new(a: number, b: number): number;
