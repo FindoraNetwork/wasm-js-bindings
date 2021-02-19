@@ -618,6 +618,11 @@ export class ClientAssetRecord {
 * @returns {ClientAssetRecord}
 */
   static from_json(val: any): ClientAssetRecord;
+/**
+* ClientAssetRecord ==> JsValue
+* @returns {any}
+*/
+  to_json(): any;
 }
 /**
 * Public key of a credential issuer.
@@ -968,6 +973,14 @@ export class TransactionBuilder {
 * @returns {TransactionBuilder}
 */
   add_fee_relative_auto(am: BigInt, kp: XfrKeyPair): TransactionBuilder;
+/**
+* Use this func to get the necessary infomations for generating `Relative Inputs`
+*
+* - TxoRef::Relative("Element index of the result")
+* - ClientAssetRecord::from_json("Element of the result")
+* @returns {any[]}
+*/
+  get_relative_outputs(): any[];
 /**
 * As the last operation of any transaction,
 * add a static fee to the transaction.
