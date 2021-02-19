@@ -961,6 +961,14 @@ export class TracingPolicy {
 export class TransactionBuilder {
   free(): void;
 /**
+* @param am: amount to pay
+* @param kp: owner's XfrKeyPair
+* @param {BigInt} am
+* @param {XfrKeyPair} kp
+* @returns {TransactionBuilder}
+*/
+  add_fee_relative_auto(am: BigInt, kp: XfrKeyPair): TransactionBuilder;
+/**
 * As the last operation of any transaction,
 * add a static fee to the transaction.
 * @param {FeeInputs} inputs

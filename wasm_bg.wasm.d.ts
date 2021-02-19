@@ -80,6 +80,7 @@ export function __wbg_transactionbuilder_free(a: number): void;
 export function __wbg_feeinputs_free(a: number): void;
 export function feeinputs_new(): number;
 export function feeinputs_append(a: number, b: number, c: number, d: number, e: number, f: number): void;
+export function transactionbuilder_add_fee_relative_auto(a: number, b: number, c: number, d: number): number;
 export function transactionbuilder_add_fee(a: number, b: number): number;
 export function transactionbuilder_check_fee(a: number): number;
 export function transactionbuilder_new(a: number, b: number): number;
