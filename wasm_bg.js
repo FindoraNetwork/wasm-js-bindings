@@ -1906,9 +1906,10 @@ export class FeeInputs {
     * @param {BigInt} am
     * @param {TxoRef} tr
     * @param {ClientAssetRecord} ar
+    * @param {any} om
     * @param {XfrKeyPair} kp
     */
-    append(am, tr, ar, kp) {
+    append(am, tr, ar, om, kp) {
         uint64CvtShim[0] = am;
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
@@ -1921,7 +1922,7 @@ export class FeeInputs {
         _assertClass(kp, XfrKeyPair);
         var ptr3 = kp.ptr;
         kp.ptr = 0;
-        wasm.feeinputs_append(this.ptr, low0, high0, ptr1, ptr2, ptr3);
+        wasm.feeinputs_append(this.ptr, low0, high0, ptr1, ptr2, addHeapObject(om), ptr3);
     }
 }
 /**
@@ -3029,6 +3030,11 @@ export const __wbindgen_json_serialize = function(arg0, arg1) {
 export const __wbindgen_json_parse = function(arg0, arg1) {
     var ret = JSON.parse(getStringFromWasm0(arg0, arg1));
     return addHeapObject(ret);
+};
+
+export const __wbindgen_is_null = function(arg0) {
+    var ret = getObject(arg0) === null;
+    return ret;
 };
 
 export const __wbg_getRandomValues_57e4008f45f0e105 = handleError(function(arg0, arg1) {
