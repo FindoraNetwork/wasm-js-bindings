@@ -439,6 +439,10 @@ export function create_debt_memo(ir_numerator, ir_denominator, fiat_code, loan_a
     }
 }
 
+function isLikeNone(x) {
+    return x === undefined || x === null;
+}
+
 let cachegetUint32Memory0 = null;
 function getUint32Memory0() {
     if (cachegetUint32Memory0 === null || cachegetUint32Memory0.buffer !== wasm.memory.buffer) {
@@ -455,10 +459,6 @@ function getArrayJsValueFromWasm0(ptr, len) {
         result.push(takeObject(slice[i]));
     }
     return result;
-}
-
-function isLikeNone(x) {
-    return x === undefined || x === null;
 }
 /**
 * Returns a JavaScript object containing decrypted owner record information,
@@ -1906,7 +1906,7 @@ export class FeeInputs {
     * @param {BigInt} am
     * @param {TxoRef} tr
     * @param {ClientAssetRecord} ar
-    * @param {any} om
+    * @param {OwnerMemo | undefined} om
     * @param {XfrKeyPair} kp
     */
     append(am, tr, ar, om, kp) {
@@ -1919,10 +1919,16 @@ export class FeeInputs {
         _assertClass(ar, ClientAssetRecord);
         var ptr2 = ar.ptr;
         ar.ptr = 0;
+        let ptr3 = 0;
+        if (!isLikeNone(om)) {
+            _assertClass(om, OwnerMemo);
+            ptr3 = om.ptr;
+            om.ptr = 0;
+        }
         _assertClass(kp, XfrKeyPair);
-        var ptr3 = kp.ptr;
+        var ptr4 = kp.ptr;
         kp.ptr = 0;
-        wasm.feeinputs_append(this.ptr, low0, high0, ptr1, ptr2, addHeapObject(om), ptr3);
+        wasm.feeinputs_append(this.ptr, low0, high0, ptr1, ptr2, ptr3, ptr4);
     }
 }
 /**
@@ -3030,11 +3036,6 @@ export const __wbindgen_json_serialize = function(arg0, arg1) {
 export const __wbindgen_json_parse = function(arg0, arg1) {
     var ret = JSON.parse(getStringFromWasm0(arg0, arg1));
     return addHeapObject(ret);
-};
-
-export const __wbindgen_is_null = function(arg0) {
-    var ret = getObject(arg0) === null;
-    return ret;
 };
 
 export const __wbg_getRandomValues_57e4008f45f0e105 = handleError(function(arg0, arg1) {
