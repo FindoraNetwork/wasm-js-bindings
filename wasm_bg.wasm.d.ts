@@ -80,7 +80,8 @@ export function create_debt_memo(a: number, b: number, c: number, d: number, e: 
 export function __wbg_transactionbuilder_free(a: number): void;
 export function __wbg_feeinputs_free(a: number): void;
 export function feeinputs_new(): number;
-export function feeinputs_append(a: number, b: number, c: number, d: number, e: number, f: number, g: number): number;
+export function feeinputs_append(a: number, b: number, c: number, d: number, e: number, f: number, g: number): void;
+export function feeinputs_append2(a: number, b: number, c: number, d: number, e: number, f: number, g: number): number;
 export function transactionbuilder_add_fee_relative_auto(a: number, b: number, c: number, d: number): number;
 export function transactionbuilder_get_relative_outputs(a: number, b: number): void;
 export function transactionbuilder_add_fee(a: number, b: number): number;
