@@ -804,8 +804,9 @@ export class FeeInputs {
 * @param {ClientAssetRecord} ar
 * @param {OwnerMemo | undefined} om
 * @param {XfrKeyPair} kp
+* @returns {FeeInputs}
 */
-  append(am: BigInt, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): void;
+  append(am: BigInt, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): FeeInputs;
 }
 /**
 * Blinding factor for a custom data operation. A blinding factor adds a random value to the
