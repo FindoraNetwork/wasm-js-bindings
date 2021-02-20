@@ -1908,8 +1908,11 @@ export class FeeInputs {
     * @param {ClientAssetRecord} ar
     * @param {OwnerMemo | undefined} om
     * @param {XfrKeyPair} kp
+    * @returns {FeeInputs}
     */
     append(am, tr, ar, om, kp) {
+        var ptr = this.ptr;
+        this.ptr = 0;
         uint64CvtShim[0] = am;
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
@@ -1928,7 +1931,8 @@ export class FeeInputs {
         _assertClass(kp, XfrKeyPair);
         var ptr4 = kp.ptr;
         kp.ptr = 0;
-        wasm.feeinputs_append(this.ptr, low0, high0, ptr1, ptr2, ptr3, ptr4);
+        var ret = wasm.feeinputs_append(ptr, low0, high0, ptr1, ptr2, ptr3, ptr4);
+        return FeeInputs.__wrap(ret);
     }
 }
 /**
