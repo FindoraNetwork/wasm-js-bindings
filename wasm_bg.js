@@ -201,14 +201,13 @@ function _assertClass(instance, klass) {
 */
 export function build_id() {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         wasm.build_id(retptr);
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 }
@@ -223,14 +222,13 @@ export function build_id() {
 */
 export function random_asset_type() {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         wasm.random_asset_type(retptr);
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 }
@@ -242,14 +240,13 @@ export function random_asset_type() {
 */
 export function asset_type_from_jsvalue(val) {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         wasm.asset_type_from_jsvalue(retptr, addBorrowedObject(val));
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         heap[stack_pointer++] = undefined;
         wasm.__wbindgen_free(r0, r1);
     }
@@ -313,8 +310,7 @@ export function verify_authenticated_custom_data_result(state_commitment, authen
 */
 export function calculate_fee(ir_numerator, ir_denominator, outstanding_balance) {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         uint64CvtShim[0] = ir_numerator;
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
@@ -332,7 +328,7 @@ export function calculate_fee(ir_numerator, ir_denominator, outstanding_balance)
         const n3 = uint64CvtShim[0];
         return n3;
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
     }
 }
 
@@ -352,14 +348,13 @@ export function get_null_pk() {
 */
 export function create_default_policy_info() {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         wasm.create_default_policy_info(retptr);
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 }
@@ -383,8 +378,7 @@ export function create_default_policy_info() {
 */
 export function create_debt_policy_info(ir_numerator, ir_denominator, fiat_code, loan_amount) {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         uint64CvtShim[0] = ir_numerator;
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
@@ -401,7 +395,7 @@ export function create_debt_policy_info(ir_numerator, ir_denominator, fiat_code,
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 }
@@ -423,8 +417,7 @@ export function create_debt_policy_info(ir_numerator, ir_denominator, fiat_code,
 */
 export function create_debt_memo(ir_numerator, ir_denominator, fiat_code, loan_amount) {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         uint64CvtShim[0] = ir_numerator;
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
@@ -441,9 +434,13 @@ export function create_debt_memo(ir_numerator, ir_denominator, fiat_code, loan_a
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
+}
+
+function isLikeNone(x) {
+    return x === undefined || x === null;
 }
 
 let cachegetUint32Memory0 = null;
@@ -462,10 +459,6 @@ function getArrayJsValueFromWasm0(ptr, len) {
         result.push(takeObject(slice[i]));
     }
     return result;
-}
-
-function isLikeNone(x) {
-    return x === undefined || x === null;
 }
 /**
 * Returns a JavaScript object containing decrypted owner record information,
@@ -501,15 +494,14 @@ export function open_client_asset_record(record, owner_memo, keypair) {
 */
 export function get_pub_key_str(key_pair) {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         _assertClass(key_pair, XfrKeyPair);
         wasm.get_pub_key_str(retptr, key_pair.ptr);
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 }
@@ -521,15 +513,14 @@ export function get_pub_key_str(key_pair) {
 */
 export function get_priv_key_str(key_pair) {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         _assertClass(key_pair, XfrKeyPair);
         wasm.get_priv_key_str(retptr, key_pair.ptr);
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 }
@@ -565,15 +556,14 @@ export function new_keypair_from_seed(seed_str, name) {
 */
 export function public_key_to_base64(key) {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         _assertClass(key, XfrPublicKey);
         wasm.public_key_to_base64(retptr, key.ptr);
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 }
@@ -598,15 +588,14 @@ export function public_key_from_base64(pk) {
 */
 export function keypair_to_str(key_pair) {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         _assertClass(key_pair, XfrKeyPair);
         wasm.keypair_to_str(retptr, key_pair.ptr);
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 }
@@ -818,15 +807,14 @@ export function trace_assets(xfr_body, tracer_keypair, candidate_assets) {
 */
 export function public_key_to_bech32(key) {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         _assertClass(key, XfrPublicKey);
         wasm.public_key_to_bech32(retptr, key.ptr);
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 }
@@ -849,8 +837,7 @@ export function public_key_from_bech32(addr) {
 */
 export function bech32_to_base64(pk) {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         var ptr0 = passStringToWasm0(pk, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
         wasm.bech32_to_base64(retptr, ptr0, len0);
@@ -858,7 +845,7 @@ export function bech32_to_base64(pk) {
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 }
@@ -869,8 +856,7 @@ export function bech32_to_base64(pk) {
 */
 export function base64_to_bech32(pk) {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         var ptr0 = passStringToWasm0(pk, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
         wasm.base64_to_bech32(retptr, ptr0, len0);
@@ -878,7 +864,7 @@ export function base64_to_bech32(pk) {
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 }
@@ -893,8 +879,7 @@ function getArrayU8FromWasm0(ptr, len) {
 */
 export function encryption_pbkdf2_aes256gcm(key_pair, password) {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         var ptr0 = passStringToWasm0(key_pair, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
         var ptr1 = passStringToWasm0(password, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -906,7 +891,7 @@ export function encryption_pbkdf2_aes256gcm(key_pair, password) {
         wasm.__wbindgen_free(r0, r1 * 1);
         return v2;
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
     }
 }
 
@@ -923,8 +908,7 @@ function passArray8ToWasm0(arg, malloc) {
 */
 export function decryption_pbkdf2_aes256gcm(enc_key_pair, password) {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         var ptr0 = passArray8ToWasm0(enc_key_pair, wasm.__wbindgen_malloc);
         var len0 = WASM_VECTOR_LEN;
         var ptr1 = passStringToWasm0(password, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -934,7 +918,7 @@ export function decryption_pbkdf2_aes256gcm(enc_key_pair, password) {
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 }
@@ -956,14 +940,13 @@ export function create_keypair_from_secret(sk_str) {
 */
 export function generate_mnemonic_default() {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         wasm.generate_mnemonic_default(retptr);
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 }
@@ -978,8 +961,7 @@ export function generate_mnemonic_default() {
 */
 export function generate_mnemonic_custom(wordslen, lang) {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         var ptr0 = passStringToWasm0(lang, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
         wasm.generate_mnemonic_custom(retptr, wordslen, ptr0, len0);
@@ -987,7 +969,7 @@ export function generate_mnemonic_custom(wordslen, lang) {
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 }
@@ -1047,14 +1029,13 @@ export function restore_keypair_from_mnemonic_bip49(phrase, lang, path) {
 */
 export function fra_get_asset_code() {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         wasm.fra_get_asset_code(retptr);
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
     }
 }
@@ -1065,8 +1046,7 @@ export function fra_get_asset_code() {
 */
 export function fra_get_minimal_fee() {
     try {
-        const retptr = wasm.__wbindgen_export_2.value - 16;
-        wasm.__wbindgen_export_2.value = retptr;
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         wasm.fra_get_minimal_fee(retptr);
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
@@ -1075,7 +1055,7 @@ export function fra_get_minimal_fee() {
         const n0 = uint64CvtShim[0];
         return n0;
     } finally {
-        wasm.__wbindgen_export_2.value += 16;
+        wasm.__wbindgen_add_to_stack_pointer(16);
     }
 }
 
@@ -1926,9 +1906,10 @@ export class FeeInputs {
     * @param {BigInt} am
     * @param {TxoRef} tr
     * @param {ClientAssetRecord} ar
+    * @param {OwnerMemo | undefined} om
     * @param {XfrKeyPair} kp
     */
-    append(am, tr, ar, kp) {
+    append(am, tr, ar, om, kp) {
         uint64CvtShim[0] = am;
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
@@ -1938,10 +1919,48 @@ export class FeeInputs {
         _assertClass(ar, ClientAssetRecord);
         var ptr2 = ar.ptr;
         ar.ptr = 0;
+        let ptr3 = 0;
+        if (!isLikeNone(om)) {
+            _assertClass(om, OwnerMemo);
+            ptr3 = om.ptr;
+            om.ptr = 0;
+        }
         _assertClass(kp, XfrKeyPair);
-        var ptr3 = kp.ptr;
+        var ptr4 = kp.ptr;
         kp.ptr = 0;
-        wasm.feeinputs_append(this.ptr, low0, high0, ptr1, ptr2, ptr3);
+        wasm.feeinputs_append(this.ptr, low0, high0, ptr1, ptr2, ptr3, ptr4);
+    }
+    /**
+    * @param {BigInt} am
+    * @param {TxoRef} tr
+    * @param {ClientAssetRecord} ar
+    * @param {OwnerMemo | undefined} om
+    * @param {XfrKeyPair} kp
+    * @returns {FeeInputs}
+    */
+    append2(am, tr, ar, om, kp) {
+        var ptr = this.ptr;
+        this.ptr = 0;
+        uint64CvtShim[0] = am;
+        const low0 = u32CvtShim[0];
+        const high0 = u32CvtShim[1];
+        _assertClass(tr, TxoRef);
+        var ptr1 = tr.ptr;
+        tr.ptr = 0;
+        _assertClass(ar, ClientAssetRecord);
+        var ptr2 = ar.ptr;
+        ar.ptr = 0;
+        let ptr3 = 0;
+        if (!isLikeNone(om)) {
+            _assertClass(om, OwnerMemo);
+            ptr3 = om.ptr;
+            om.ptr = 0;
+        }
+        _assertClass(kp, XfrKeyPair);
+        var ptr4 = kp.ptr;
+        kp.ptr = 0;
+        var ret = wasm.feeinputs_append2(ptr, low0, high0, ptr1, ptr2, ptr3, ptr4);
+        return FeeInputs.__wrap(ret);
     }
 }
 /**
@@ -2076,14 +2095,13 @@ export class Key {
     */
     to_base64() {
         try {
-            const retptr = wasm.__wbindgen_export_2.value - 16;
-            wasm.__wbindgen_export_2.value = retptr;
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
             wasm.key_to_base64(retptr, this.ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             return getStringFromWasm0(r0, r1);
         } finally {
-            wasm.__wbindgen_export_2.value += 16;
+            wasm.__wbindgen_add_to_stack_pointer(16);
             wasm.__wbindgen_free(r0, r1);
         }
     }
@@ -2324,8 +2342,7 @@ export class TransactionBuilder {
     */
     get_relative_outputs() {
         try {
-            const retptr = wasm.__wbindgen_export_2.value - 16;
-            wasm.__wbindgen_export_2.value = retptr;
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
             wasm.transactionbuilder_get_relative_outputs(retptr, this.ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
@@ -2333,7 +2350,7 @@ export class TransactionBuilder {
             wasm.__wbindgen_free(r0, r1 * 4);
             return v0;
         } finally {
-            wasm.__wbindgen_export_2.value += 16;
+            wasm.__wbindgen_add_to_stack_pointer(16);
         }
     }
     /**
@@ -2623,14 +2640,13 @@ export class TransactionBuilder {
     */
     transaction() {
         try {
-            const retptr = wasm.__wbindgen_export_2.value - 16;
-            wasm.__wbindgen_export_2.value = retptr;
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
             wasm.transactionbuilder_transaction(retptr, this.ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             return getStringFromWasm0(r0, r1);
         } finally {
-            wasm.__wbindgen_export_2.value += 16;
+            wasm.__wbindgen_add_to_stack_pointer(16);
             wasm.__wbindgen_free(r0, r1);
         }
     }
@@ -2687,14 +2703,13 @@ export class TransferOperationBuilder {
     */
     debug() {
         try {
-            const retptr = wasm.__wbindgen_export_2.value - 16;
-            wasm.__wbindgen_export_2.value = retptr;
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
             wasm.transferoperationbuilder_debug(retptr, this.ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             return getStringFromWasm0(r0, r1);
         } finally {
-            wasm.__wbindgen_export_2.value += 16;
+            wasm.__wbindgen_add_to_stack_pointer(16);
             wasm.__wbindgen_free(r0, r1);
         }
     }
@@ -2904,14 +2919,13 @@ export class TransferOperationBuilder {
     */
     builder() {
         try {
-            const retptr = wasm.__wbindgen_export_2.value - 16;
-            wasm.__wbindgen_export_2.value = retptr;
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
             wasm.transferoperationbuilder_builder(retptr, this.ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             return getStringFromWasm0(r0, r1);
         } finally {
-            wasm.__wbindgen_export_2.value += 16;
+            wasm.__wbindgen_add_to_stack_pointer(16);
             wasm.__wbindgen_free(r0, r1);
         }
     }
@@ -2921,14 +2935,13 @@ export class TransferOperationBuilder {
     */
     transaction() {
         try {
-            const retptr = wasm.__wbindgen_export_2.value - 16;
-            wasm.__wbindgen_export_2.value = retptr;
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
             wasm.transferoperationbuilder_transaction(retptr, this.ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             return getStringFromWasm0(r0, r1);
         } finally {
-            wasm.__wbindgen_export_2.value += 16;
+            wasm.__wbindgen_add_to_stack_pointer(16);
             wasm.__wbindgen_free(r0, r1);
         }
     }
@@ -3133,31 +3146,31 @@ export const __wbg_randomFillSync_d2ba53160aec6aba = function(arg0, arg1, arg2) 
     getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
 };
 
-export const __wbg_buffer_3f12a1c608c6d04e = function(arg0) {
+export const __wbg_buffer_bc64154385c04ac4 = function(arg0) {
     var ret = getObject(arg0).buffer;
     return addHeapObject(ret);
 };
 
-export const __wbg_length_c645e7c02233b440 = function(arg0) {
+export const __wbg_length_e9f6f145de2fede5 = function(arg0) {
     var ret = getObject(arg0).length;
     return ret;
 };
 
-export const __wbg_new_c6c0228e6d22a2f9 = function(arg0) {
+export const __wbg_new_22a33711cf65b661 = function(arg0) {
     var ret = new Uint8Array(getObject(arg0));
     return addHeapObject(ret);
 };
 
-export const __wbg_set_b91afac9fd216d99 = function(arg0, arg1, arg2) {
+export const __wbg_set_b29de3f25280c6ec = function(arg0, arg1, arg2) {
     getObject(arg0).set(getObject(arg1), arg2 >>> 0);
 };
 
-export const __wbg_newwithlength_a429e08f8a8fe4b3 = function(arg0) {
+export const __wbg_newwithlength_48451d71403bfede = function(arg0) {
     var ret = new Uint8Array(arg0 >>> 0);
     return addHeapObject(ret);
 };
 
-export const __wbg_subarray_02e2fcfa6b285cb2 = function(arg0, arg1, arg2) {
+export const __wbg_subarray_6b2dd31c84ee881f = function(arg0, arg1, arg2) {
     var ret = getObject(arg0).subarray(arg1 >>> 0, arg2 >>> 0);
     return addHeapObject(ret);
 };

@@ -802,9 +802,19 @@ export class FeeInputs {
 * @param {BigInt} am
 * @param {TxoRef} tr
 * @param {ClientAssetRecord} ar
+* @param {OwnerMemo | undefined} om
 * @param {XfrKeyPair} kp
 */
-  append(am: BigInt, tr: TxoRef, ar: ClientAssetRecord, kp: XfrKeyPair): void;
+  append(am: BigInt, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): void;
+/**
+* @param {BigInt} am
+* @param {TxoRef} tr
+* @param {ClientAssetRecord} ar
+* @param {OwnerMemo | undefined} om
+* @param {XfrKeyPair} kp
+* @returns {FeeInputs}
+*/
+  append2(am: BigInt, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): FeeInputs;
 }
 /**
 * Blinding factor for a custom data operation. A blinding factor adds a random value to the
