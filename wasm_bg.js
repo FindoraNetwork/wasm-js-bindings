@@ -791,12 +791,12 @@ export function wasm_credential_verify(issuer_pub_key, attributes, commitment, p
 * @param {JsValue} candidate_assets - List of asset types traced by the tracer keypair.
 * @param {any} xfr_body
 * @param {AssetTracerKeyPair} tracer_keypair
-* @param {any} candidate_assets
+* @param {any} _candidate_assets
 * @returns {any}
 */
-export function trace_assets(xfr_body, tracer_keypair, candidate_assets) {
+export function trace_assets(xfr_body, tracer_keypair, _candidate_assets) {
     _assertClass(tracer_keypair, AssetTracerKeyPair);
-    var ret = wasm.trace_assets(addHeapObject(xfr_body), tracer_keypair.ptr, addHeapObject(candidate_assets));
+    var ret = wasm.trace_assets(addHeapObject(xfr_body), tracer_keypair.ptr, addHeapObject(_candidate_assets));
     return takeObject(ret);
 }
 
@@ -1081,7 +1081,7 @@ function handleError(f) {
 /**
 * When an asset is defined, several options governing the assets must be
 * specified:
-* 1. **Traceable**: Records and identities of traceable assets can be decrypted by a provided tracking key. By defaults, assets do not have
+* 1. **Traceable**: Records and identities of traceable assets can be decrypted by a provided tracing key. By defaults, assets do not have
 * any tracing policies.
 * 2. **Transferable**: Non-transferable assets can only be transferred once from the issuer to another user. By default, assets are transferable.
 * 3. **Updatable**: Whether the asset memo can be updated. By default, assets are not updatable.
@@ -2277,22 +2277,22 @@ export class TracingPolicy {
     * @param {AssetTracerKeyPair} tracing_key
     * @returns {TracingPolicy}
     */
-    static new_with_tracking(tracing_key) {
+    static new_with_tracing(tracing_key) {
         _assertClass(tracing_key, AssetTracerKeyPair);
-        var ret = wasm.tracingpolicy_new_with_tracking(tracing_key.ptr);
+        var ret = wasm.tracingpolicy_new_with_tracing(tracing_key.ptr);
         return TracingPolicy.__wrap(ret);
     }
     /**
     * @param {AssetTracerKeyPair} tracing_key
     * @param {CredIssuerPublicKey} cred_issuer_key
     * @param {any} reveal_map
-    * @param {boolean} tracking
+    * @param {boolean} tracing
     * @returns {TracingPolicy}
     */
-    static new_with_identity_tracking(tracing_key, cred_issuer_key, reveal_map, tracking) {
+    static new_with_identity_tracing(tracing_key, cred_issuer_key, reveal_map, tracing) {
         _assertClass(tracing_key, AssetTracerKeyPair);
         _assertClass(cred_issuer_key, CredIssuerPublicKey);
-        var ret = wasm.tracingpolicy_new_with_identity_tracking(tracing_key.ptr, cred_issuer_key.ptr, addHeapObject(reveal_map), tracking);
+        var ret = wasm.tracingpolicy_new_with_identity_tracing(tracing_key.ptr, cred_issuer_key.ptr, addHeapObject(reveal_map), tracing);
         return TracingPolicy.__wrap(ret);
     }
 }
@@ -2736,7 +2736,7 @@ export class TransferOperationBuilder {
     * @param {BigInt} amount
     * @returns {TransferOperationBuilder}
     */
-    add_input_with_tracking(txo_ref, asset_record, owner_memo, tracing_policies, key, amount) {
+    add_input_with_tracing(txo_ref, asset_record, owner_memo, tracing_policies, key, amount) {
         var ptr = this.ptr;
         this.ptr = 0;
         _assertClass(txo_ref, TxoRef);
@@ -2756,7 +2756,7 @@ export class TransferOperationBuilder {
         uint64CvtShim[0] = amount;
         const low3 = u32CvtShim[0];
         const high3 = u32CvtShim[1];
-        var ret = wasm.transferoperationbuilder_add_input_with_tracking(ptr, ptr0, ptr1, ptr2, tracing_policies.ptr, key.ptr, low3, high3);
+        var ret = wasm.transferoperationbuilder_add_input_with_tracing(ptr, ptr0, ptr1, ptr2, tracing_policies.ptr, key.ptr, low3, high3);
         return TransferOperationBuilder.__wrap(ret);
     }
     /**
@@ -2778,7 +2778,7 @@ export class TransferOperationBuilder {
     * @param {BigInt} amount
     * @returns {TransferOperationBuilder}
     */
-    add_input_no_tracking(txo_ref, asset_record, owner_memo, key, amount) {
+    add_input_no_tracing(txo_ref, asset_record, owner_memo, key, amount) {
         var ptr = this.ptr;
         this.ptr = 0;
         _assertClass(txo_ref, TxoRef);
@@ -2795,7 +2795,7 @@ export class TransferOperationBuilder {
         uint64CvtShim[0] = amount;
         const low2 = u32CvtShim[0];
         const high2 = u32CvtShim[1];
-        var ret = wasm.transferoperationbuilder_add_input_no_tracking(ptr, ptr0, asset_record.ptr, ptr1, key.ptr, low2, high2);
+        var ret = wasm.transferoperationbuilder_add_input_no_tracing(ptr, ptr0, asset_record.ptr, ptr1, key.ptr, low2, high2);
         return TransferOperationBuilder.__wrap(ret);
     }
     /**
@@ -2817,7 +2817,7 @@ export class TransferOperationBuilder {
     * @param {boolean} conf_type
     * @returns {TransferOperationBuilder}
     */
-    add_output_with_tracking(amount, recipient, tracing_policies, code, conf_amount, conf_type) {
+    add_output_with_tracing(amount, recipient, tracing_policies, code, conf_amount, conf_type) {
         var ptr = this.ptr;
         this.ptr = 0;
         uint64CvtShim[0] = amount;
@@ -2827,7 +2827,7 @@ export class TransferOperationBuilder {
         _assertClass(tracing_policies, TracingPolicies);
         var ptr1 = passStringToWasm0(code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len1 = WASM_VECTOR_LEN;
-        var ret = wasm.transferoperationbuilder_add_output_with_tracking(ptr, low0, high0, recipient.ptr, tracing_policies.ptr, ptr1, len1, conf_amount, conf_type);
+        var ret = wasm.transferoperationbuilder_add_output_with_tracing(ptr, low0, high0, recipient.ptr, tracing_policies.ptr, ptr1, len1, conf_amount, conf_type);
         return TransferOperationBuilder.__wrap(ret);
     }
     /**
@@ -2846,7 +2846,7 @@ export class TransferOperationBuilder {
     * @param {boolean} conf_type
     * @returns {TransferOperationBuilder}
     */
-    add_output_no_tracking(amount, recipient, code, conf_amount, conf_type) {
+    add_output_no_tracing(amount, recipient, code, conf_amount, conf_type) {
         var ptr = this.ptr;
         this.ptr = 0;
         uint64CvtShim[0] = amount;
@@ -2855,7 +2855,7 @@ export class TransferOperationBuilder {
         _assertClass(recipient, XfrPublicKey);
         var ptr1 = passStringToWasm0(code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len1 = WASM_VECTOR_LEN;
-        var ret = wasm.transferoperationbuilder_add_output_no_tracking(ptr, low0, high0, recipient.ptr, ptr1, len1, conf_amount, conf_type);
+        var ret = wasm.transferoperationbuilder_add_output_no_tracing(ptr, low0, high0, recipient.ptr, ptr1, len1, conf_amount, conf_type);
         return TransferOperationBuilder.__wrap(ret);
     }
     /**
@@ -3023,9 +3023,18 @@ export class XfrKeyPair {
     /**
     * @returns {XfrPublicKey}
     */
-    get_pk() {
-        var ret = wasm.xfrkeypair_get_pk(this.ptr);
+    get pub_key() {
+        var ret = wasm.__wbg_get_xfrkeypair_pub_key(this.ptr);
         return XfrPublicKey.__wrap(ret);
+    }
+    /**
+    * @param {XfrPublicKey} arg0
+    */
+    set pub_key(arg0) {
+        _assertClass(arg0, XfrPublicKey);
+        var ptr0 = arg0.ptr;
+        arg0.ptr = 0;
+        wasm.__wbg_set_xfrkeypair_pub_key(this.ptr, ptr0);
     }
 }
 /**
