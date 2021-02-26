@@ -469,7 +469,7 @@ function getArrayJsValueFromWasm0(ptr, len) {
 * @param {ClientAssetRecord} record
 * @param {OwnerMemo | undefined} owner_memo
 * @param {XfrKeyPair} keypair
-* @returns {OpenAssetRecord}
+* @returns {any}
 */
 export function open_client_asset_record(record, owner_memo, keypair) {
     _assertClass(record, ClientAssetRecord);
@@ -481,7 +481,7 @@ export function open_client_asset_record(record, owner_memo, keypair) {
     }
     _assertClass(keypair, XfrKeyPair);
     var ret = wasm.open_client_asset_record(record.ptr, ptr0, keypair.ptr);
-    return OpenAssetRecord.__wrap(ret);
+    return takeObject(ret);
 }
 
 /**
@@ -3115,6 +3115,10 @@ async function init(input) {
         var len0 = WASM_VECTOR_LEN;
         getInt32Memory0()[arg0 / 4 + 1] = len0;
         getInt32Memory0()[arg0 / 4 + 0] = ptr0;
+    };
+    imports.wbg.__wbg_openassetrecord_new = function(arg0) {
+        var ret = OpenAssetRecord.__wrap(arg0);
+        return addHeapObject(ret);
     };
     imports.wbg.__wbindgen_json_parse = function(arg0, arg1) {
         var ret = JSON.parse(getStringFromWasm0(arg0, arg1));

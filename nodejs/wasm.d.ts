@@ -120,9 +120,9 @@ export function create_debt_memo(ir_numerator: BigInt, ir_denominator: BigInt, f
 * @param {ClientAssetRecord} record
 * @param {OwnerMemo | undefined} owner_memo
 * @param {XfrKeyPair} keypair
-* @returns {OpenAssetRecord}
+* @returns {any}
 */
-export function open_client_asset_record(record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, keypair: XfrKeyPair): OpenAssetRecord;
+export function open_client_asset_record(record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, keypair: XfrKeyPair): any;
 /**
 * Extracts the public key as a string from a transfer key pair.
 * @param {XfrKeyPair} key_pair
