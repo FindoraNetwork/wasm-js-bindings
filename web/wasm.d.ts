@@ -120,9 +120,9 @@ export function create_debt_memo(ir_numerator: BigInt, ir_denominator: BigInt, f
 * @param {ClientAssetRecord} record
 * @param {OwnerMemo | undefined} owner_memo
 * @param {XfrKeyPair} keypair
-* @returns {any}
+* @returns {OpenAssetRecord}
 */
-export function open_client_asset_record(record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, keypair: XfrKeyPair): any;
+export function open_client_asset_record(record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, keypair: XfrKeyPair): OpenAssetRecord;
 /**
 * Extracts the public key as a string from a transfer key pair.
 * @param {XfrKeyPair} key_pair
@@ -885,6 +885,11 @@ export class Key {
   static from_base64(string: string): Key;
 }
 /**
+*/
+export class OpenAssetRecord {
+  free(): void;
+}
+/**
 * Asset owner memo. Contains information needed to decrypt an asset record.
 * @see {@link module:Findora-Wasm.ClientAssetRecord|ClientAssetRecord} for more details about asset records.
 */
@@ -1371,6 +1376,7 @@ export interface InitOutput {
   readonly __wbg_clientassetrecord_free: (a: number) => void;
   readonly clientassetrecord_from_json: (a: number) => number;
   readonly clientassetrecord_to_json: (a: number) => number;
+  readonly __wbg_openassetrecord_free: (a: number) => void;
   readonly __wbg_assettracerkeypair_free: (a: number) => void;
   readonly assettracerkeypair_new: () => number;
   readonly __wbg_ownermemo_free: (a: number) => void;

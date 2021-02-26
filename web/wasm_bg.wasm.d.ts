@@ -12,6 +12,7 @@ export function authenticatedassetrecord_from_json_record(a: number): number;
 export function __wbg_clientassetrecord_free(a: number): void;
 export function clientassetrecord_from_json(a: number): number;
 export function clientassetrecord_to_json(a: number): number;
+export function __wbg_openassetrecord_free(a: number): void;
 export function __wbg_assettracerkeypair_free(a: number): void;
 export function assettracerkeypair_new(): number;
 export function __wbg_ownermemo_free(a: number): void;
