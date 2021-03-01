@@ -139,6 +139,7 @@ export function base64_to_bech32(a: number, b: number, c: number): void;
 export function encryption_pbkdf2_aes256gcm(a: number, b: number, c: number, d: number, e: number): void;
 export function decryption_pbkdf2_aes256gcm(a: number, b: number, c: number, d: number, e: number): void;
 export function create_keypair_from_secret(a: number, b: number): number;
+export function get_pk_from_keypair(a: number): number;
 export function generate_mnemonic_default(a: number): void;
 export function generate_mnemonic_custom(a: number, b: number, c: number, d: number): void;
 export function __wbg_bippath_free(a: number): void;

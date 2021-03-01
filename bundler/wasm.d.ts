@@ -337,6 +337,11 @@ export function decryption_pbkdf2_aes256gcm(enc_key_pair: Uint8Array, password: 
 */
 export function create_keypair_from_secret(sk_str: string): XfrKeyPair | undefined;
 /**
+* @param {XfrKeyPair} kp
+* @returns {XfrPublicKey}
+*/
+export function get_pk_from_keypair(kp: XfrKeyPair): XfrPublicKey;
+/**
 * Randomly generate a 12words-length mnemonic.
 * @returns {string}
 */

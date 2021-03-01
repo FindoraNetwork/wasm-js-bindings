@@ -790,21 +790,12 @@ module.exports.wasm_credential_verify = function(issuer_pub_key, attributes, com
 * @param {JsValue} candidate_assets - List of asset types traced by the tracer keypair.
 * @param {any} xfr_body
 * @param {AssetTracerKeyPair} tracer_keypair
-<<<<<<< HEAD
 * @param {any} _candidate_assets
 * @returns {any}
 */
 module.exports.trace_assets = function(xfr_body, tracer_keypair, _candidate_assets) {
     _assertClass(tracer_keypair, AssetTracerKeyPair);
     var ret = wasm.trace_assets(addHeapObject(xfr_body), tracer_keypair.ptr, addHeapObject(_candidate_assets));
-=======
-* @param {any} candidate_assets
-* @returns {any}
-*/
-module.exports.trace_assets = function(xfr_body, tracer_keypair, candidate_assets) {
-    _assertClass(tracer_keypair, AssetTracerKeyPair);
-    var ret = wasm.trace_assets(addHeapObject(xfr_body), tracer_keypair.ptr, addHeapObject(candidate_assets));
->>>>>>> main
     return takeObject(ret);
 };
 
@@ -940,6 +931,16 @@ module.exports.create_keypair_from_secret = function(sk_str) {
     var len0 = WASM_VECTOR_LEN;
     var ret = wasm.create_keypair_from_secret(ptr0, len0);
     return ret === 0 ? undefined : XfrKeyPair.__wrap(ret);
+};
+
+/**
+* @param {XfrKeyPair} kp
+* @returns {XfrPublicKey}
+*/
+module.exports.get_pk_from_keypair = function(kp) {
+    _assertClass(kp, XfrKeyPair);
+    var ret = wasm.get_pk_from_keypair(kp.ptr);
+    return XfrPublicKey.__wrap(ret);
 };
 
 /**
@@ -1089,11 +1090,7 @@ function handleError(f) {
 /**
 * When an asset is defined, several options governing the assets must be
 * specified:
-<<<<<<< HEAD
 * 1. **Traceable**: Records and identities of traceable assets can be decrypted by a provided tracing key. By defaults, assets do not have
-=======
-* 1. **Traceable**: Records and identities of traceable assets can be decrypted by a provided tracking key. By defaults, assets do not have
->>>>>>> main
 * any tracing policies.
 * 2. **Transferable**: Non-transferable assets can only be transferred once from the issuer to another user. By default, assets are transferable.
 * 3. **Updatable**: Whether the asset memo can be updated. By default, assets are not updatable.
@@ -1118,7 +1115,6 @@ class AssetRules {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1128,12 +1124,6 @@ class AssetRules {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_assetrules_free(ptr);
     }
     /**
@@ -1151,12 +1141,7 @@ class AssetRules {
     * @returns {AssetRules}
     */
     add_tracing_policy(policy) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         _assertClass(policy, TracingPolicy);
         var ret = wasm.assetrules_add_tracing_policy(ptr, policy.ptr);
         return AssetRules.__wrap(ret);
@@ -1168,12 +1153,7 @@ class AssetRules {
     * @returns {AssetRules}
     */
     set_max_units(max_units) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         uint64CvtShim[0] = max_units;
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
@@ -1188,12 +1168,7 @@ class AssetRules {
     * @returns {AssetRules}
     */
     set_transferable(transferable) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         var ret = wasm.assetrules_set_transferable(ptr, transferable);
         return AssetRules.__wrap(ret);
     }
@@ -1206,12 +1181,7 @@ class AssetRules {
     * @returns {AssetRules}
     */
     set_updatable(updatable) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         var ret = wasm.assetrules_set_updatable(ptr, updatable);
         return AssetRules.__wrap(ret);
     }
@@ -1223,12 +1193,7 @@ class AssetRules {
     * @returns {AssetRules}
     */
     set_transfer_multisig_rules(multisig_rules) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         _assertClass(multisig_rules, SignatureRules);
         var ptr0 = multisig_rules.ptr;
         multisig_rules.ptr = 0;
@@ -1243,12 +1208,7 @@ class AssetRules {
     * @returns {AssetRules}
     */
     set_decimals(decimals) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         var ret = wasm.assetrules_set_decimals(ptr, decimals);
         return AssetRules.__wrap(ret);
     }
@@ -1270,7 +1230,6 @@ class AssetTracerKeyPair {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1280,12 +1239,6 @@ class AssetTracerKeyPair {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_assettracerkeypair_free(ptr);
     }
     /**
@@ -1311,7 +1264,6 @@ class AssetType {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1321,12 +1273,6 @@ class AssetType {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_assettype_free(ptr);
     }
     /**
@@ -1385,7 +1331,6 @@ class AuthenticatedAIRResult {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1395,12 +1340,6 @@ class AuthenticatedAIRResult {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_authenticatedairresult_free(ptr);
     }
     /**
@@ -1454,7 +1393,6 @@ class AuthenticatedAssetRecord {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1464,12 +1402,6 @@ class AuthenticatedAssetRecord {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_authenticatedassetrecord_free(ptr);
     }
     /**
@@ -1519,7 +1451,6 @@ class BipPath {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1529,12 +1460,6 @@ class BipPath {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_bippath_free(ptr);
     }
     /**
@@ -1564,7 +1489,6 @@ class ClientAssetRecord {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1574,12 +1498,6 @@ class ClientAssetRecord {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_clientassetrecord_free(ptr);
     }
     /**
@@ -1635,7 +1553,6 @@ class CredIssuerPublicKey {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1645,12 +1562,6 @@ class CredIssuerPublicKey {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_credissuerpublickey_free(ptr);
     }
 }
@@ -1667,7 +1578,6 @@ class CredIssuerSecretKey {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1677,12 +1587,6 @@ class CredIssuerSecretKey {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_credissuersecretkey_free(ptr);
     }
 }
@@ -1699,7 +1603,6 @@ class CredUserPublicKey {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1709,12 +1612,6 @@ class CredUserPublicKey {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_creduserpublickey_free(ptr);
     }
 }
@@ -1731,7 +1628,6 @@ class CredUserSecretKey {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1741,12 +1637,6 @@ class CredUserSecretKey {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_credusersecretkey_free(ptr);
     }
 }
@@ -1766,7 +1656,6 @@ class Credential {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1776,12 +1665,6 @@ class Credential {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_credential_free(ptr);
     }
 }
@@ -1800,7 +1683,6 @@ class CredentialCommitment {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1810,12 +1692,6 @@ class CredentialCommitment {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_credentialcommitment_free(ptr);
     }
 }
@@ -1833,7 +1709,6 @@ class CredentialCommitmentData {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1843,12 +1718,6 @@ class CredentialCommitmentData {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_credentialcommitmentdata_free(ptr);
     }
     /**
@@ -1897,7 +1766,6 @@ class CredentialCommitmentKey {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1907,12 +1775,6 @@ class CredentialCommitmentKey {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_credentialcommitmentkey_free(ptr);
     }
 }
@@ -1929,7 +1791,6 @@ class CredentialIssuerKeyPair {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1939,12 +1800,6 @@ class CredentialIssuerKeyPair {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_credentialissuerkeypair_free(ptr);
     }
     /**
@@ -2001,7 +1856,6 @@ class CredentialPoK {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -2011,12 +1865,6 @@ class CredentialPoK {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_credentialpok_free(ptr);
     }
 }
@@ -2033,7 +1881,6 @@ class CredentialRevealSig {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -2043,12 +1890,6 @@ class CredentialRevealSig {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_credentialrevealsig_free(ptr);
     }
     /**
@@ -2085,7 +1926,6 @@ class CredentialSignature {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -2095,12 +1935,6 @@ class CredentialSignature {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_credentialsignature_free(ptr);
     }
 }
@@ -2117,7 +1951,6 @@ class CredentialUserKeyPair {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -2127,12 +1960,6 @@ class CredentialUserKeyPair {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_credentialuserkeypair_free(ptr);
     }
     /**
@@ -2185,7 +2012,6 @@ class FeeInputs {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -2195,12 +2021,6 @@ class FeeInputs {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_feeinputs_free(ptr);
     }
     /**
@@ -2247,12 +2067,7 @@ class FeeInputs {
     * @returns {FeeInputs}
     */
     append2(am, tr, ar, om, kp) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         uint64CvtShim[0] = am;
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
@@ -2289,7 +2104,6 @@ class KVBlind {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -2299,12 +2113,6 @@ class KVBlind {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_kvblind_free(ptr);
     }
     /**
@@ -2350,7 +2158,6 @@ class KVHash {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -2360,12 +2167,6 @@ class KVHash {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_kvhash_free(ptr);
     }
     /**
@@ -2413,7 +2214,6 @@ class Key {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -2423,12 +2223,6 @@ class Key {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_key_free(ptr);
     }
     /**
@@ -2482,7 +2276,6 @@ class OwnerMemo {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -2492,12 +2285,6 @@ class OwnerMemo {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_ownermemo_free(ptr);
     }
     /**
@@ -2546,7 +2333,6 @@ class PublicParams {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -2556,12 +2342,6 @@ class PublicParams {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_publicparams_free(ptr);
     }
     /**
@@ -2586,7 +2366,6 @@ class SignatureRules {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -2596,12 +2375,6 @@ class SignatureRules {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_signaturerules_free(ptr);
     }
     /**
@@ -2638,7 +2411,6 @@ class TracingPolicies {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -2648,12 +2420,6 @@ class TracingPolicies {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_tracingpolicies_free(ptr);
     }
 }
@@ -2671,7 +2437,6 @@ class TracingPolicy {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -2681,34 +2446,21 @@ class TracingPolicy {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_tracingpolicy_free(ptr);
     }
     /**
     * @param {AssetTracerKeyPair} tracing_key
     * @returns {TracingPolicy}
     */
-<<<<<<< HEAD
     static new_with_tracing(tracing_key) {
         _assertClass(tracing_key, AssetTracerKeyPair);
         var ret = wasm.tracingpolicy_new_with_tracing(tracing_key.ptr);
-=======
-    static new_with_tracking(tracing_key) {
-        _assertClass(tracing_key, AssetTracerKeyPair);
-        var ret = wasm.tracingpolicy_new_with_tracking(tracing_key.ptr);
->>>>>>> main
         return TracingPolicy.__wrap(ret);
     }
     /**
     * @param {AssetTracerKeyPair} tracing_key
     * @param {CredIssuerPublicKey} cred_issuer_key
     * @param {any} reveal_map
-<<<<<<< HEAD
     * @param {boolean} tracing
     * @returns {TracingPolicy}
     */
@@ -2716,15 +2468,6 @@ class TracingPolicy {
         _assertClass(tracing_key, AssetTracerKeyPair);
         _assertClass(cred_issuer_key, CredIssuerPublicKey);
         var ret = wasm.tracingpolicy_new_with_identity_tracing(tracing_key.ptr, cred_issuer_key.ptr, addHeapObject(reveal_map), tracing);
-=======
-    * @param {boolean} tracking
-    * @returns {TracingPolicy}
-    */
-    static new_with_identity_tracking(tracing_key, cred_issuer_key, reveal_map, tracking) {
-        _assertClass(tracing_key, AssetTracerKeyPair);
-        _assertClass(cred_issuer_key, CredIssuerPublicKey);
-        var ret = wasm.tracingpolicy_new_with_identity_tracking(tracing_key.ptr, cred_issuer_key.ptr, addHeapObject(reveal_map), tracking);
->>>>>>> main
         return TracingPolicy.__wrap(ret);
     }
 }
@@ -2741,7 +2484,6 @@ class TransactionBuilder {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -2751,12 +2493,6 @@ class TransactionBuilder {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_transactionbuilder_free(ptr);
     }
     /**
@@ -2767,12 +2503,7 @@ class TransactionBuilder {
     * @returns {TransactionBuilder}
     */
     add_fee_relative_auto(am, kp) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         uint64CvtShim[0] = am;
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
@@ -2809,12 +2540,7 @@ class TransactionBuilder {
     * @returns {TransactionBuilder}
     */
     add_fee(inputs) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         _assertClass(inputs, FeeInputs);
         var ptr0 = inputs.ptr;
         inputs.ptr = 0;
@@ -2866,12 +2592,7 @@ class TransactionBuilder {
     * @returns {TransactionBuilder}
     */
     add_operation_create_asset(key_pair, memo, token_code, asset_rules) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         _assertClass(key_pair, XfrKeyPair);
         var ptr0 = passStringToWasm0(memo, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
@@ -2893,12 +2614,7 @@ class TransactionBuilder {
     * @returns {TransactionBuilder}
     */
     add_operation_create_asset_with_policy(key_pair, memo, token_code, policy_choice, asset_rules) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         _assertClass(key_pair, XfrKeyPair);
         var ptr0 = passStringToWasm0(memo, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
@@ -2919,12 +2635,7 @@ class TransactionBuilder {
     * @returns {TransactionBuilder}
     */
     add_policy_option(token_code, which_check) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         var ptr0 = passStringToWasm0(token_code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
         var ptr1 = passStringToWasm0(which_check, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -2953,12 +2664,7 @@ class TransactionBuilder {
     * @returns {TransactionBuilder}
     */
     add_basic_issue_asset(key_pair, code, seq_num, amount, conf_amount, zei_params) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         _assertClass(key_pair, XfrKeyPair);
         var ptr0 = passStringToWasm0(code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
@@ -2990,12 +2696,7 @@ class TransactionBuilder {
     * @returns {TransactionBuilder}
     */
     add_operation_air_assign(key_pair, user_public_key, issuer_public_key, commitment, pok) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         _assertClass(key_pair, XfrKeyPair);
         _assertClass(user_public_key, CredUserPublicKey);
         _assertClass(issuer_public_key, CredIssuerPublicKey);
@@ -3018,12 +2719,7 @@ class TransactionBuilder {
     * @returns {TransactionBuilder}
     */
     add_operation_kv_update_no_hash(auth_key_pair, key, seq_num) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         _assertClass(auth_key_pair, XfrKeyPair);
         _assertClass(key, Key);
         uint64CvtShim[0] = seq_num;
@@ -3048,12 +2744,7 @@ class TransactionBuilder {
     * @returns {TransactionBuilder}
     */
     add_operation_kv_update_with_hash(auth_key_pair, key, seq_num, kv_hash) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         _assertClass(auth_key_pair, XfrKeyPair);
         _assertClass(key, Key);
         uint64CvtShim[0] = seq_num;
@@ -3078,12 +2769,7 @@ class TransactionBuilder {
     * @returns {TransactionBuilder}
     */
     add_operation_update_memo(auth_key_pair, code, new_memo) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         _assertClass(auth_key_pair, XfrKeyPair);
         var ptr0 = passStringToWasm0(code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
@@ -3101,12 +2787,7 @@ class TransactionBuilder {
     * @returns {TransactionBuilder}
     */
     add_transfer_operation(op) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         var ptr0 = passStringToWasm0(op, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
         var ret = wasm.transactionbuilder_add_transfer_operation(ptr, ptr0, len0);
@@ -3117,12 +2798,7 @@ class TransactionBuilder {
     * @returns {TransactionBuilder}
     */
     sign(kp) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         _assertClass(kp, XfrKeyPair);
         var ret = wasm.transactionbuilder_sign(ptr, kp.ptr);
         return TransactionBuilder.__wrap(ret);
@@ -3177,7 +2853,6 @@ class TransferOperationBuilder {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -3187,12 +2862,6 @@ class TransferOperationBuilder {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_transferoperationbuilder_free(ptr);
     }
     /**
@@ -3242,14 +2911,8 @@ class TransferOperationBuilder {
     * @param {BigInt} amount
     * @returns {TransferOperationBuilder}
     */
-<<<<<<< HEAD
     add_input_with_tracing(txo_ref, asset_record, owner_memo, tracing_policies, key, amount) {
         const ptr = this.__destroy_into_raw();
-=======
-    add_input_with_tracking(txo_ref, asset_record, owner_memo, tracing_policies, key, amount) {
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         _assertClass(txo_ref, TxoRef);
         var ptr0 = txo_ref.ptr;
         txo_ref.ptr = 0;
@@ -3267,11 +2930,7 @@ class TransferOperationBuilder {
         uint64CvtShim[0] = amount;
         const low3 = u32CvtShim[0];
         const high3 = u32CvtShim[1];
-<<<<<<< HEAD
         var ret = wasm.transferoperationbuilder_add_input_with_tracing(ptr, ptr0, ptr1, ptr2, tracing_policies.ptr, key.ptr, low3, high3);
-=======
-        var ret = wasm.transferoperationbuilder_add_input_with_tracking(ptr, ptr0, ptr1, ptr2, tracing_policies.ptr, key.ptr, low3, high3);
->>>>>>> main
         return TransferOperationBuilder.__wrap(ret);
     }
     /**
@@ -3293,14 +2952,8 @@ class TransferOperationBuilder {
     * @param {BigInt} amount
     * @returns {TransferOperationBuilder}
     */
-<<<<<<< HEAD
     add_input_no_tracing(txo_ref, asset_record, owner_memo, key, amount) {
         const ptr = this.__destroy_into_raw();
-=======
-    add_input_no_tracking(txo_ref, asset_record, owner_memo, key, amount) {
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         _assertClass(txo_ref, TxoRef);
         var ptr0 = txo_ref.ptr;
         txo_ref.ptr = 0;
@@ -3315,11 +2968,7 @@ class TransferOperationBuilder {
         uint64CvtShim[0] = amount;
         const low2 = u32CvtShim[0];
         const high2 = u32CvtShim[1];
-<<<<<<< HEAD
         var ret = wasm.transferoperationbuilder_add_input_no_tracing(ptr, ptr0, asset_record.ptr, ptr1, key.ptr, low2, high2);
-=======
-        var ret = wasm.transferoperationbuilder_add_input_no_tracking(ptr, ptr0, asset_record.ptr, ptr1, key.ptr, low2, high2);
->>>>>>> main
         return TransferOperationBuilder.__wrap(ret);
     }
     /**
@@ -3341,14 +2990,8 @@ class TransferOperationBuilder {
     * @param {boolean} conf_type
     * @returns {TransferOperationBuilder}
     */
-<<<<<<< HEAD
     add_output_with_tracing(amount, recipient, tracing_policies, code, conf_amount, conf_type) {
         const ptr = this.__destroy_into_raw();
-=======
-    add_output_with_tracking(amount, recipient, tracing_policies, code, conf_amount, conf_type) {
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         uint64CvtShim[0] = amount;
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
@@ -3356,11 +2999,7 @@ class TransferOperationBuilder {
         _assertClass(tracing_policies, TracingPolicies);
         var ptr1 = passStringToWasm0(code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len1 = WASM_VECTOR_LEN;
-<<<<<<< HEAD
         var ret = wasm.transferoperationbuilder_add_output_with_tracing(ptr, low0, high0, recipient.ptr, tracing_policies.ptr, ptr1, len1, conf_amount, conf_type);
-=======
-        var ret = wasm.transferoperationbuilder_add_output_with_tracking(ptr, low0, high0, recipient.ptr, tracing_policies.ptr, ptr1, len1, conf_amount, conf_type);
->>>>>>> main
         return TransferOperationBuilder.__wrap(ret);
     }
     /**
@@ -3379,25 +3018,15 @@ class TransferOperationBuilder {
     * @param {boolean} conf_type
     * @returns {TransferOperationBuilder}
     */
-<<<<<<< HEAD
     add_output_no_tracing(amount, recipient, code, conf_amount, conf_type) {
         const ptr = this.__destroy_into_raw();
-=======
-    add_output_no_tracking(amount, recipient, code, conf_amount, conf_type) {
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         uint64CvtShim[0] = amount;
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
         _assertClass(recipient, XfrPublicKey);
         var ptr1 = passStringToWasm0(code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len1 = WASM_VECTOR_LEN;
-<<<<<<< HEAD
         var ret = wasm.transferoperationbuilder_add_output_no_tracing(ptr, low0, high0, recipient.ptr, ptr1, len1, conf_amount, conf_type);
-=======
-        var ret = wasm.transferoperationbuilder_add_output_no_tracking(ptr, low0, high0, recipient.ptr, ptr1, len1, conf_amount, conf_type);
->>>>>>> main
         return TransferOperationBuilder.__wrap(ret);
     }
     /**
@@ -3407,12 +3036,7 @@ class TransferOperationBuilder {
     * @returns {TransferOperationBuilder}
     */
     balance() {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         var ret = wasm.transferoperationbuilder_balance(ptr);
         return TransferOperationBuilder.__wrap(ret);
     }
@@ -3424,12 +3048,7 @@ class TransferOperationBuilder {
     * @returns {TransferOperationBuilder}
     */
     create() {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         var ret = wasm.transferoperationbuilder_create(ptr);
         return TransferOperationBuilder.__wrap(ret);
     }
@@ -3443,12 +3062,7 @@ class TransferOperationBuilder {
     * @returns {TransferOperationBuilder}
     */
     sign(kp) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         _assertClass(kp, XfrKeyPair);
         var ret = wasm.transferoperationbuilder_sign(ptr, kp.ptr);
         return TransferOperationBuilder.__wrap(ret);
@@ -3462,12 +3076,7 @@ class TransferOperationBuilder {
     * @returns {TransferOperationBuilder}
     */
     add_cosignature(kp, input_idx) {
-<<<<<<< HEAD
         const ptr = this.__destroy_into_raw();
-=======
-        var ptr = this.ptr;
-        this.ptr = 0;
->>>>>>> main
         _assertClass(kp, XfrKeyPair);
         var ret = wasm.transferoperationbuilder_add_cosignature(ptr, kp.ptr, input_idx);
         return TransferOperationBuilder.__wrap(ret);
@@ -3517,7 +3126,6 @@ class TxoRef {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -3527,12 +3135,6 @@ class TxoRef {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_txoref_free(ptr);
     }
     /**
@@ -3586,7 +3188,6 @@ class XfrKeyPair {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -3596,18 +3197,11 @@ class XfrKeyPair {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_xfrkeypair_free(ptr);
     }
     /**
     * @returns {XfrPublicKey}
     */
-<<<<<<< HEAD
     get pub_key() {
         var ret = wasm.__wbg_get_xfrkeypair_pub_key(this.ptr);
         return XfrPublicKey.__wrap(ret);
@@ -3621,12 +3215,6 @@ class XfrKeyPair {
         arg0.ptr = 0;
         wasm.__wbg_set_xfrkeypair_pub_key(this.ptr, ptr0);
     }
-=======
-    get_pk() {
-        var ret = wasm.xfrkeypair_get_pk(this.ptr);
-        return XfrPublicKey.__wrap(ret);
-    }
->>>>>>> main
 }
 module.exports.XfrKeyPair = XfrKeyPair;
 /**
@@ -3640,7 +3228,6 @@ class XfrPublicKey {
         return obj;
     }
 
-<<<<<<< HEAD
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -3650,12 +3237,6 @@ class XfrPublicKey {
 
     free() {
         const ptr = this.__destroy_into_raw();
-=======
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
->>>>>>> main
         wasm.__wbg_xfrpublickey_free(ptr);
     }
 }
@@ -3760,55 +3341,31 @@ module.exports.__wbg_randomFillSync_d2ba53160aec6aba = function(arg0, arg1, arg2
     getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
 };
 
-<<<<<<< HEAD
 module.exports.__wbg_buffer_e35e010c3ba9f945 = function(arg0) {
-=======
-module.exports.__wbg_buffer_bc64154385c04ac4 = function(arg0) {
->>>>>>> main
     var ret = getObject(arg0).buffer;
     return addHeapObject(ret);
 };
 
-<<<<<<< HEAD
 module.exports.__wbg_length_2cfa674c2a529bc1 = function(arg0) {
-=======
-module.exports.__wbg_length_e9f6f145de2fede5 = function(arg0) {
->>>>>>> main
     var ret = getObject(arg0).length;
     return ret;
 };
 
-<<<<<<< HEAD
 module.exports.__wbg_new_139e70222494b1ff = function(arg0) {
-=======
-module.exports.__wbg_new_22a33711cf65b661 = function(arg0) {
->>>>>>> main
     var ret = new Uint8Array(getObject(arg0));
     return addHeapObject(ret);
 };
 
-<<<<<<< HEAD
 module.exports.__wbg_set_d771848e3c7935bb = function(arg0, arg1, arg2) {
     getObject(arg0).set(getObject(arg1), arg2 >>> 0);
 };
 
 module.exports.__wbg_newwithlength_e0c461e90217842c = function(arg0) {
-=======
-module.exports.__wbg_set_b29de3f25280c6ec = function(arg0, arg1, arg2) {
-    getObject(arg0).set(getObject(arg1), arg2 >>> 0);
-};
-
-module.exports.__wbg_newwithlength_48451d71403bfede = function(arg0) {
->>>>>>> main
     var ret = new Uint8Array(arg0 >>> 0);
     return addHeapObject(ret);
 };
 
-<<<<<<< HEAD
 module.exports.__wbg_subarray_8a52f1c1a11c02a8 = function(arg0, arg1, arg2) {
-=======
-module.exports.__wbg_subarray_6b2dd31c84ee881f = function(arg0, arg1, arg2) {
->>>>>>> main
     var ret = getObject(arg0).subarray(arg1 >>> 0, arg2 >>> 0);
     return addHeapObject(ret);
 };
