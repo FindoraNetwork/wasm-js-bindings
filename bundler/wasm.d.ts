@@ -293,10 +293,10 @@ export function wasm_credential_verify(issuer_pub_key: CredIssuerPublicKey, attr
 * @param {JsValue} candidate_assets - List of asset types traced by the tracer keypair.
 * @param {any} xfr_body
 * @param {AssetTracerKeyPair} tracer_keypair
-* @param {any} candidate_assets
+* @param {any} _candidate_assets
 * @returns {any}
 */
-export function trace_assets(xfr_body: any, tracer_keypair: AssetTracerKeyPair, candidate_assets: any): any;
+export function trace_assets(xfr_body: any, tracer_keypair: AssetTracerKeyPair, _candidate_assets: any): any;
 /**
 * Returns bech32 encoded representation of an XfrPublicKey.
 * @param {XfrPublicKey} key
@@ -393,7 +393,7 @@ export function fra_get_dest_pubkey(): XfrPublicKey;
 /**
 * When an asset is defined, several options governing the assets must be
 * specified:
-* 1. **Traceable**: Records and identities of traceable assets can be decrypted by a provided tracking key. By defaults, assets do not have
+* 1. **Traceable**: Records and identities of traceable assets can be decrypted by a provided tracing key. By defaults, assets do not have
 * any tracing policies.
 * 2. **Transferable**: Non-transferable assets can only be transferred once from the issuer to another user. By default, assets are transferable.
 * 3. **Updatable**: Whether the asset memo can be updated. By default, assets are not updatable.
@@ -960,15 +960,15 @@ export class TracingPolicy {
 * @param {AssetTracerKeyPair} tracing_key
 * @returns {TracingPolicy}
 */
-  static new_with_tracking(tracing_key: AssetTracerKeyPair): TracingPolicy;
+  static new_with_tracing(tracing_key: AssetTracerKeyPair): TracingPolicy;
 /**
 * @param {AssetTracerKeyPair} tracing_key
 * @param {CredIssuerPublicKey} cred_issuer_key
 * @param {any} reveal_map
-* @param {boolean} tracking
+* @param {boolean} tracing
 * @returns {TracingPolicy}
 */
-  static new_with_identity_tracking(tracing_key: AssetTracerKeyPair, cred_issuer_key: CredIssuerPublicKey, reveal_map: any, tracking: boolean): TracingPolicy;
+  static new_with_identity_tracing(tracing_key: AssetTracerKeyPair, cred_issuer_key: CredIssuerPublicKey, reveal_map: any, tracing: boolean): TracingPolicy;
 }
 /**
 * Structure that allows users to construct arbitrary transactions.
@@ -1207,7 +1207,7 @@ export class TransferOperationBuilder {
 * @param {BigInt} amount
 * @returns {TransferOperationBuilder}
 */
-  add_input_with_tracking(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, tracing_policies: TracingPolicies, key: XfrKeyPair, amount: BigInt): TransferOperationBuilder;
+  add_input_with_tracing(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, tracing_policies: TracingPolicies, key: XfrKeyPair, amount: BigInt): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to add an input to a transfer operation builder.
 * @param {TxoRef} txo_ref - Absolute or relative utxo reference
@@ -1227,7 +1227,7 @@ export class TransferOperationBuilder {
 * @param {BigInt} amount
 * @returns {TransferOperationBuilder}
 */
-  add_input_no_tracking(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, key: XfrKeyPair, amount: BigInt): TransferOperationBuilder;
+  add_input_no_tracing(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, key: XfrKeyPair, amount: BigInt): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to add an output to a transfer operation builder.
 *
@@ -1247,7 +1247,7 @@ export class TransferOperationBuilder {
 * @param {boolean} conf_type
 * @returns {TransferOperationBuilder}
 */
-  add_output_with_tracking(amount: BigInt, recipient: XfrPublicKey, tracing_policies: TracingPolicies, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
+  add_output_with_tracing(amount: BigInt, recipient: XfrPublicKey, tracing_policies: TracingPolicies, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to add an output to a transfer operation builder.
 *
@@ -1264,7 +1264,7 @@ export class TransferOperationBuilder {
 * @param {boolean} conf_type
 * @returns {TransferOperationBuilder}
 */
-  add_output_no_tracking(amount: BigInt, recipient: XfrPublicKey, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
+  add_output_no_tracing(amount: BigInt, recipient: XfrPublicKey, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to ensure the transfer inputs and outputs are balanced.
 * This function will add change outputs for all unspent portions of input records.
@@ -1348,7 +1348,7 @@ export class XfrKeyPair {
 /**
 * @returns {XfrPublicKey}
 */
-  get_pk(): XfrPublicKey;
+  pub_key: XfrPublicKey;
 }
 /**
 */
