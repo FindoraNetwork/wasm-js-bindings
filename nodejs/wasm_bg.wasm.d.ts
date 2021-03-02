@@ -48,13 +48,8 @@ export function __wbg_signaturerules_free(a: number): void;
 export function signaturerules_new(a: number, b: number, c: number): number;
 export function __wbg_tracingpolicies_free(a: number): void;
 export function __wbg_tracingpolicy_free(a: number): void;
-<<<<<<< HEAD
 export function tracingpolicy_new_with_tracing(a: number): number;
 export function tracingpolicy_new_with_identity_tracing(a: number, b: number, c: number, d: number): number;
-=======
-export function tracingpolicy_new_with_tracking(a: number): number;
-export function tracingpolicy_new_with_identity_tracking(a: number, b: number, c: number, d: number): number;
->>>>>>> main
 export function __wbg_assetrules_free(a: number): void;
 export function assetrules_new(): number;
 export function assetrules_add_tracing_policy(a: number, b: number): number;
@@ -108,17 +103,10 @@ export function transactionbuilder_get_owner_memo(a: number, b: number): number;
 export function __wbg_transferoperationbuilder_free(a: number): void;
 export function transferoperationbuilder_new(): number;
 export function transferoperationbuilder_debug(a: number, b: number): void;
-<<<<<<< HEAD
 export function transferoperationbuilder_add_input_with_tracing(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number): number;
 export function transferoperationbuilder_add_input_no_tracing(a: number, b: number, c: number, d: number, e: number, f: number, g: number): number;
 export function transferoperationbuilder_add_output_with_tracing(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number): number;
 export function transferoperationbuilder_add_output_no_tracing(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number): number;
-=======
-export function transferoperationbuilder_add_input_with_tracking(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number): number;
-export function transferoperationbuilder_add_input_no_tracking(a: number, b: number, c: number, d: number, e: number, f: number, g: number): number;
-export function transferoperationbuilder_add_output_with_tracking(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number): number;
-export function transferoperationbuilder_add_output_no_tracking(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number): number;
->>>>>>> main
 export function transferoperationbuilder_balance(a: number): number;
 export function transferoperationbuilder_create(a: number): number;
 export function transferoperationbuilder_sign(a: number, b: number): number;
@@ -151,6 +139,7 @@ export function base64_to_bech32(a: number, b: number, c: number): void;
 export function encryption_pbkdf2_aes256gcm(a: number, b: number, c: number, d: number, e: number): void;
 export function decryption_pbkdf2_aes256gcm(a: number, b: number, c: number, d: number, e: number): void;
 export function create_keypair_from_secret(a: number, b: number): number;
+export function get_pk_from_keypair(a: number): number;
 export function generate_mnemonic_default(a: number): void;
 export function generate_mnemonic_custom(a: number, b: number, c: number, d: number): void;
 export function __wbg_bippath_free(a: number): void;
@@ -171,12 +160,8 @@ export function __wbg_creduserpublickey_free(a: number): void;
 export function __wbg_credusersecretkey_free(a: number): void;
 export function __wbg_xfrpublickey_free(a: number): void;
 export function __wbg_xfrkeypair_free(a: number): void;
-<<<<<<< HEAD
 export function __wbg_get_xfrkeypair_pub_key(a: number): number;
 export function __wbg_set_xfrkeypair_pub_key(a: number, b: number): void;
-=======
-export function xfrkeypair_get_pk(a: number): number;
->>>>>>> main
 export function __wbindgen_malloc(a: number): number;
 export function __wbindgen_realloc(a: number, b: number, c: number): number;
 export function __wbindgen_add_to_stack_pointer(a: number): number;

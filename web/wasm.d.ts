@@ -293,17 +293,10 @@ export function wasm_credential_verify(issuer_pub_key: CredIssuerPublicKey, attr
 * @param {JsValue} candidate_assets - List of asset types traced by the tracer keypair.
 * @param {any} xfr_body
 * @param {AssetTracerKeyPair} tracer_keypair
-<<<<<<< HEAD
 * @param {any} _candidate_assets
 * @returns {any}
 */
 export function trace_assets(xfr_body: any, tracer_keypair: AssetTracerKeyPair, _candidate_assets: any): any;
-=======
-* @param {any} candidate_assets
-* @returns {any}
-*/
-export function trace_assets(xfr_body: any, tracer_keypair: AssetTracerKeyPair, candidate_assets: any): any;
->>>>>>> main
 /**
 * Returns bech32 encoded representation of an XfrPublicKey.
 * @param {XfrPublicKey} key
@@ -343,6 +336,11 @@ export function decryption_pbkdf2_aes256gcm(enc_key_pair: Uint8Array, password: 
 * @returns {XfrKeyPair | undefined}
 */
 export function create_keypair_from_secret(sk_str: string): XfrKeyPair | undefined;
+/**
+* @param {XfrKeyPair} kp
+* @returns {XfrPublicKey}
+*/
+export function get_pk_from_keypair(kp: XfrKeyPair): XfrPublicKey;
 /**
 * Randomly generate a 12words-length mnemonic.
 * @returns {string}
@@ -400,11 +398,7 @@ export function fra_get_dest_pubkey(): XfrPublicKey;
 /**
 * When an asset is defined, several options governing the assets must be
 * specified:
-<<<<<<< HEAD
 * 1. **Traceable**: Records and identities of traceable assets can be decrypted by a provided tracing key. By defaults, assets do not have
-=======
-* 1. **Traceable**: Records and identities of traceable assets can be decrypted by a provided tracking key. By defaults, assets do not have
->>>>>>> main
 * any tracing policies.
 * 2. **Transferable**: Non-transferable assets can only be transferred once from the issuer to another user. By default, assets are transferable.
 * 3. **Updatable**: Whether the asset memo can be updated. By default, assets are not updatable.
@@ -971,26 +965,15 @@ export class TracingPolicy {
 * @param {AssetTracerKeyPair} tracing_key
 * @returns {TracingPolicy}
 */
-<<<<<<< HEAD
   static new_with_tracing(tracing_key: AssetTracerKeyPair): TracingPolicy;
-=======
-  static new_with_tracking(tracing_key: AssetTracerKeyPair): TracingPolicy;
->>>>>>> main
 /**
 * @param {AssetTracerKeyPair} tracing_key
 * @param {CredIssuerPublicKey} cred_issuer_key
 * @param {any} reveal_map
-<<<<<<< HEAD
 * @param {boolean} tracing
 * @returns {TracingPolicy}
 */
   static new_with_identity_tracing(tracing_key: AssetTracerKeyPair, cred_issuer_key: CredIssuerPublicKey, reveal_map: any, tracing: boolean): TracingPolicy;
-=======
-* @param {boolean} tracking
-* @returns {TracingPolicy}
-*/
-  static new_with_identity_tracking(tracing_key: AssetTracerKeyPair, cred_issuer_key: CredIssuerPublicKey, reveal_map: any, tracking: boolean): TracingPolicy;
->>>>>>> main
 }
 /**
 * Structure that allows users to construct arbitrary transactions.
@@ -1229,11 +1212,7 @@ export class TransferOperationBuilder {
 * @param {BigInt} amount
 * @returns {TransferOperationBuilder}
 */
-<<<<<<< HEAD
   add_input_with_tracing(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, tracing_policies: TracingPolicies, key: XfrKeyPair, amount: BigInt): TransferOperationBuilder;
-=======
-  add_input_with_tracking(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, tracing_policies: TracingPolicies, key: XfrKeyPair, amount: BigInt): TransferOperationBuilder;
->>>>>>> main
 /**
 * Wraps around TransferOperationBuilder to add an input to a transfer operation builder.
 * @param {TxoRef} txo_ref - Absolute or relative utxo reference
@@ -1253,11 +1232,7 @@ export class TransferOperationBuilder {
 * @param {BigInt} amount
 * @returns {TransferOperationBuilder}
 */
-<<<<<<< HEAD
   add_input_no_tracing(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, key: XfrKeyPair, amount: BigInt): TransferOperationBuilder;
-=======
-  add_input_no_tracking(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, key: XfrKeyPair, amount: BigInt): TransferOperationBuilder;
->>>>>>> main
 /**
 * Wraps around TransferOperationBuilder to add an output to a transfer operation builder.
 *
@@ -1277,11 +1252,7 @@ export class TransferOperationBuilder {
 * @param {boolean} conf_type
 * @returns {TransferOperationBuilder}
 */
-<<<<<<< HEAD
   add_output_with_tracing(amount: BigInt, recipient: XfrPublicKey, tracing_policies: TracingPolicies, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
-=======
-  add_output_with_tracking(amount: BigInt, recipient: XfrPublicKey, tracing_policies: TracingPolicies, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
->>>>>>> main
 /**
 * Wraps around TransferOperationBuilder to add an output to a transfer operation builder.
 *
@@ -1298,11 +1269,7 @@ export class TransferOperationBuilder {
 * @param {boolean} conf_type
 * @returns {TransferOperationBuilder}
 */
-<<<<<<< HEAD
   add_output_no_tracing(amount: BigInt, recipient: XfrPublicKey, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
-=======
-  add_output_no_tracking(amount: BigInt, recipient: XfrPublicKey, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
->>>>>>> main
 /**
 * Wraps around TransferOperationBuilder to ensure the transfer inputs and outputs are balanced.
 * This function will add change outputs for all unspent portions of input records.
@@ -1386,11 +1353,7 @@ export class XfrKeyPair {
 /**
 * @returns {XfrPublicKey}
 */
-<<<<<<< HEAD
   pub_key: XfrPublicKey;
-=======
-  get_pk(): XfrPublicKey;
->>>>>>> main
 }
 /**
 */
@@ -1449,13 +1412,8 @@ export interface InitOutput {
   readonly signaturerules_new: (a: number, b: number, c: number) => number;
   readonly __wbg_tracingpolicies_free: (a: number) => void;
   readonly __wbg_tracingpolicy_free: (a: number) => void;
-<<<<<<< HEAD
   readonly tracingpolicy_new_with_tracing: (a: number) => number;
   readonly tracingpolicy_new_with_identity_tracing: (a: number, b: number, c: number, d: number) => number;
-=======
-  readonly tracingpolicy_new_with_tracking: (a: number) => number;
-  readonly tracingpolicy_new_with_identity_tracking: (a: number, b: number, c: number, d: number) => number;
->>>>>>> main
   readonly __wbg_assetrules_free: (a: number) => void;
   readonly assetrules_new: () => number;
   readonly assetrules_add_tracing_policy: (a: number, b: number) => number;
@@ -1509,17 +1467,10 @@ export interface InitOutput {
   readonly __wbg_transferoperationbuilder_free: (a: number) => void;
   readonly transferoperationbuilder_new: () => number;
   readonly transferoperationbuilder_debug: (a: number, b: number) => void;
-<<<<<<< HEAD
   readonly transferoperationbuilder_add_input_with_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => number;
   readonly transferoperationbuilder_add_input_no_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => number;
   readonly transferoperationbuilder_add_output_with_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => number;
   readonly transferoperationbuilder_add_output_no_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => number;
-=======
-  readonly transferoperationbuilder_add_input_with_tracking: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => number;
-  readonly transferoperationbuilder_add_input_no_tracking: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => number;
-  readonly transferoperationbuilder_add_output_with_tracking: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => number;
-  readonly transferoperationbuilder_add_output_no_tracking: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => number;
->>>>>>> main
   readonly transferoperationbuilder_balance: (a: number) => number;
   readonly transferoperationbuilder_create: (a: number) => number;
   readonly transferoperationbuilder_sign: (a: number, b: number) => number;
@@ -1552,6 +1503,7 @@ export interface InitOutput {
   readonly encryption_pbkdf2_aes256gcm: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly decryption_pbkdf2_aes256gcm: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly create_keypair_from_secret: (a: number, b: number) => number;
+  readonly get_pk_from_keypair: (a: number) => number;
   readonly generate_mnemonic_default: (a: number) => void;
   readonly generate_mnemonic_custom: (a: number, b: number, c: number, d: number) => void;
   readonly __wbg_bippath_free: (a: number) => void;
@@ -1572,12 +1524,8 @@ export interface InitOutput {
   readonly __wbg_credusersecretkey_free: (a: number) => void;
   readonly __wbg_xfrpublickey_free: (a: number) => void;
   readonly __wbg_xfrkeypair_free: (a: number) => void;
-<<<<<<< HEAD
   readonly __wbg_get_xfrkeypair_pub_key: (a: number) => number;
   readonly __wbg_set_xfrkeypair_pub_key: (a: number, b: number) => void;
-=======
-  readonly xfrkeypair_get_pk: (a: number) => number;
->>>>>>> main
   readonly __wbindgen_malloc: (a: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number) => number;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
@@ -1594,7 +1542,3 @@ export interface InitOutput {
 * @returns {Promise<InitOutput>}
 */
 export default function init (module_or_path?: InitInput | Promise<InitInput>): Promise<InitOutput>;
-<<<<<<< HEAD
-=======
-        
->>>>>>> main
