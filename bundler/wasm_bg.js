@@ -2792,22 +2792,6 @@ export class TransactionBuilder {
         }
     }
     /**
-    * Calculates transaction handle.
-    * @returns {string}
-    */
-    transaction_handle() {
-        try {
-            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.transactionbuilder_transaction_handle(retptr, this.ptr);
-            var r0 = getInt32Memory0()[retptr / 4 + 0];
-            var r1 = getInt32Memory0()[retptr / 4 + 1];
-            return getStringFromWasm0(r0, r1);
-        } finally {
-            wasm.__wbindgen_add_to_stack_pointer(16);
-            wasm.__wbindgen_free(r0, r1);
-        }
-    }
-    /**
     * Fetches a client record from a transaction.
     * @param {number} idx - Record to fetch. Records are added to the transaction builder sequentially.
     * @param {number} idx

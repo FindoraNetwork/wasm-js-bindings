@@ -1160,11 +1160,6 @@ export class TransactionBuilder {
 */
   transaction(): string;
 /**
-* Calculates transaction handle.
-* @returns {string}
-*/
-  transaction_handle(): string;
-/**
 * Fetches a client record from a transaction.
 * @param {number} idx - Record to fetch. Records are added to the transaction builder sequentially.
 * @param {number} idx
@@ -1467,7 +1462,6 @@ export interface InitOutput {
   readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number) => number;
   readonly transactionbuilder_sign: (a: number, b: number) => number;
   readonly transactionbuilder_transaction: (a: number, b: number) => void;
-  readonly transactionbuilder_transaction_handle: (a: number, b: number) => void;
   readonly transactionbuilder_get_owner_record: (a: number, b: number) => number;
   readonly transactionbuilder_get_owner_memo: (a: number, b: number) => number;
   readonly __wbg_transferoperationbuilder_free: (a: number) => void;
