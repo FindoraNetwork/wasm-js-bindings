@@ -98,6 +98,7 @@ export function transactionbuilder_add_operation_update_memo(a: number, b: numbe
 export function transactionbuilder_add_transfer_operation(a: number, b: number, c: number): number;
 export function transactionbuilder_sign(a: number, b: number): number;
 export function transactionbuilder_transaction(a: number, b: number): void;
+export function transactionbuilder_transaction_handle(a: number, b: number): void;
 export function transactionbuilder_get_owner_record(a: number, b: number): number;
 export function transactionbuilder_get_owner_memo(a: number, b: number): number;
 export function __wbg_transferoperationbuilder_free(a: number): void;
