@@ -1160,6 +1160,11 @@ export class TransactionBuilder {
 */
   transaction(): string;
 /**
+* Calculates transaction handle.
+* @returns {string}
+*/
+  transaction_handle(): string;
+/**
 * Fetches a client record from a transaction.
 * @param {number} idx - Record to fetch. Records are added to the transaction builder sequentially.
 * @param {number} idx
