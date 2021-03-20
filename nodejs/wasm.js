@@ -1,15 +1,40 @@
 let imports = {};
 imports['__wbindgen_placeholder__'] = module.exports;
 let wasm;
-const { TextEncoder, TextDecoder } = require(String.raw`util`);
+const { TextDecoder, TextEncoder } = require(String.raw`util`);
+
+let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
+
+cachedTextDecoder.decode();
+
+let cachegetUint8Memory0 = null;
+function getUint8Memory0() {
+    if (cachegetUint8Memory0 === null || cachegetUint8Memory0.buffer !== wasm.memory.buffer) {
+        cachegetUint8Memory0 = new Uint8Array(wasm.memory.buffer);
+    }
+    return cachegetUint8Memory0;
+}
+
+function getStringFromWasm0(ptr, len) {
+    return cachedTextDecoder.decode(getUint8Memory0().subarray(ptr, ptr + len));
+}
 
 const heap = new Array(32).fill(undefined);
 
 heap.push(undefined, null, true, false);
 
-function getObject(idx) { return heap[idx]; }
-
 let heap_next = heap.length;
+
+function addHeapObject(obj) {
+    if (heap_next === heap.length) heap.push(heap.length + 1);
+    const idx = heap_next;
+    heap_next = heap[idx];
+
+    heap[idx] = obj;
+    return idx;
+}
+
+function getObject(idx) { return heap[idx]; }
 
 function dropObject(idx) {
     if (idx < 36) return;
@@ -24,14 +49,6 @@ function takeObject(idx) {
 }
 
 let WASM_VECTOR_LEN = 0;
-
-let cachegetUint8Memory0 = null;
-function getUint8Memory0() {
-    if (cachegetUint8Memory0 === null || cachegetUint8Memory0.buffer !== wasm.memory.buffer) {
-        cachegetUint8Memory0 = new Uint8Array(wasm.memory.buffer);
-    }
-    return cachegetUint8Memory0;
-}
 
 let cachedTextEncoder = new TextEncoder('utf-8');
 
@@ -92,23 +109,6 @@ function getInt32Memory0() {
         cachegetInt32Memory0 = new Int32Array(wasm.memory.buffer);
     }
     return cachegetInt32Memory0;
-}
-
-let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
-
-cachedTextDecoder.decode();
-
-function getStringFromWasm0(ptr, len) {
-    return cachedTextDecoder.decode(getUint8Memory0().subarray(ptr, ptr + len));
-}
-
-function addHeapObject(obj) {
-    if (heap_next === heap.length) heap.push(heap.length + 1);
-    const idx = heap_next;
-    heap_next = heap[idx];
-
-    heap[idx] = obj;
-    return idx;
 }
 
 function debugString(val) {
@@ -175,25 +175,6 @@ function debugString(val) {
     // TODO we could test for more things here, like `Set`s and `Map`s.
     return className;
 }
-
-const u32CvtShim = new Uint32Array(2);
-
-const uint64CvtShim = new BigUint64Array(u32CvtShim.buffer);
-
-let stack_pointer = 32;
-
-function addBorrowedObject(obj) {
-    if (stack_pointer == 1) throw new Error('out of js stack');
-    heap[--stack_pointer] = obj;
-    return stack_pointer;
-}
-
-function _assertClass(instance, klass) {
-    if (!(instance instanceof klass)) {
-        throw new Error(`expected instance of ${klass.name}`);
-    }
-    return instance.ptr;
-}
 /**
 * Returns the git commit hash and commit date of the commit this library was built against.
 * @returns {string}
@@ -232,6 +213,13 @@ module.exports.random_asset_type = function() {
     }
 };
 
+let stack_pointer = 32;
+
+function addBorrowedObject(obj) {
+    if (stack_pointer == 1) throw new Error('out of js stack');
+    heap[--stack_pointer] = obj;
+    return stack_pointer;
+}
 /**
 * Generates asset type as a Base64 string from a JSON-serialized JavaScript value.
 * @param {any} val
@@ -291,6 +279,9 @@ module.exports.verify_authenticated_custom_data_result = function(state_commitme
     return ret !== 0;
 };
 
+const u32CvtShim = new Uint32Array(2);
+
+const uint64CvtShim = new BigUint64Array(u32CvtShim.buffer);
 /**
 * Performs a simple loan repayment fee calculation.
 *
@@ -437,6 +428,13 @@ module.exports.create_debt_memo = function(ir_numerator, ir_denominator, fiat_co
         wasm.__wbindgen_free(r0, r1);
     }
 };
+
+function _assertClass(instance, klass) {
+    if (!(instance instanceof klass)) {
+        throw new Error(`expected instance of ${klass.name}`);
+    }
+    return instance.ptr;
+}
 
 function isLikeNone(x) {
     return x === undefined || x === null;
@@ -1909,7 +1907,7 @@ class CredentialRevealSig {
     * @returns {CredentialPoK}
     */
     get_pok() {
-        var ret = wasm.credentialrevealsig_get_pok(this.ptr);
+        var ret = wasm.credentialcommitmentdata_get_pok(this.ptr);
         return CredentialPoK.__wrap(ret);
     }
 }
@@ -3258,6 +3256,11 @@ class XfrPublicKey {
 }
 module.exports.XfrPublicKey = XfrPublicKey;
 
+module.exports.__wbindgen_string_new = function(arg0, arg1) {
+    var ret = getStringFromWasm0(arg0, arg1);
+    return addHeapObject(ret);
+};
+
 module.exports.__wbindgen_object_drop_ref = function(arg0) {
     takeObject(arg0);
 };
@@ -3269,11 +3272,6 @@ module.exports.__wbindgen_json_serialize = function(arg0, arg1) {
     var len0 = WASM_VECTOR_LEN;
     getInt32Memory0()[arg0 / 4 + 1] = len0;
     getInt32Memory0()[arg0 / 4 + 0] = ptr0;
-};
-
-module.exports.__wbindgen_string_new = function(arg0, arg1) {
-    var ret = getStringFromWasm0(arg0, arg1);
-    return addHeapObject(ret);
 };
 
 module.exports.__wbindgen_json_parse = function(arg0, arg1) {
