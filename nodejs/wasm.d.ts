@@ -35,18 +35,6 @@ export function asset_type_from_jsvalue(val: any): string;
 */
 export function verify_authenticated_txn(state_commitment: string, authenticated_txn: string): boolean;
 /**
-* Given a serialized state commitment and an authenticated custom data result, returns true if the custom data result correctly
-* hashes up to the state commitment and false otherwise.
-* @param {string} state_commitment - String representing the state commitment.
-* @param {JsValue} authenticated_txn - JSON-encoded value representing the authenticated custom
-* data result.
-* @throws Will throw an error if the state commitment or the authenticated result fail to deserialize.
-* @param {string} state_commitment 
-* @param {any} authenticated_res 
-* @returns {boolean} 
-*/
-export function verify_authenticated_custom_data_result(state_commitment: string, authenticated_res: any): boolean;
-/**
 * Performs a simple loan repayment fee calculation.
 *
 * The returned fee is a fraction of the `outstanding_balance`
@@ -523,34 +511,6 @@ export class AssetType {
   get_tracing_policies(): TracingPolicies;
 }
 /**
-* Authenticated address identity registry value. Contains a proof that the AIR result is stored
-* on the ledger.
-*/
-export class AuthenticatedAIRResult {
-  free(): void;
-/**
-* Construct an AIRResult from the JSON-encoded value returned by the ledger.
-* @see {@link module:Findora-Network~Network#getAIRResult|Network.getAIRResult} for information about how to fetch a
-* value from the address identity registry.
-* @param {any} json 
-* @returns {AuthenticatedAIRResult} 
-*/
-  static from_json(json: any): AuthenticatedAIRResult;
-/**
-* Returns true if the authenticated AIR result proofs verify succesfully. If the proofs are
-* valid, the identity commitment contained in the AIR result is a valid part of the ledger.
-* @param {string} state_commitment - String representing the ledger state commitment.
-* @param {string} state_commitment 
-* @returns {boolean} 
-*/
-  is_valid(state_commitment: string): boolean;
-/**
-* Returns the underlying credential commitment of the AIR result.
-* @returns {CredentialCommitment | undefined} 
-*/
-  get_commitment(): CredentialCommitment | undefined;
-}
-/**
 * Object representing an authenticable asset record. Clients can validate authentication proofs
 * against a ledger state commitment.
 */
@@ -822,51 +782,6 @@ export class FeeInputs {
   append2(am: BigInt, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): FeeInputs;
 }
 /**
-* Blinding factor for a custom data operation. A blinding factor adds a random value to the
-* custom data being hashed to make the hash hiding.
-*/
-export class KVBlind {
-  free(): void;
-/**
-* Generate a random blinding factor.
-* @returns {KVBlind} 
-*/
-  static gen_random(): KVBlind;
-/**
-* Convert the key pair to a JSON-encoded value that can be used in the browser.
-* @returns {any} 
-*/
-  to_json(): any;
-/**
-* Create a KVBlind from a JSON-encoded value.
-* @param {any} val 
-* @returns {KVBlind} 
-*/
-  static from_json(val: any): KVBlind;
-}
-/**
-* Hash that can be stored in the ledger's custom data store.
-*/
-export class KVHash {
-  free(): void;
-/**
-* Generate a new custom data hash without a blinding factor.
-* @param {JsValue} data - Data to hash. Must be an array of bytes.
-* @param {any} data 
-* @returns {KVHash} 
-*/
-  static new_no_blind(data: any): KVHash;
-/**
-* Generate a new custom data hash with a blinding factor.
-* @param {JsValue} data - Data to hash. Must be an array of bytes.
-* @param {KVBlind} kv_blind - Optional blinding factor.
-* @param {any} data 
-* @param {KVBlind} kv_blind 
-* @returns {KVHash} 
-*/
-  static new_with_blind(data: any, kv_blind: KVBlind): KVHash;
-}
-/**
 * Key for hashes in the ledger's custom data store.
 */
 export class Key {
@@ -1077,54 +992,6 @@ export class TransactionBuilder {
 * @returns {TransactionBuilder} 
 */
   add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: BigInt, amount: BigInt, conf_amount: boolean, zei_params: PublicParams): TransactionBuilder;
-/**
-* Adds an operation to the transaction builder that appends a credential commitment to the address
-* identity registry.
-* @param {XfrKeyPair} key_pair - Ledger key that is tied to the credential.
-* @param {CredUserPublicKey} user_public_key - Public key of the credential user.
-* @param {CredIssuerPublicKey} issuer_public_key - Public key of the credential issuer.
-* @param {CredentialCommitment} commitment - Credential commitment to add to the address identity registry.
-* @param {CredPoK} pok- Proof that the credential commitment is valid.
-* @see {@link module:Findora-Wasm.wasm_credential_commit|wasm_credential_commit} for information about how to generate a credential
-* commitment.
-* @param {XfrKeyPair} key_pair 
-* @param {CredUserPublicKey} user_public_key 
-* @param {CredIssuerPublicKey} issuer_public_key 
-* @param {CredentialCommitment} commitment 
-* @param {CredentialPoK} pok 
-* @returns {TransactionBuilder} 
-*/
-  add_operation_air_assign(key_pair: XfrKeyPair, user_public_key: CredUserPublicKey, issuer_public_key: CredIssuerPublicKey, commitment: CredentialCommitment, pok: CredentialPoK): TransactionBuilder;
-/**
-* Adds an operation to the transaction builder that removes a hash from ledger's custom data
-* store.
-* @param {XfrKeyPair} auth_key_pair - Key pair that is authorized to delete the hash at the
-* provided key.
-* @param {Key} key - The key of the custom data store whose value will be cleared if the
-* transaction validates.
-* @param {BigInt} seq_num - Nonce to prevent replays.
-* @param {XfrKeyPair} auth_key_pair 
-* @param {Key} key 
-* @param {BigInt} seq_num 
-* @returns {TransactionBuilder} 
-*/
-  add_operation_kv_update_no_hash(auth_key_pair: XfrKeyPair, key: Key, seq_num: BigInt): TransactionBuilder;
-/**
-* Adds an operation to the transaction builder that adds a hash to the ledger's custom data
-* store.
-* @param {XfrKeyPair} auth_key_pair - Key pair that is authorized to add the hash at the
-* provided key.
-* @param {Key} key - The key of the custom data store the value will be added to if the
-* transaction validates.
-* @param {KVHash} hash - The hash to add to the custom data store.
-* @param {BigInt} seq_num - Nonce to prevent replays.
-* @param {XfrKeyPair} auth_key_pair 
-* @param {Key} key 
-* @param {BigInt} seq_num 
-* @param {KVHash} kv_hash 
-* @returns {TransactionBuilder} 
-*/
-  add_operation_kv_update_with_hash(auth_key_pair: XfrKeyPair, key: Key, seq_num: BigInt, kv_hash: KVHash): TransactionBuilder;
 /**
 * Adds an operation to the transaction builder that adds a hash to the ledger's custom data
 * store.
