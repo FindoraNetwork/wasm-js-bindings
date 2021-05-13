@@ -2092,20 +2092,16 @@ class TransactionBuilder {
     /**
     * @param am: amount to pay
     * @param kp: owner's XfrKeyPair
-    * @param {BigInt} am
     * @param {XfrKeyPair} kp
     * @returns {TransactionBuilder}
     */
-    add_fee_relative_auto(am, kp) {
+    add_fee_relative_auto(kp) {
         var ptr = this.ptr;
         this.ptr = 0;
-        uint64CvtShim[0] = am;
-        const low0 = u32CvtShim[0];
-        const high0 = u32CvtShim[1];
         _assertClass(kp, XfrKeyPair);
-        var ptr1 = kp.ptr;
+        var ptr0 = kp.ptr;
         kp.ptr = 0;
-        var ret = wasm.transactionbuilder_add_fee_relative_auto(ptr, low0, high0, ptr1);
+        var ret = wasm.transactionbuilder_add_fee_relative_auto(ptr, ptr0);
         return TransactionBuilder.__wrap(ret);
     }
     /**

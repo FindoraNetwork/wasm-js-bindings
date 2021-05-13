@@ -898,11 +898,10 @@ export class TransactionBuilder {
 /**
 * @param am: amount to pay
 * @param kp: owner's XfrKeyPair
-* @param {BigInt} am 
 * @param {XfrKeyPair} kp 
 * @returns {TransactionBuilder} 
 */
-  add_fee_relative_auto(am: BigInt, kp: XfrKeyPair): TransactionBuilder;
+  add_fee_relative_auto(kp: XfrKeyPair): TransactionBuilder;
 /**
 * Use this func to get the necessary infomations for generating `Relative Inputs`
 *
