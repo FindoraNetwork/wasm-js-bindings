@@ -72,7 +72,7 @@ export function __wbg_feeinputs_free(a: number): void;
 export function feeinputs_new(): number;
 export function feeinputs_append(a: number, b: number, c: number, d: number, e: number, f: number, g: number): void;
 export function feeinputs_append2(a: number, b: number, c: number, d: number, e: number, f: number, g: number): number;
-export function transactionbuilder_add_fee_relative_auto(a: number, b: number): number;
+export function transactionbuilder_add_fee_relative_auto(a: number, b: number, c: number, d: number): number;
 export function transactionbuilder_get_relative_outputs(a: number, b: number): void;
 export function transactionbuilder_add_fee(a: number, b: number): number;
 export function transactionbuilder_check_fee(a: number): number;
@@ -82,8 +82,6 @@ export function transactionbuilder_add_operation_create_asset_with_policy(a: num
 export function transactionbuilder_add_policy_option(a: number, b: number, c: number, d: number, e: number): number;
 export function transactionbuilder_add_basic_issue_asset(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number): number;
 export function transactionbuilder_add_operation_update_memo(a: number, b: number, c: number, d: number, e: number, f: number): number;
-export function transactionbuilder_add_operation_delegation(a: number, b: number, c: number, d: number, e: number, f: number): number;
-export function transactionbuilder_add_operation_undelegation(a: number, b: number): number;
 export function transactionbuilder_add_transfer_operation(a: number, b: number, c: number): number;
 export function transactionbuilder_sign(a: number, b: number): number;
 export function transactionbuilder_transaction(a: number, b: number): void;
