@@ -1007,6 +1007,18 @@ export class TransactionBuilder {
 */
   add_operation_update_memo(auth_key_pair: XfrKeyPair, code: string, new_memo: string): TransactionBuilder;
 /**
+* @param {XfrKeyPair} keypair 
+* @param {string} validator 
+* @param {BigInt} time_secs 
+* @returns {TransactionBuilder} 
+*/
+  add_operation_delegation(keypair: XfrKeyPair, validator: string, time_secs: BigInt): TransactionBuilder;
+/**
+* @param {XfrKeyPair} keypair 
+* @returns {TransactionBuilder} 
+*/
+  add_operation_undelegation(keypair: XfrKeyPair): TransactionBuilder;
+/**
 * Adds a serialized transfer asset operation to a transaction builder instance.
 * @param {string} op - a JSON-serialized transfer operation.
 * @see {@link module:Findora-Wasm~TransferOperationBuilder} for details on constructing a transfer operation.
@@ -1317,6 +1329,8 @@ export interface InitOutput {
   readonly transactionbuilder_add_policy_option: (a: number, b: number, c: number, d: number, e: number) => number;
   readonly transactionbuilder_add_basic_issue_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;
   readonly transactionbuilder_add_operation_update_memo: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
+  readonly transactionbuilder_add_operation_delegation: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
+  readonly transactionbuilder_add_operation_undelegation: (a: number, b: number) => number;
   readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number) => number;
   readonly transactionbuilder_sign: (a: number, b: number) => number;
   readonly transactionbuilder_transaction: (a: number, b: number) => void;
