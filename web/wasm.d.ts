@@ -1009,9 +1009,10 @@ export class TransactionBuilder {
 /**
 * @param {XfrKeyPair} keypair 
 * @param {string} validator 
+* @param {BigInt} time_secs 
 * @returns {TransactionBuilder} 
 */
-  add_operation_delegation(keypair: XfrKeyPair, validator: string): TransactionBuilder;
+  add_operation_delegation(keypair: XfrKeyPair, validator: string, time_secs: BigInt): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair 
 * @returns {TransactionBuilder} 
@@ -1328,7 +1329,7 @@ export interface InitOutput {
   readonly transactionbuilder_add_policy_option: (a: number, b: number, c: number, d: number, e: number) => number;
   readonly transactionbuilder_add_basic_issue_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;
   readonly transactionbuilder_add_operation_update_memo: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
-  readonly transactionbuilder_add_operation_delegation: (a: number, b: number, c: number, d: number) => number;
+  readonly transactionbuilder_add_operation_delegation: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly transactionbuilder_add_operation_undelegation: (a: number, b: number) => number;
   readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number) => number;
   readonly transactionbuilder_sign: (a: number, b: number) => number;

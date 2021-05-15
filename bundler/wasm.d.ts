@@ -1009,9 +1009,10 @@ export class TransactionBuilder {
 /**
 * @param {XfrKeyPair} keypair 
 * @param {string} validator 
+* @param {BigInt} time_secs 
 * @returns {TransactionBuilder} 
 */
-  add_operation_delegation(keypair: XfrKeyPair, validator: string): TransactionBuilder;
+  add_operation_delegation(keypair: XfrKeyPair, validator: string, time_secs: BigInt): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair 
 * @returns {TransactionBuilder} 
