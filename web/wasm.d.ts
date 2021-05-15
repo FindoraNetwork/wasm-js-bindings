@@ -384,6 +384,11 @@ export function fra_get_minimal_fee(): BigInt;
 */
 export function fra_get_dest_pubkey(): XfrPublicKey;
 /**
+* The system address used to reveive delegation principals.
+* @returns {string} 
+*/
+export function get_delegation_target_address(): string;
+/**
 * When an asset is defined, several options governing the assets must be
 * specified:
 * 1. **Traceable**: Records and identities of traceable assets can be decrypted by a provided tracing key. By defaults, assets do not have
@@ -1393,6 +1398,7 @@ export interface InitOutput {
   readonly fra_get_asset_code: (a: number) => void;
   readonly fra_get_minimal_fee: (a: number) => void;
   readonly fra_get_dest_pubkey: () => number;
+  readonly get_delegation_target_address: (a: number) => void;
   readonly __wbg_credentialsignature_free: (a: number) => void;
   readonly credentialrevealsig_get_commitment: (a: number) => number;
   readonly __wbg_credissuersecretkey_free: (a: number) => void;

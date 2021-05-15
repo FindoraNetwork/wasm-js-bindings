@@ -1011,6 +1011,21 @@ export function fra_get_dest_pubkey() {
     return XfrPublicKey.__wrap(ret);
 }
 
+/**
+* The system address used to reveive delegation principals.
+* @returns {string}
+*/
+export function get_delegation_target_address() {
+    try {
+        wasm.get_delegation_target_address(8);
+        var r0 = getInt32Memory0()[8 / 4 + 0];
+        var r1 = getInt32Memory0()[8 / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
 function handleError(f) {
     return function () {
         try {

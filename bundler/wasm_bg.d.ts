@@ -141,6 +141,7 @@ export function restore_keypair_from_mnemonic_bip49(a: number, b: number, c: num
 export function fra_get_asset_code(a: number): void;
 export function fra_get_minimal_fee(a: number): void;
 export function fra_get_dest_pubkey(): number;
+export function get_delegation_target_address(a: number): void;
 export function __wbg_credentialsignature_free(a: number): void;
 export function credentialrevealsig_get_commitment(a: number): number;
 export function __wbg_credissuersecretkey_free(a: number): void;
