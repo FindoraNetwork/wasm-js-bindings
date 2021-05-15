@@ -2308,19 +2308,15 @@ export class TransactionBuilder {
     /**
     * @param {XfrKeyPair} keypair
     * @param {string} validator
-    * @param {BigInt} time_secs
     * @returns {TransactionBuilder}
     */
-    add_operation_delegation(keypair, validator, time_secs) {
+    add_operation_delegation(keypair, validator) {
         var ptr = this.ptr;
         this.ptr = 0;
         _assertClass(keypair, XfrKeyPair);
         var ptr0 = passStringToWasm0(validator, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        uint64CvtShim[0] = time_secs;
-        const low1 = u32CvtShim[0];
-        const high1 = u32CvtShim[1];
-        var ret = wasm.transactionbuilder_add_operation_delegation(ptr, keypair.ptr, ptr0, len0, low1, high1);
+        var ret = wasm.transactionbuilder_add_operation_delegation(ptr, keypair.ptr, ptr0, len0);
         return TransactionBuilder.__wrap(ret);
     }
     /**
