@@ -2320,6 +2320,21 @@ class TransactionBuilder {
         return TransactionBuilder.__wrap(ret);
     }
     /**
+    * @param {XfrKeyPair} keypair
+    * @param {BigInt} am
+    * @returns {TransactionBuilder}
+    */
+    add_operation_claim(keypair, am) {
+        var ptr = this.ptr;
+        this.ptr = 0;
+        _assertClass(keypair, XfrKeyPair);
+        uint64CvtShim[0] = am;
+        const low0 = u32CvtShim[0];
+        const high0 = u32CvtShim[1];
+        var ret = wasm.transactionbuilder_add_operation_claim(ptr, keypair.ptr, low0, high0);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
     * Adds a serialized transfer asset operation to a transaction builder instance.
     * @param {string} op - a JSON-serialized transfer operation.
     * @see {@link module:Findora-Wasm~TransferOperationBuilder} for details on constructing a transfer operation.
