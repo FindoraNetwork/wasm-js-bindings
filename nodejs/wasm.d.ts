@@ -898,11 +898,10 @@ export class TransactionBuilder {
 /**
 * @param am: amount to pay
 * @param kp: owner's XfrKeyPair
-* @param {BigInt} am 
 * @param {XfrKeyPair} kp 
 * @returns {TransactionBuilder} 
 */
-  add_fee_relative_auto(am: BigInt, kp: XfrKeyPair): TransactionBuilder;
+  add_fee_relative_auto(kp: XfrKeyPair): TransactionBuilder;
 /**
 * Use this func to get the necessary infomations for generating `Relative Inputs`
 *
@@ -1007,6 +1006,18 @@ export class TransactionBuilder {
 * @returns {TransactionBuilder} 
 */
   add_operation_update_memo(auth_key_pair: XfrKeyPair, code: string, new_memo: string): TransactionBuilder;
+/**
+* @param {XfrKeyPair} keypair 
+* @param {string} validator 
+* @param {BigInt} time_secs 
+* @returns {TransactionBuilder} 
+*/
+  add_operation_delegation(keypair: XfrKeyPair, validator: string, time_secs: BigInt): TransactionBuilder;
+/**
+* @param {XfrKeyPair} keypair 
+* @returns {TransactionBuilder} 
+*/
+  add_operation_undelegation(keypair: XfrKeyPair): TransactionBuilder;
 /**
 * Adds a serialized transfer asset operation to a transaction builder instance.
 * @param {string} op - a JSON-serialized transfer operation.

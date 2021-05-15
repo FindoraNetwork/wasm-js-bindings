@@ -2100,20 +2100,16 @@ export class TransactionBuilder {
     /**
     * @param am: amount to pay
     * @param kp: owner's XfrKeyPair
-    * @param {BigInt} am
     * @param {XfrKeyPair} kp
     * @returns {TransactionBuilder}
     */
-    add_fee_relative_auto(am, kp) {
+    add_fee_relative_auto(kp) {
         var ptr = this.ptr;
         this.ptr = 0;
-        uint64CvtShim[0] = am;
-        const low0 = u32CvtShim[0];
-        const high0 = u32CvtShim[1];
         _assertClass(kp, XfrKeyPair);
-        var ptr1 = kp.ptr;
+        var ptr0 = kp.ptr;
         kp.ptr = 0;
-        var ret = wasm.transactionbuilder_add_fee_relative_auto(ptr, low0, high0, ptr1);
+        var ret = wasm.transactionbuilder_add_fee_relative_auto(ptr, ptr0);
         return TransactionBuilder.__wrap(ret);
     }
     /**
@@ -2304,6 +2300,35 @@ export class TransactionBuilder {
         var ptr1 = passStringToWasm0(new_memo, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len1 = WASM_VECTOR_LEN;
         var ret = wasm.transactionbuilder_add_operation_update_memo(ptr, auth_key_pair.ptr, ptr0, len0, ptr1, len1);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
+    * @param {XfrKeyPair} keypair
+    * @param {string} validator
+    * @param {BigInt} time_secs
+    * @returns {TransactionBuilder}
+    */
+    add_operation_delegation(keypair, validator, time_secs) {
+        var ptr = this.ptr;
+        this.ptr = 0;
+        _assertClass(keypair, XfrKeyPair);
+        var ptr0 = passStringToWasm0(validator, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        uint64CvtShim[0] = time_secs;
+        const low1 = u32CvtShim[0];
+        const high1 = u32CvtShim[1];
+        var ret = wasm.transactionbuilder_add_operation_delegation(ptr, keypair.ptr, ptr0, len0, low1, high1);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
+    * @param {XfrKeyPair} keypair
+    * @returns {TransactionBuilder}
+    */
+    add_operation_undelegation(keypair) {
+        var ptr = this.ptr;
+        this.ptr = 0;
+        _assertClass(keypair, XfrKeyPair);
+        var ret = wasm.transactionbuilder_add_operation_undelegation(ptr, keypair.ptr);
         return TransactionBuilder.__wrap(ret);
     }
     /**
