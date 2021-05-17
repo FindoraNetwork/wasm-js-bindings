@@ -1277,7 +1277,6 @@ export interface InitOutput {
   readonly __wbg_credentialuserkeypair_free: (a: number) => void;
   readonly __wbg_credentialissuerkeypair_free: (a: number) => void;
   readonly __wbg_credentialrevealsig_free: (a: number) => void;
-  readonly credentialrevealsig_get_pok: (a: number) => number;
   readonly __wbg_credentialcommitmentdata_free: (a: number) => void;
   readonly credentialcommitmentdata_get_commitment: (a: number) => number;
   readonly credentialcommitmentdata_get_pok: (a: number) => number;
@@ -1315,6 +1314,9 @@ export interface InitOutput {
   readonly key_gen_random: () => number;
   readonly key_to_base64: (a: number, b: number) => void;
   readonly key_from_base64: (a: number, b: number) => number;
+  readonly __wbg_credentialsignature_free: (a: number) => void;
+  readonly credentialrevealsig_get_pok: (a: number) => number;
+  readonly credentialrevealsig_get_commitment: (a: number) => number;
   readonly build_id: (a: number) => void;
   readonly random_asset_type: (a: number) => void;
   readonly asset_type_from_jsvalue: (a: number, b: number) => void;
@@ -1399,8 +1401,6 @@ export interface InitOutput {
   readonly fra_get_minimal_fee: (a: number) => void;
   readonly fra_get_dest_pubkey: () => number;
   readonly get_delegation_target_address: (a: number) => void;
-  readonly __wbg_credentialsignature_free: (a: number) => void;
-  readonly credentialrevealsig_get_commitment: (a: number) => number;
   readonly __wbg_credissuersecretkey_free: (a: number) => void;
   readonly __wbg_credissuerpublickey_free: (a: number) => void;
   readonly __wbg_creduserpublickey_free: (a: number) => void;
