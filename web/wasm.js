@@ -2322,24 +2322,24 @@ export class TransactionBuilder {
     * @param {string} validator
     * @returns {TransactionBuilder}
     */
-    add_operation_delegation(keypair, validator) {
+    add_operation_delegate(keypair, validator) {
         var ptr = this.ptr;
         this.ptr = 0;
         _assertClass(keypair, XfrKeyPair);
         var ptr0 = passStringToWasm0(validator, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        var ret = wasm.transactionbuilder_add_operation_delegation(ptr, keypair.ptr, ptr0, len0);
+        var ret = wasm.transactionbuilder_add_operation_delegate(ptr, keypair.ptr, ptr0, len0);
         return TransactionBuilder.__wrap(ret);
     }
     /**
     * @param {XfrKeyPair} keypair
     * @returns {TransactionBuilder}
     */
-    add_operation_undelegation(keypair) {
+    add_operation_undelegate(keypair) {
         var ptr = this.ptr;
         this.ptr = 0;
         _assertClass(keypair, XfrKeyPair);
-        var ret = wasm.transactionbuilder_add_operation_undelegation(ptr, keypair.ptr);
+        var ret = wasm.transactionbuilder_add_operation_undelegate(ptr, keypair.ptr);
         return TransactionBuilder.__wrap(ret);
     }
     /**

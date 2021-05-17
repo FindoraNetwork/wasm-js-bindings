@@ -1016,12 +1016,12 @@ export class TransactionBuilder {
 * @param {string} validator 
 * @returns {TransactionBuilder} 
 */
-  add_operation_delegation(keypair: XfrKeyPair, validator: string): TransactionBuilder;
+  add_operation_delegate(keypair: XfrKeyPair, validator: string): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair 
 * @returns {TransactionBuilder} 
 */
-  add_operation_undelegation(keypair: XfrKeyPair): TransactionBuilder;
+  add_operation_undelegate(keypair: XfrKeyPair): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair 
 * @param {BigInt} am 

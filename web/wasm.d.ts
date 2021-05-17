@@ -1016,12 +1016,12 @@ export class TransactionBuilder {
 * @param {string} validator 
 * @returns {TransactionBuilder} 
 */
-  add_operation_delegation(keypair: XfrKeyPair, validator: string): TransactionBuilder;
+  add_operation_delegate(keypair: XfrKeyPair, validator: string): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair 
 * @returns {TransactionBuilder} 
 */
-  add_operation_undelegation(keypair: XfrKeyPair): TransactionBuilder;
+  add_operation_undelegate(keypair: XfrKeyPair): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair 
 * @param {BigInt} am 
@@ -1341,8 +1341,8 @@ export interface InitOutput {
   readonly transactionbuilder_add_policy_option: (a: number, b: number, c: number, d: number, e: number) => number;
   readonly transactionbuilder_add_basic_issue_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;
   readonly transactionbuilder_add_operation_update_memo: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
-  readonly transactionbuilder_add_operation_delegation: (a: number, b: number, c: number, d: number) => number;
-  readonly transactionbuilder_add_operation_undelegation: (a: number, b: number) => number;
+  readonly transactionbuilder_add_operation_delegate: (a: number, b: number, c: number, d: number) => number;
+  readonly transactionbuilder_add_operation_undelegate: (a: number, b: number) => number;
   readonly transactionbuilder_add_operation_claim: (a: number, b: number, c: number, d: number) => number;
   readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number) => number;
   readonly transactionbuilder_sign: (a: number, b: number) => number;
