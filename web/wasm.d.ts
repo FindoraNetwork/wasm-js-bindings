@@ -1160,6 +1160,11 @@ export class TransactionBuilder {
 */
   transaction(): string;
 /**
+* Calculates transaction hash.
+* @returns {string} 
+*/
+  transaction_hash(): string;
+/**
 * Calculates transaction handle.
 * @returns {string} 
 */
@@ -1467,6 +1472,7 @@ export interface InitOutput {
   readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number) => number;
   readonly transactionbuilder_sign: (a: number, b: number) => number;
   readonly transactionbuilder_transaction: (a: number, b: number) => void;
+  readonly transactionbuilder_transaction_hash: (a: number, b: number) => void;
   readonly transactionbuilder_transaction_handle: (a: number, b: number) => void;
   readonly transactionbuilder_get_owner_record: (a: number, b: number) => number;
   readonly transactionbuilder_get_owner_memo: (a: number, b: number) => number;

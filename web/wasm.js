@@ -2600,6 +2600,20 @@ export class TransactionBuilder {
         }
     }
     /**
+    * Calculates transaction hash.
+    * @returns {string}
+    */
+    transaction_hash() {
+        try {
+            wasm.transactionbuilder_transaction_hash(8, this.ptr);
+            var r0 = getInt32Memory0()[8 / 4 + 0];
+            var r1 = getInt32Memory0()[8 / 4 + 1];
+            return getStringFromWasm0(r0, r1);
+        } finally {
+            wasm.__wbindgen_free(r0, r1);
+        }
+    }
+    /**
     * Calculates transaction handle.
     * @returns {string}
     */

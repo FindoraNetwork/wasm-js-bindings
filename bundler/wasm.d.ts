@@ -1160,6 +1160,11 @@ export class TransactionBuilder {
 */
   transaction(): string;
 /**
+* Calculates transaction hash.
+* @returns {string} 
+*/
+  transaction_hash(): string;
+/**
 * Calculates transaction handle.
 * @returns {string} 
 */
