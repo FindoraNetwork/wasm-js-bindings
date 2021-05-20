@@ -384,11 +384,6 @@ export function fra_get_minimal_fee(): BigInt;
 */
 export function fra_get_dest_pubkey(): XfrPublicKey;
 /**
-* The system address used to reveive delegation principals.
-* @returns {string} 
-*/
-export function get_delegation_target_address(): string;
-/**
 * When an asset is defined, several options governing the assets must be
 * specified:
 * 1. **Traceable**: Records and identities of traceable assets can be decrypted by a provided tracing key. By defaults, assets do not have
@@ -903,10 +898,11 @@ export class TransactionBuilder {
 /**
 * @param am: amount to pay
 * @param kp: owner's XfrKeyPair
+* @param {BigInt} am 
 * @param {XfrKeyPair} kp 
 * @returns {TransactionBuilder} 
 */
-  add_fee_relative_auto(kp: XfrKeyPair): TransactionBuilder;
+  add_fee_relative_auto(am: BigInt, kp: XfrKeyPair): TransactionBuilder;
 /**
 * Use this func to get the necessary infomations for generating `Relative Inputs`
 *
@@ -1011,28 +1007,6 @@ export class TransactionBuilder {
 * @returns {TransactionBuilder} 
 */
   add_operation_update_memo(auth_key_pair: XfrKeyPair, code: string, new_memo: string): TransactionBuilder;
-/**
-* @param {XfrKeyPair} keypair 
-* @param {string} validator 
-* @returns {TransactionBuilder} 
-*/
-  add_operation_delegate(keypair: XfrKeyPair, validator: string): TransactionBuilder;
-/**
-* @param {XfrKeyPair} keypair 
-* @returns {TransactionBuilder} 
-*/
-  add_operation_undelegate(keypair: XfrKeyPair): TransactionBuilder;
-/**
-* @param {XfrKeyPair} keypair 
-* @returns {TransactionBuilder} 
-*/
-  add_operation_claim(keypair: XfrKeyPair): TransactionBuilder;
-/**
-* @param {XfrKeyPair} keypair 
-* @param {BigInt} am 
-* @returns {TransactionBuilder} 
-*/
-  add_operation_claim_custom(keypair: XfrKeyPair, am: BigInt): TransactionBuilder;
 /**
 * Adds a serialized transfer asset operation to a transaction builder instance.
 * @param {string} op - a JSON-serialized transfer operation.
@@ -1282,6 +1256,7 @@ export interface InitOutput {
   readonly __wbg_credentialuserkeypair_free: (a: number) => void;
   readonly __wbg_credentialissuerkeypair_free: (a: number) => void;
   readonly __wbg_credentialrevealsig_free: (a: number) => void;
+  readonly credentialrevealsig_get_pok: (a: number) => number;
   readonly __wbg_credentialcommitmentdata_free: (a: number) => void;
   readonly credentialcommitmentdata_get_commitment: (a: number) => number;
   readonly credentialcommitmentdata_get_pok: (a: number) => number;
@@ -1319,9 +1294,6 @@ export interface InitOutput {
   readonly key_gen_random: () => number;
   readonly key_to_base64: (a: number, b: number) => void;
   readonly key_from_base64: (a: number, b: number) => number;
-  readonly __wbg_credentialsignature_free: (a: number) => void;
-  readonly credentialrevealsig_get_pok: (a: number) => number;
-  readonly credentialrevealsig_get_commitment: (a: number) => number;
   readonly build_id: (a: number) => void;
   readonly random_asset_type: (a: number) => void;
   readonly asset_type_from_jsvalue: (a: number, b: number) => void;
@@ -1336,7 +1308,7 @@ export interface InitOutput {
   readonly feeinputs_new: () => number;
   readonly feeinputs_append: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => void;
   readonly feeinputs_append2: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => number;
-  readonly transactionbuilder_add_fee_relative_auto: (a: number, b: number) => number;
+  readonly transactionbuilder_add_fee_relative_auto: (a: number, b: number, c: number, d: number) => number;
   readonly transactionbuilder_get_relative_outputs: (a: number, b: number) => void;
   readonly transactionbuilder_add_fee: (a: number, b: number) => number;
   readonly transactionbuilder_check_fee: (a: number) => number;
@@ -1346,10 +1318,6 @@ export interface InitOutput {
   readonly transactionbuilder_add_policy_option: (a: number, b: number, c: number, d: number, e: number) => number;
   readonly transactionbuilder_add_basic_issue_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;
   readonly transactionbuilder_add_operation_update_memo: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
-  readonly transactionbuilder_add_operation_delegate: (a: number, b: number, c: number, d: number) => number;
-  readonly transactionbuilder_add_operation_undelegate: (a: number, b: number) => number;
-  readonly transactionbuilder_add_operation_claim: (a: number, b: number) => number;
-  readonly transactionbuilder_add_operation_claim_custom: (a: number, b: number, c: number, d: number) => number;
   readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number) => number;
   readonly transactionbuilder_sign: (a: number, b: number) => number;
   readonly transactionbuilder_transaction: (a: number, b: number) => void;
@@ -1406,7 +1374,8 @@ export interface InitOutput {
   readonly fra_get_asset_code: (a: number) => void;
   readonly fra_get_minimal_fee: (a: number) => void;
   readonly fra_get_dest_pubkey: () => number;
-  readonly get_delegation_target_address: (a: number) => void;
+  readonly __wbg_credentialsignature_free: (a: number) => void;
+  readonly credentialrevealsig_get_commitment: (a: number) => number;
   readonly __wbg_credissuersecretkey_free: (a: number) => void;
   readonly __wbg_credissuerpublickey_free: (a: number) => void;
   readonly __wbg_creduserpublickey_free: (a: number) => void;
