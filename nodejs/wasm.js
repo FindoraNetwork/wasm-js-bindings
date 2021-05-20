@@ -3,25 +3,38 @@ imports['__wbindgen_placeholder__'] = module.exports;
 let wasm;
 const { TextDecoder } = require(String.raw`util`);
 
+let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
+
+cachedTextDecoder.decode();
+
+let cachegetUint8Memory0 = null;
+function getUint8Memory0() {
+    if (cachegetUint8Memory0 === null || cachegetUint8Memory0.buffer !== wasm.memory.buffer) {
+        cachegetUint8Memory0 = new Uint8Array(wasm.memory.buffer);
+    }
+    return cachegetUint8Memory0;
+}
+
+function getStringFromWasm0(ptr, len) {
+    return cachedTextDecoder.decode(getUint8Memory0().subarray(ptr, ptr + len));
+}
+
 const heap = new Array(32).fill(undefined);
 
 heap.push(undefined, null, true, false);
 
-function getObject(idx) { return heap[idx]; }
-
 let heap_next = heap.length;
 
-function dropObject(idx) {
-    if (idx < 36) return;
-    heap[idx] = heap_next;
-    heap_next = idx;
+function addHeapObject(obj) {
+    if (heap_next === heap.length) heap.push(heap.length + 1);
+    const idx = heap_next;
+    heap_next = heap[idx];
+
+    heap[idx] = obj;
+    return idx;
 }
 
-function takeObject(idx) {
-    const ret = getObject(idx);
-    dropObject(idx);
-    return ret;
-}
+function getObject(idx) { return heap[idx]; }
 
 let WASM_VECTOR_LEN = 0;
 
@@ -50,29 +63,16 @@ function getInt32Memory0() {
     return cachegetInt32Memory0;
 }
 
-let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
-
-cachedTextDecoder.decode();
-
-let cachegetUint8Memory0 = null;
-function getUint8Memory0() {
-    if (cachegetUint8Memory0 === null || cachegetUint8Memory0.buffer !== wasm.memory.buffer) {
-        cachegetUint8Memory0 = new Uint8Array(wasm.memory.buffer);
-    }
-    return cachegetUint8Memory0;
+function dropObject(idx) {
+    if (idx < 36) return;
+    heap[idx] = heap_next;
+    heap_next = idx;
 }
 
-function getStringFromWasm0(ptr, len) {
-    return cachedTextDecoder.decode(getUint8Memory0().subarray(ptr, ptr + len));
-}
-
-function addHeapObject(obj) {
-    if (heap_next === heap.length) heap.push(heap.length + 1);
-    const idx = heap_next;
-    heap_next = heap[idx];
-
-    heap[idx] = obj;
-    return idx;
+function takeObject(idx) {
+    const ret = getObject(idx);
+    dropObject(idx);
+    return ret;
 }
 
 function debugString(val) {
@@ -974,6 +974,21 @@ module.exports.fra_get_dest_pubkey = function() {
     return XfrPublicKey.__wrap(ret);
 };
 
+/**
+* The system address used to reveive delegation principals.
+* @returns {string}
+*/
+module.exports.get_delegation_target_address = function() {
+    try {
+        wasm.get_delegation_target_address(8);
+        var r0 = getInt32Memory0()[8 / 4 + 0];
+        var r1 = getInt32Memory0()[8 / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_free(r0, r1);
+    }
+};
+
 function handleError(f) {
     return function () {
         try {
@@ -1665,7 +1680,7 @@ class CredentialRevealSig {
     * @returns {CredentialPoK}
     */
     get_pok() {
-        var ret = wasm.credentialrevealsig_get_pok(this.ptr);
+        var ret = wasm.credentialcommitmentdata_get_pok(this.ptr);
         return CredentialPoK.__wrap(ret);
     }
 }
@@ -2092,20 +2107,16 @@ class TransactionBuilder {
     /**
     * @param am: amount to pay
     * @param kp: owner's XfrKeyPair
-    * @param {BigInt} am
     * @param {XfrKeyPair} kp
     * @returns {TransactionBuilder}
     */
-    add_fee_relative_auto(am, kp) {
+    add_fee_relative_auto(kp) {
         var ptr = this.ptr;
         this.ptr = 0;
-        uint64CvtShim[0] = am;
-        const low0 = u32CvtShim[0];
-        const high0 = u32CvtShim[1];
         _assertClass(kp, XfrKeyPair);
-        var ptr1 = kp.ptr;
+        var ptr0 = kp.ptr;
         kp.ptr = 0;
-        var ret = wasm.transactionbuilder_add_fee_relative_auto(ptr, low0, high0, ptr1);
+        var ret = wasm.transactionbuilder_add_fee_relative_auto(ptr, ptr0);
         return TransactionBuilder.__wrap(ret);
     }
     /**
@@ -2296,6 +2307,57 @@ class TransactionBuilder {
         var ptr1 = passStringToWasm0(new_memo, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len1 = WASM_VECTOR_LEN;
         var ret = wasm.transactionbuilder_add_operation_update_memo(ptr, auth_key_pair.ptr, ptr0, len0, ptr1, len1);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
+    * @param {XfrKeyPair} keypair
+    * @param {string} validator
+    * @returns {TransactionBuilder}
+    */
+    add_operation_delegate(keypair, validator) {
+        var ptr = this.ptr;
+        this.ptr = 0;
+        _assertClass(keypair, XfrKeyPair);
+        var ptr0 = passStringToWasm0(validator, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        var ret = wasm.transactionbuilder_add_operation_delegate(ptr, keypair.ptr, ptr0, len0);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
+    * @param {XfrKeyPair} keypair
+    * @returns {TransactionBuilder}
+    */
+    add_operation_undelegate(keypair) {
+        var ptr = this.ptr;
+        this.ptr = 0;
+        _assertClass(keypair, XfrKeyPair);
+        var ret = wasm.transactionbuilder_add_operation_undelegate(ptr, keypair.ptr);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
+    * @param {XfrKeyPair} keypair
+    * @returns {TransactionBuilder}
+    */
+    add_operation_claim(keypair) {
+        var ptr = this.ptr;
+        this.ptr = 0;
+        _assertClass(keypair, XfrKeyPair);
+        var ret = wasm.transactionbuilder_add_operation_claim(ptr, keypair.ptr);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
+    * @param {XfrKeyPair} keypair
+    * @param {BigInt} am
+    * @returns {TransactionBuilder}
+    */
+    add_operation_claim_custom(keypair, am) {
+        var ptr = this.ptr;
+        this.ptr = 0;
+        _assertClass(keypair, XfrKeyPair);
+        uint64CvtShim[0] = am;
+        const low0 = u32CvtShim[0];
+        const high0 = u32CvtShim[1];
+        var ret = wasm.transactionbuilder_add_operation_claim_custom(ptr, keypair.ptr, low0, high0);
         return TransactionBuilder.__wrap(ret);
     }
     /**
@@ -2758,8 +2820,9 @@ class XfrPublicKey {
 }
 module.exports.XfrPublicKey = XfrPublicKey;
 
-module.exports.__wbindgen_object_drop_ref = function(arg0) {
-    takeObject(arg0);
+module.exports.__wbindgen_json_parse = function(arg0, arg1) {
+    var ret = JSON.parse(getStringFromWasm0(arg0, arg1));
+    return addHeapObject(ret);
 };
 
 module.exports.__wbindgen_json_serialize = function(arg0, arg1) {
@@ -2776,9 +2839,8 @@ module.exports.__wbindgen_string_new = function(arg0, arg1) {
     return addHeapObject(ret);
 };
 
-module.exports.__wbindgen_json_parse = function(arg0, arg1) {
-    var ret = JSON.parse(getStringFromWasm0(arg0, arg1));
-    return addHeapObject(ret);
+module.exports.__wbindgen_object_drop_ref = function(arg0) {
+    takeObject(arg0);
 };
 
 module.exports.__wbg_getRandomValues_57e4008f45f0e105 = handleError(function(arg0, arg1) {
