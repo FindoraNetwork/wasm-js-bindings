@@ -980,13 +980,67 @@ module.exports.fra_get_dest_pubkey = function() {
 */
 module.exports.get_delegation_target_address = function() {
     try {
-        wasm.get_delegation_target_address(8);
+        wasm.get_coinbase_principal_address(8);
         var r0 = getInt32Memory0()[8 / 4 + 0];
         var r1 = getInt32Memory0()[8 / 4 + 1];
         return getStringFromWasm0(r0, r1);
     } finally {
         wasm.__wbindgen_free(r0, r1);
     }
+};
+
+/**
+* @returns {string}
+*/
+module.exports.get_coinbase_address = function() {
+    try {
+        wasm.get_coinbase_address(8);
+        var r0 = getInt32Memory0()[8 / 4 + 0];
+        var r1 = getInt32Memory0()[8 / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_free(r0, r1);
+    }
+};
+
+/**
+* @returns {string}
+*/
+module.exports.get_coinbase_principal_address = function() {
+    try {
+        wasm.get_coinbase_principal_address(8);
+        var r0 = getInt32Memory0()[8 / 4 + 0];
+        var r1 = getInt32Memory0()[8 / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_free(r0, r1);
+    }
+};
+
+/**
+* @returns {BigInt}
+*/
+module.exports.get_delegation_min_amount = function() {
+    wasm.get_delegation_min_amount(8);
+    var r0 = getInt32Memory0()[8 / 4 + 0];
+    var r1 = getInt32Memory0()[8 / 4 + 1];
+    u32CvtShim[0] = r0;
+    u32CvtShim[1] = r1;
+    const n0 = uint64CvtShim[0];
+    return n0;
+};
+
+/**
+* @returns {BigInt}
+*/
+module.exports.get_delegation_max_amount = function() {
+    wasm.get_delegation_max_amount(8);
+    var r0 = getInt32Memory0()[8 / 4 + 0];
+    var r1 = getInt32Memory0()[8 / 4 + 1];
+    u32CvtShim[0] = r0;
+    u32CvtShim[1] = r1;
+    const n0 = uint64CvtShim[0];
+    return n0;
 };
 
 function handleError(f) {

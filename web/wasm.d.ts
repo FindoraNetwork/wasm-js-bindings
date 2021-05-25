@@ -389,6 +389,22 @@ export function fra_get_dest_pubkey(): XfrPublicKey;
 */
 export function get_delegation_target_address(): string;
 /**
+* @returns {string} 
+*/
+export function get_coinbase_address(): string;
+/**
+* @returns {string} 
+*/
+export function get_coinbase_principal_address(): string;
+/**
+* @returns {BigInt} 
+*/
+export function get_delegation_min_amount(): BigInt;
+/**
+* @returns {BigInt} 
+*/
+export function get_delegation_max_amount(): BigInt;
+/**
 * When an asset is defined, several options governing the assets must be
 * specified:
 * 1. **Traceable**: Records and identities of traceable assets can be decrypted by a provided tracing key. By defaults, assets do not have
@@ -1406,6 +1422,10 @@ export interface InitOutput {
   readonly fra_get_asset_code: (a: number) => void;
   readonly fra_get_minimal_fee: (a: number) => void;
   readonly fra_get_dest_pubkey: () => number;
+  readonly get_coinbase_address: (a: number) => void;
+  readonly get_coinbase_principal_address: (a: number) => void;
+  readonly get_delegation_min_amount: (a: number) => void;
+  readonly get_delegation_max_amount: (a: number) => void;
   readonly get_delegation_target_address: (a: number) => void;
   readonly __wbg_credissuersecretkey_free: (a: number) => void;
   readonly __wbg_credissuerpublickey_free: (a: number) => void;
