@@ -3,7 +3,13 @@
   "collaborators": [
     "ngolub <ngolub@stanford.edu>"
   ],
+  "description": "",
   "version": "0.1.0",
+  "license": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
   "files": [
     "wasm_bg.wasm",
     "wasm.js",
