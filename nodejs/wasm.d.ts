@@ -384,6 +384,27 @@ export function fra_get_minimal_fee(): BigInt;
 */
 export function fra_get_dest_pubkey(): XfrPublicKey;
 /**
+* The system address used to reveive delegation principals.
+* @returns {string} 
+*/
+export function get_delegation_target_address(): string;
+/**
+* @returns {string} 
+*/
+export function get_coinbase_address(): string;
+/**
+* @returns {string} 
+*/
+export function get_coinbase_principal_address(): string;
+/**
+* @returns {BigInt} 
+*/
+export function get_delegation_min_amount(): BigInt;
+/**
+* @returns {BigInt} 
+*/
+export function get_delegation_max_amount(): BigInt;
+/**
 * When an asset is defined, several options governing the assets must be
 * specified:
 * 1. **Traceable**: Records and identities of traceable assets can be decrypted by a provided tracing key. By defaults, assets do not have
@@ -898,11 +919,10 @@ export class TransactionBuilder {
 /**
 * @param am: amount to pay
 * @param kp: owner's XfrKeyPair
-* @param {BigInt} am 
 * @param {XfrKeyPair} kp 
 * @returns {TransactionBuilder} 
 */
-  add_fee_relative_auto(am: BigInt, kp: XfrKeyPair): TransactionBuilder;
+  add_fee_relative_auto(kp: XfrKeyPair): TransactionBuilder;
 /**
 * Use this func to get the necessary infomations for generating `Relative Inputs`
 *
@@ -1007,6 +1027,28 @@ export class TransactionBuilder {
 * @returns {TransactionBuilder} 
 */
   add_operation_update_memo(auth_key_pair: XfrKeyPair, code: string, new_memo: string): TransactionBuilder;
+/**
+* @param {XfrKeyPair} keypair 
+* @param {string} validator 
+* @returns {TransactionBuilder} 
+*/
+  add_operation_delegate(keypair: XfrKeyPair, validator: string): TransactionBuilder;
+/**
+* @param {XfrKeyPair} keypair 
+* @returns {TransactionBuilder} 
+*/
+  add_operation_undelegate(keypair: XfrKeyPair): TransactionBuilder;
+/**
+* @param {XfrKeyPair} keypair 
+* @returns {TransactionBuilder} 
+*/
+  add_operation_claim(keypair: XfrKeyPair): TransactionBuilder;
+/**
+* @param {XfrKeyPair} keypair 
+* @param {BigInt} am 
+* @returns {TransactionBuilder} 
+*/
+  add_operation_claim_custom(keypair: XfrKeyPair, am: BigInt): TransactionBuilder;
 /**
 * Adds a serialized transfer asset operation to a transaction builder instance.
 * @param {string} op - a JSON-serialized transfer operation.
