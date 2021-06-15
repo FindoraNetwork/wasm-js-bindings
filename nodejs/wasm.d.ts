@@ -1040,6 +1040,14 @@ export class TransactionBuilder {
   add_operation_undelegate(keypair: XfrKeyPair): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair 
+* @param {BigInt} am 
+* @param {XfrPublicKey} rwd_receiver 
+* @param {XfrPublicKey} target_validator 
+* @returns {TransactionBuilder} 
+*/
+  add_operation_undelegate_partially(keypair: XfrKeyPair, am: BigInt, rwd_receiver: XfrPublicKey, target_validator: XfrPublicKey): TransactionBuilder;
+/**
+* @param {XfrKeyPair} keypair 
 * @returns {TransactionBuilder} 
 */
   add_operation_claim(keypair: XfrKeyPair): TransactionBuilder;
