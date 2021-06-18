@@ -2903,8 +2903,8 @@ export class XfrPublicKey {
     }
 }
 
-export const __wbindgen_string_new = function(arg0, arg1) {
-    var ret = getStringFromWasm0(arg0, arg1);
+export const __wbindgen_json_parse = function(arg0, arg1) {
+    var ret = JSON.parse(getStringFromWasm0(arg0, arg1));
     return addHeapObject(ret);
 };
 
@@ -2917,13 +2917,13 @@ export const __wbindgen_json_serialize = function(arg0, arg1) {
     getInt32Memory0()[arg0 / 4 + 0] = ptr0;
 };
 
-export const __wbindgen_object_drop_ref = function(arg0) {
-    takeObject(arg0);
+export const __wbindgen_string_new = function(arg0, arg1) {
+    var ret = getStringFromWasm0(arg0, arg1);
+    return addHeapObject(ret);
 };
 
-export const __wbindgen_json_parse = function(arg0, arg1) {
-    var ret = JSON.parse(getStringFromWasm0(arg0, arg1));
-    return addHeapObject(ret);
+export const __wbindgen_object_drop_ref = function(arg0) {
+    takeObject(arg0);
 };
 
 export const __wbindgen_object_clone_ref = function(arg0) {
