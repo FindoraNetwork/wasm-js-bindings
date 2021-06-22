@@ -2392,7 +2392,7 @@ class TransactionBuilder {
     * @param {XfrKeyPair} keypair
     * @param {BigInt} am
     * @param {XfrPublicKey} rwd_receiver
-    * @param {XfrPublicKey} target_validator
+    * @param {string} target_validator
     * @returns {TransactionBuilder}
     */
     add_operation_undelegate_partially(keypair, am, rwd_receiver, target_validator) {
@@ -2405,10 +2405,9 @@ class TransactionBuilder {
         _assertClass(rwd_receiver, XfrPublicKey);
         var ptr1 = rwd_receiver.ptr;
         rwd_receiver.ptr = 0;
-        _assertClass(target_validator, XfrPublicKey);
-        var ptr2 = target_validator.ptr;
-        target_validator.ptr = 0;
-        var ret = wasm.transactionbuilder_add_operation_undelegate_partially(ptr, keypair.ptr, low0, high0, ptr1, ptr2);
+        var ptr2 = passStringToWasm0(target_validator, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len2 = WASM_VECTOR_LEN;
+        var ret = wasm.transactionbuilder_add_operation_undelegate_partially(ptr, keypair.ptr, low0, high0, ptr1, ptr2, len2);
         return TransactionBuilder.__wrap(ret);
     }
     /**

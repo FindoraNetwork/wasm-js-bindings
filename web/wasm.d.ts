@@ -1042,10 +1042,10 @@ export class TransactionBuilder {
 * @param {XfrKeyPair} keypair 
 * @param {BigInt} am 
 * @param {XfrPublicKey} rwd_receiver 
-* @param {XfrPublicKey} target_validator 
+* @param {string} target_validator 
 * @returns {TransactionBuilder} 
 */
-  add_operation_undelegate_partially(keypair: XfrKeyPair, am: BigInt, rwd_receiver: XfrPublicKey, target_validator: XfrPublicKey): TransactionBuilder;
+  add_operation_undelegate_partially(keypair: XfrKeyPair, am: BigInt, rwd_receiver: XfrPublicKey, target_validator: string): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair 
 * @returns {TransactionBuilder} 
@@ -1372,7 +1372,7 @@ export interface InitOutput {
   readonly transactionbuilder_add_operation_update_memo: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly transactionbuilder_add_operation_delegate: (a: number, b: number, c: number, d: number) => number;
   readonly transactionbuilder_add_operation_undelegate: (a: number, b: number) => number;
-  readonly transactionbuilder_add_operation_undelegate_partially: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
+  readonly transactionbuilder_add_operation_undelegate_partially: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => number;
   readonly transactionbuilder_add_operation_claim: (a: number, b: number) => number;
   readonly transactionbuilder_add_operation_claim_custom: (a: number, b: number, c: number, d: number) => number;
   readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number) => number;
