@@ -2399,23 +2399,19 @@ export class TransactionBuilder {
     /**
     * @param {XfrKeyPair} keypair
     * @param {BigInt} am
-    * @param {XfrPublicKey} rwd_receiver
     * @param {string} target_validator
     * @returns {TransactionBuilder}
     */
-    add_operation_undelegate_partially(keypair, am, rwd_receiver, target_validator) {
+    add_operation_undelegate_partially(keypair, am, target_validator) {
         var ptr = this.ptr;
         this.ptr = 0;
         _assertClass(keypair, XfrKeyPair);
         uint64CvtShim[0] = am;
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
-        _assertClass(rwd_receiver, XfrPublicKey);
-        var ptr1 = rwd_receiver.ptr;
-        rwd_receiver.ptr = 0;
-        var ptr2 = passStringToWasm0(target_validator, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len2 = WASM_VECTOR_LEN;
-        var ret = wasm.transactionbuilder_add_operation_undelegate_partially(ptr, keypair.ptr, low0, high0, ptr1, ptr2, len2);
+        var ptr1 = passStringToWasm0(target_validator, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len1 = WASM_VECTOR_LEN;
+        var ret = wasm.transactionbuilder_add_operation_undelegate_partially(ptr, keypair.ptr, low0, high0, ptr1, len1);
         return TransactionBuilder.__wrap(ret);
     }
     /**
