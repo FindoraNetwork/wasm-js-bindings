@@ -980,7 +980,7 @@ module.exports.fra_get_dest_pubkey = function() {
 */
 module.exports.get_delegation_target_address = function() {
     try {
-        wasm.get_coinbase_principal_address(8);
+        wasm.get_coinbase_address(8);
         var r0 = getInt32Memory0()[8 / 4 + 0];
         var r1 = getInt32Memory0()[8 / 4 + 1];
         return getStringFromWasm0(r0, r1);
@@ -1008,7 +1008,7 @@ module.exports.get_coinbase_address = function() {
 */
 module.exports.get_coinbase_principal_address = function() {
     try {
-        wasm.get_coinbase_principal_address(8);
+        wasm.get_coinbase_address(8);
         var r0 = getInt32Memory0()[8 / 4 + 0];
         var r1 = getInt32Memory0()[8 / 4 + 1];
         return getStringFromWasm0(r0, r1);

@@ -1432,10 +1432,10 @@ export interface InitOutput {
   readonly fra_get_minimal_fee: (a: number) => void;
   readonly fra_get_dest_pubkey: () => number;
   readonly get_coinbase_address: (a: number) => void;
-  readonly get_coinbase_principal_address: (a: number) => void;
   readonly get_delegation_min_amount: (a: number) => void;
   readonly get_delegation_max_amount: (a: number) => void;
   readonly get_delegation_target_address: (a: number) => void;
+  readonly get_coinbase_principal_address: (a: number) => void;
   readonly __wbg_credissuersecretkey_free: (a: number) => void;
   readonly __wbg_credissuerpublickey_free: (a: number) => void;
   readonly __wbg_creduserpublickey_free: (a: number) => void;

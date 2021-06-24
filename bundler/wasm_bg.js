@@ -1017,7 +1017,7 @@ export function fra_get_dest_pubkey() {
 */
 export function get_delegation_target_address() {
     try {
-        wasm.get_coinbase_principal_address(8);
+        wasm.get_coinbase_address(8);
         var r0 = getInt32Memory0()[8 / 4 + 0];
         var r1 = getInt32Memory0()[8 / 4 + 1];
         return getStringFromWasm0(r0, r1);
@@ -1045,7 +1045,7 @@ export function get_coinbase_address() {
 */
 export function get_coinbase_principal_address() {
     try {
-        wasm.get_coinbase_principal_address(8);
+        wasm.get_coinbase_address(8);
         var r0 = getInt32Memory0()[8 / 4 + 0];
         var r1 = getInt32Memory0()[8 / 4 + 1];
         return getStringFromWasm0(r0, r1);
