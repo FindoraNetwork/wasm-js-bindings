@@ -1,26 +1,10 @@
 import * as wasm from './wasm_bg.wasm';
 
-const heap = new Array(32).fill(undefined);
+const lTextDecoder = typeof TextDecoder === 'undefined' ? (0, module.require)('util').TextDecoder : TextDecoder;
 
-heap.push(undefined, null, true, false);
+let cachedTextDecoder = new lTextDecoder('utf-8', { ignoreBOM: true, fatal: true });
 
-function getObject(idx) { return heap[idx]; }
-
-let heap_next = heap.length;
-
-function dropObject(idx) {
-    if (idx < 36) return;
-    heap[idx] = heap_next;
-    heap_next = idx;
-}
-
-function takeObject(idx) {
-    const ret = getObject(idx);
-    dropObject(idx);
-    return ret;
-}
-
-let WASM_VECTOR_LEN = 0;
+cachedTextDecoder.decode();
 
 let cachegetUint8Memory0 = null;
 function getUint8Memory0() {
@@ -29,6 +13,29 @@ function getUint8Memory0() {
     }
     return cachegetUint8Memory0;
 }
+
+function getStringFromWasm0(ptr, len) {
+    return cachedTextDecoder.decode(getUint8Memory0().subarray(ptr, ptr + len));
+}
+
+const heap = new Array(32).fill(undefined);
+
+heap.push(undefined, null, true, false);
+
+let heap_next = heap.length;
+
+function addHeapObject(obj) {
+    if (heap_next === heap.length) heap.push(heap.length + 1);
+    const idx = heap_next;
+    heap_next = heap[idx];
+
+    heap[idx] = obj;
+    return idx;
+}
+
+function getObject(idx) { return heap[idx]; }
+
+let WASM_VECTOR_LEN = 0;
 
 const lTextEncoder = typeof TextEncoder === 'undefined' ? (0, module.require)('util').TextEncoder : TextEncoder;
 
@@ -93,23 +100,16 @@ function getInt32Memory0() {
     return cachegetInt32Memory0;
 }
 
-const lTextDecoder = typeof TextDecoder === 'undefined' ? (0, module.require)('util').TextDecoder : TextDecoder;
-
-let cachedTextDecoder = new lTextDecoder('utf-8', { ignoreBOM: true, fatal: true });
-
-cachedTextDecoder.decode();
-
-function getStringFromWasm0(ptr, len) {
-    return cachedTextDecoder.decode(getUint8Memory0().subarray(ptr, ptr + len));
+function dropObject(idx) {
+    if (idx < 36) return;
+    heap[idx] = heap_next;
+    heap_next = idx;
 }
 
-function addHeapObject(obj) {
-    if (heap_next === heap.length) heap.push(heap.length + 1);
-    const idx = heap_next;
-    heap_next = heap[idx];
-
-    heap[idx] = obj;
-    return idx;
+function takeObject(idx) {
+    const ret = getObject(idx);
+    dropObject(idx);
+    return ret;
 }
 
 function debugString(val) {
@@ -265,24 +265,6 @@ export function verify_authenticated_txn(state_commitment, authenticated_txn) {
     var ptr1 = passStringToWasm0(authenticated_txn, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len1 = WASM_VECTOR_LEN;
     var ret = wasm.verify_authenticated_txn(ptr0, len0, ptr1, len1);
-    return ret !== 0;
-}
-
-/**
-* Given a serialized state commitment and an authenticated custom data result, returns true if the custom data result correctly
-* hashes up to the state commitment and false otherwise.
-* @param {string} state_commitment - String representing the state commitment.
-* @param {JsValue} authenticated_txn - JSON-encoded value representing the authenticated custom
-* data result.
-* @throws Will throw an error if the state commitment or the authenticated result fail to deserialize.
-* @param {string} state_commitment
-* @param {any} authenticated_res
-* @returns {boolean}
-*/
-export function verify_authenticated_custom_data_result(state_commitment, authenticated_res) {
-    var ptr0 = passStringToWasm0(state_commitment, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    var len0 = WASM_VECTOR_LEN;
-    var ret = wasm.verify_authenticated_custom_data_result(ptr0, len0, addHeapObject(authenticated_res));
     return ret !== 0;
 }
 
@@ -1029,6 +1011,75 @@ export function fra_get_dest_pubkey() {
     return XfrPublicKey.__wrap(ret);
 }
 
+/**
+* The system address used to reveive delegation principals.
+* @returns {string}
+*/
+export function get_delegation_target_address() {
+    try {
+        wasm.get_coinbase_address(8);
+        var r0 = getInt32Memory0()[8 / 4 + 0];
+        var r1 = getInt32Memory0()[8 / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
+/**
+* @returns {string}
+*/
+export function get_coinbase_address() {
+    try {
+        wasm.get_coinbase_address(8);
+        var r0 = getInt32Memory0()[8 / 4 + 0];
+        var r1 = getInt32Memory0()[8 / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
+/**
+* @returns {string}
+*/
+export function get_coinbase_principal_address() {
+    try {
+        wasm.get_coinbase_address(8);
+        var r0 = getInt32Memory0()[8 / 4 + 0];
+        var r1 = getInt32Memory0()[8 / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
+/**
+* @returns {BigInt}
+*/
+export function get_delegation_min_amount() {
+    wasm.get_delegation_min_amount(8);
+    var r0 = getInt32Memory0()[8 / 4 + 0];
+    var r1 = getInt32Memory0()[8 / 4 + 1];
+    u32CvtShim[0] = r0;
+    u32CvtShim[1] = r1;
+    const n0 = uint64CvtShim[0];
+    return n0;
+}
+
+/**
+* @returns {BigInt}
+*/
+export function get_delegation_max_amount() {
+    wasm.get_delegation_max_amount(8);
+    var r0 = getInt32Memory0()[8 / 4 + 0];
+    var r1 = getInt32Memory0()[8 / 4 + 1];
+    u32CvtShim[0] = r0;
+    u32CvtShim[1] = r1;
+    const n0 = uint64CvtShim[0];
+    return n0;
+}
+
 function handleError(f) {
     return function () {
         try {
@@ -1256,62 +1307,6 @@ export class AssetType {
     get_tracing_policies() {
         var ret = wasm.assettype_get_tracing_policies(this.ptr);
         return TracingPolicies.__wrap(ret);
-    }
-}
-/**
-* Authenticated address identity registry value. Contains a proof that the AIR result is stored
-* on the ledger.
-*/
-export class AuthenticatedAIRResult {
-
-    static __wrap(ptr) {
-        const obj = Object.create(AuthenticatedAIRResult.prototype);
-        obj.ptr = ptr;
-
-        return obj;
-    }
-
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
-        wasm.__wbg_authenticatedairresult_free(ptr);
-    }
-    /**
-    * Construct an AIRResult from the JSON-encoded value returned by the ledger.
-    * @see {@link module:Findora-Network~Network#getAIRResult|Network.getAIRResult} for information about how to fetch a
-    * value from the address identity registry.
-    * @param {any} json
-    * @returns {AuthenticatedAIRResult}
-    */
-    static from_json(json) {
-        try {
-            var ret = wasm.authenticatedairresult_from_json(addBorrowedObject(json));
-            return AuthenticatedAIRResult.__wrap(ret);
-        } finally {
-            heap[stack_pointer++] = undefined;
-        }
-    }
-    /**
-    * Returns true if the authenticated AIR result proofs verify succesfully. If the proofs are
-    * valid, the identity commitment contained in the AIR result is a valid part of the ledger.
-    * @param {string} state_commitment - String representing the ledger state commitment.
-    * @param {string} state_commitment
-    * @returns {boolean}
-    */
-    is_valid(state_commitment) {
-        var ptr0 = passStringToWasm0(state_commitment, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len0 = WASM_VECTOR_LEN;
-        var ret = wasm.authenticatedairresult_is_valid(this.ptr, ptr0, len0);
-        return ret !== 0;
-    }
-    /**
-    * Returns the underlying credential commitment of the AIR result.
-    * @returns {CredentialCommitment | undefined}
-    */
-    get_commitment() {
-        var ret = wasm.authenticatedairresult_get_commitment(this.ptr);
-        return ret === 0 ? undefined : CredentialCommitment.__wrap(ret);
     }
 }
 /**
@@ -1760,7 +1755,7 @@ export class CredentialRevealSig {
     * @returns {CredentialPoK}
     */
     get_pok() {
-        var ret = wasm.credentialrevealsig_get_pok(this.ptr);
+        var ret = wasm.credentialcommitmentdata_get_pok(this.ptr);
         return CredentialPoK.__wrap(ret);
     }
 }
@@ -1922,105 +1917,6 @@ export class FeeInputs {
         kp.ptr = 0;
         var ret = wasm.feeinputs_append2(ptr, low0, high0, ptr1, ptr2, ptr3, ptr4);
         return FeeInputs.__wrap(ret);
-    }
-}
-/**
-* Blinding factor for a custom data operation. A blinding factor adds a random value to the
-* custom data being hashed to make the hash hiding.
-*/
-export class KVBlind {
-
-    static __wrap(ptr) {
-        const obj = Object.create(KVBlind.prototype);
-        obj.ptr = ptr;
-
-        return obj;
-    }
-
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
-        wasm.__wbg_kvblind_free(ptr);
-    }
-    /**
-    * Generate a random blinding factor.
-    * @returns {KVBlind}
-    */
-    static gen_random() {
-        var ret = wasm.kvblind_gen_random();
-        return KVBlind.__wrap(ret);
-    }
-    /**
-    * Convert the key pair to a JSON-encoded value that can be used in the browser.
-    * @returns {any}
-    */
-    to_json() {
-        var ret = wasm.kvblind_to_json(this.ptr);
-        return takeObject(ret);
-    }
-    /**
-    * Create a KVBlind from a JSON-encoded value.
-    * @param {any} val
-    * @returns {KVBlind}
-    */
-    static from_json(val) {
-        try {
-            var ret = wasm.kvblind_from_json(addBorrowedObject(val));
-            return KVBlind.__wrap(ret);
-        } finally {
-            heap[stack_pointer++] = undefined;
-        }
-    }
-}
-/**
-* Hash that can be stored in the ledger's custom data store.
-*/
-export class KVHash {
-
-    static __wrap(ptr) {
-        const obj = Object.create(KVHash.prototype);
-        obj.ptr = ptr;
-
-        return obj;
-    }
-
-    free() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
-        wasm.__wbg_kvhash_free(ptr);
-    }
-    /**
-    * Generate a new custom data hash without a blinding factor.
-    * @param {JsValue} data - Data to hash. Must be an array of bytes.
-    * @param {any} data
-    * @returns {KVHash}
-    */
-    static new_no_blind(data) {
-        try {
-            var ret = wasm.kvhash_new_no_blind(addBorrowedObject(data));
-            return KVHash.__wrap(ret);
-        } finally {
-            heap[stack_pointer++] = undefined;
-        }
-    }
-    /**
-    * Generate a new custom data hash with a blinding factor.
-    * @param {JsValue} data - Data to hash. Must be an array of bytes.
-    * @param {KVBlind} kv_blind - Optional blinding factor.
-    * @param {any} data
-    * @param {KVBlind} kv_blind
-    * @returns {KVHash}
-    */
-    static new_with_blind(data, kv_blind) {
-        try {
-            _assertClass(kv_blind, KVBlind);
-            var ret = wasm.kvhash_new_with_blind(addBorrowedObject(data), kv_blind.ptr);
-            return KVHash.__wrap(ret);
-        } finally {
-            heap[stack_pointer++] = undefined;
-        }
     }
 }
 /**
@@ -2276,20 +2172,16 @@ export class TransactionBuilder {
     /**
     * @param am: amount to pay
     * @param kp: owner's XfrKeyPair
-    * @param {BigInt} am
     * @param {XfrKeyPair} kp
     * @returns {TransactionBuilder}
     */
-    add_fee_relative_auto(am, kp) {
+    add_fee_relative_auto(kp) {
         var ptr = this.ptr;
         this.ptr = 0;
-        uint64CvtShim[0] = am;
-        const low0 = u32CvtShim[0];
-        const high0 = u32CvtShim[1];
         _assertClass(kp, XfrKeyPair);
-        var ptr1 = kp.ptr;
+        var ptr0 = kp.ptr;
         kp.ptr = 0;
-        var ret = wasm.transactionbuilder_add_fee_relative_auto(ptr, low0, high0, ptr1);
+        var ret = wasm.transactionbuilder_add_fee_relative_auto(ptr, ptr0);
         return TransactionBuilder.__wrap(ret);
     }
     /**
@@ -2458,85 +2350,6 @@ export class TransactionBuilder {
         return TransactionBuilder.__wrap(ret);
     }
     /**
-    * Adds an operation to the transaction builder that appends a credential commitment to the address
-    * identity registry.
-    * @param {XfrKeyPair} key_pair - Ledger key that is tied to the credential.
-    * @param {CredUserPublicKey} user_public_key - Public key of the credential user.
-    * @param {CredIssuerPublicKey} issuer_public_key - Public key of the credential issuer.
-    * @param {CredentialCommitment} commitment - Credential commitment to add to the address identity registry.
-    * @param {CredPoK} pok- Proof that the credential commitment is valid.
-    * @see {@link module:Findora-Wasm.wasm_credential_commit|wasm_credential_commit} for information about how to generate a credential
-    * commitment.
-    * @param {XfrKeyPair} key_pair
-    * @param {CredUserPublicKey} user_public_key
-    * @param {CredIssuerPublicKey} issuer_public_key
-    * @param {CredentialCommitment} commitment
-    * @param {CredentialPoK} pok
-    * @returns {TransactionBuilder}
-    */
-    add_operation_air_assign(key_pair, user_public_key, issuer_public_key, commitment, pok) {
-        var ptr = this.ptr;
-        this.ptr = 0;
-        _assertClass(key_pair, XfrKeyPair);
-        _assertClass(user_public_key, CredUserPublicKey);
-        _assertClass(issuer_public_key, CredIssuerPublicKey);
-        _assertClass(commitment, CredentialCommitment);
-        _assertClass(pok, CredentialPoK);
-        var ret = wasm.transactionbuilder_add_operation_air_assign(ptr, key_pair.ptr, user_public_key.ptr, issuer_public_key.ptr, commitment.ptr, pok.ptr);
-        return TransactionBuilder.__wrap(ret);
-    }
-    /**
-    * Adds an operation to the transaction builder that removes a hash from ledger's custom data
-    * store.
-    * @param {XfrKeyPair} auth_key_pair - Key pair that is authorized to delete the hash at the
-    * provided key.
-    * @param {Key} key - The key of the custom data store whose value will be cleared if the
-    * transaction validates.
-    * @param {BigInt} seq_num - Nonce to prevent replays.
-    * @param {XfrKeyPair} auth_key_pair
-    * @param {Key} key
-    * @param {BigInt} seq_num
-    * @returns {TransactionBuilder}
-    */
-    add_operation_kv_update_no_hash(auth_key_pair, key, seq_num) {
-        var ptr = this.ptr;
-        this.ptr = 0;
-        _assertClass(auth_key_pair, XfrKeyPair);
-        _assertClass(key, Key);
-        uint64CvtShim[0] = seq_num;
-        const low0 = u32CvtShim[0];
-        const high0 = u32CvtShim[1];
-        var ret = wasm.transactionbuilder_add_operation_kv_update_no_hash(ptr, auth_key_pair.ptr, key.ptr, low0, high0);
-        return TransactionBuilder.__wrap(ret);
-    }
-    /**
-    * Adds an operation to the transaction builder that adds a hash to the ledger's custom data
-    * store.
-    * @param {XfrKeyPair} auth_key_pair - Key pair that is authorized to add the hash at the
-    * provided key.
-    * @param {Key} key - The key of the custom data store the value will be added to if the
-    * transaction validates.
-    * @param {KVHash} hash - The hash to add to the custom data store.
-    * @param {BigInt} seq_num - Nonce to prevent replays.
-    * @param {XfrKeyPair} auth_key_pair
-    * @param {Key} key
-    * @param {BigInt} seq_num
-    * @param {KVHash} kv_hash
-    * @returns {TransactionBuilder}
-    */
-    add_operation_kv_update_with_hash(auth_key_pair, key, seq_num, kv_hash) {
-        var ptr = this.ptr;
-        this.ptr = 0;
-        _assertClass(auth_key_pair, XfrKeyPair);
-        _assertClass(key, Key);
-        uint64CvtShim[0] = seq_num;
-        const low0 = u32CvtShim[0];
-        const high0 = u32CvtShim[1];
-        _assertClass(kv_hash, KVHash);
-        var ret = wasm.transactionbuilder_add_operation_kv_update_with_hash(ptr, auth_key_pair.ptr, key.ptr, low0, high0, kv_hash.ptr);
-        return TransactionBuilder.__wrap(ret);
-    }
-    /**
     * Adds an operation to the transaction builder that adds a hash to the ledger's custom data
     * store.
     * @param {XfrKeyPair} auth_key_pair - Asset creator key pair.
@@ -2559,6 +2372,75 @@ export class TransactionBuilder {
         var ptr1 = passStringToWasm0(new_memo, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len1 = WASM_VECTOR_LEN;
         var ret = wasm.transactionbuilder_add_operation_update_memo(ptr, auth_key_pair.ptr, ptr0, len0, ptr1, len1);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
+    * @param {XfrKeyPair} keypair
+    * @param {string} validator
+    * @returns {TransactionBuilder}
+    */
+    add_operation_delegate(keypair, validator) {
+        var ptr = this.ptr;
+        this.ptr = 0;
+        _assertClass(keypair, XfrKeyPair);
+        var ptr0 = passStringToWasm0(validator, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        var ret = wasm.transactionbuilder_add_operation_delegate(ptr, keypair.ptr, ptr0, len0);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
+    * @param {XfrKeyPair} keypair
+    * @returns {TransactionBuilder}
+    */
+    add_operation_undelegate(keypair) {
+        var ptr = this.ptr;
+        this.ptr = 0;
+        _assertClass(keypair, XfrKeyPair);
+        var ret = wasm.transactionbuilder_add_operation_undelegate(ptr, keypair.ptr);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
+    * @param {XfrKeyPair} keypair
+    * @param {BigInt} am
+    * @param {string} target_validator
+    * @returns {TransactionBuilder}
+    */
+    add_operation_undelegate_partially(keypair, am, target_validator) {
+        var ptr = this.ptr;
+        this.ptr = 0;
+        _assertClass(keypair, XfrKeyPair);
+        uint64CvtShim[0] = am;
+        const low0 = u32CvtShim[0];
+        const high0 = u32CvtShim[1];
+        var ptr1 = passStringToWasm0(target_validator, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len1 = WASM_VECTOR_LEN;
+        var ret = wasm.transactionbuilder_add_operation_undelegate_partially(ptr, keypair.ptr, low0, high0, ptr1, len1);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
+    * @param {XfrKeyPair} keypair
+    * @returns {TransactionBuilder}
+    */
+    add_operation_claim(keypair) {
+        var ptr = this.ptr;
+        this.ptr = 0;
+        _assertClass(keypair, XfrKeyPair);
+        var ret = wasm.transactionbuilder_add_operation_claim(ptr, keypair.ptr);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
+    * @param {XfrKeyPair} keypair
+    * @param {BigInt} am
+    * @returns {TransactionBuilder}
+    */
+    add_operation_claim_custom(keypair, am) {
+        var ptr = this.ptr;
+        this.ptr = 0;
+        _assertClass(keypair, XfrKeyPair);
+        uint64CvtShim[0] = am;
+        const low0 = u32CvtShim[0];
+        const high0 = u32CvtShim[1];
+        var ret = wasm.transactionbuilder_add_operation_claim_custom(ptr, keypair.ptr, low0, high0);
         return TransactionBuilder.__wrap(ret);
     }
     /**
@@ -2595,20 +2477,6 @@ export class TransactionBuilder {
     transaction() {
         try {
             wasm.transactionbuilder_transaction(8, this.ptr);
-            var r0 = getInt32Memory0()[8 / 4 + 0];
-            var r1 = getInt32Memory0()[8 / 4 + 1];
-            return getStringFromWasm0(r0, r1);
-        } finally {
-            wasm.__wbindgen_free(r0, r1);
-        }
-    }
-    /**
-    * Calculates transaction hash.
-    * @returns {string}
-    */
-    transaction_hash() {
-        try {
-            wasm.transactionbuilder_transaction_hash(8, this.ptr);
             var r0 = getInt32Memory0()[8 / 4 + 0];
             var r1 = getInt32Memory0()[8 / 4 + 1];
             return getStringFromWasm0(r0, r1);
@@ -3030,8 +2898,9 @@ export class XfrPublicKey {
     }
 }
 
-export const __wbindgen_object_drop_ref = function(arg0) {
-    takeObject(arg0);
+export const __wbindgen_json_parse = function(arg0, arg1) {
+    var ret = JSON.parse(getStringFromWasm0(arg0, arg1));
+    return addHeapObject(ret);
 };
 
 export const __wbindgen_json_serialize = function(arg0, arg1) {
@@ -3048,47 +2917,57 @@ export const __wbindgen_string_new = function(arg0, arg1) {
     return addHeapObject(ret);
 };
 
-export const __wbindgen_json_parse = function(arg0, arg1) {
-    var ret = JSON.parse(getStringFromWasm0(arg0, arg1));
+export const __wbindgen_object_drop_ref = function(arg0) {
+    takeObject(arg0);
+};
+
+export const __wbindgen_object_clone_ref = function(arg0) {
+    var ret = getObject(arg0);
     return addHeapObject(ret);
 };
 
-export const __wbg_getRandomValues_57e4008f45f0e105 = handleError(function(arg0, arg1) {
+export const __wbg_getRandomValues_98117e9a7e993920 = handleError(function(arg0, arg1) {
     getObject(arg0).getRandomValues(getObject(arg1));
 });
 
-export const __wbg_randomFillSync_d90848a552cbd666 = handleError(function(arg0, arg1, arg2) {
+export const __wbg_randomFillSync_64cc7d048f228ca8 = handleError(function(arg0, arg1, arg2) {
     getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
 });
 
-export const __wbg_self_f865985e662246aa = handleError(function() {
-    var ret = self.self;
-    return addHeapObject(ret);
-});
-
-export const __wbg_static_accessor_MODULE_39947eb3fe77895f = function() {
-    var ret = module;
+export const __wbg_process_2f24d6544ea7b200 = function(arg0) {
+    var ret = getObject(arg0).process;
     return addHeapObject(ret);
 };
 
-export const __wbg_require_c59851dfa0dc7e78 = handleError(function(arg0, arg1, arg2) {
-    var ret = getObject(arg0).require(getStringFromWasm0(arg1, arg2));
+export const __wbindgen_is_object = function(arg0) {
+    const val = getObject(arg0);
+    var ret = typeof(val) === 'object' && val !== null;
+    return ret;
+};
+
+export const __wbg_versions_6164651e75405d4a = function(arg0) {
+    var ret = getObject(arg0).versions;
+    return addHeapObject(ret);
+};
+
+export const __wbg_node_4b517d861cbcb3bc = function(arg0) {
+    var ret = getObject(arg0).node;
+    return addHeapObject(ret);
+};
+
+export const __wbg_modulerequire_3440a4bcf44437db = handleError(function(arg0, arg1) {
+    var ret = module.require(getStringFromWasm0(arg0, arg1));
     return addHeapObject(ret);
 });
 
-export const __wbg_crypto_bfb05100db79193b = function(arg0) {
+export const __wbg_crypto_98fc271021c7d2ad = function(arg0) {
     var ret = getObject(arg0).crypto;
     return addHeapObject(ret);
 };
 
-export const __wbg_msCrypto_f6dddc6ae048b7e2 = function(arg0) {
+export const __wbg_msCrypto_a2cdb043d2bfe57f = function(arg0) {
     var ret = getObject(arg0).msCrypto;
     return addHeapObject(ret);
-};
-
-export const __wbindgen_is_undefined = function(arg0) {
-    var ret = getObject(arg0) === undefined;
-    return ret;
 };
 
 export const __wbg_self_86b4b13392c7af56 = handleError(function() {
@@ -3116,6 +2995,11 @@ export const __wbg_msCrypto_9ad6677321a08dd8 = function(arg0) {
     return addHeapObject(ret);
 };
 
+export const __wbindgen_is_undefined = function(arg0) {
+    var ret = getObject(arg0) === undefined;
+    return ret;
+};
+
 export const __wbg_getRandomValues_dd27e6b0652b3236 = function(arg0) {
     var ret = getObject(arg0).getRandomValues;
     return addHeapObject(ret);
@@ -3128,6 +3012,36 @@ export const __wbg_getRandomValues_e57c9b75ddead065 = function(arg0, arg1) {
 export const __wbg_randomFillSync_d2ba53160aec6aba = function(arg0, arg1, arg2) {
     getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
 };
+
+export const __wbg_call_1f85aaa5836dfb23 = handleError(function(arg0, arg1) {
+    var ret = getObject(arg0).call(getObject(arg1));
+    return addHeapObject(ret);
+});
+
+export const __wbg_newnoargs_8aad4a6554f38345 = function(arg0, arg1) {
+    var ret = new Function(getStringFromWasm0(arg0, arg1));
+    return addHeapObject(ret);
+};
+
+export const __wbg_self_c0d3a5923e013647 = handleError(function() {
+    var ret = self.self;
+    return addHeapObject(ret);
+});
+
+export const __wbg_window_7ee6c8be3432927d = handleError(function() {
+    var ret = window.window;
+    return addHeapObject(ret);
+});
+
+export const __wbg_globalThis_c6de1d938e089cf0 = handleError(function() {
+    var ret = globalThis.globalThis;
+    return addHeapObject(ret);
+});
+
+export const __wbg_global_c9a01ce4680907f8 = handleError(function() {
+    var ret = global.global;
+    return addHeapObject(ret);
+});
 
 export const __wbg_buffer_eb5185aa4a8e9c62 = function(arg0) {
     var ret = getObject(arg0).buffer;
@@ -3156,6 +3070,11 @@ export const __wbg_newwithlength_02a009c0728d3ba1 = function(arg0) {
 export const __wbg_subarray_cc54babc55409ee0 = function(arg0, arg1, arg2) {
     var ret = getObject(arg0).subarray(arg1 >>> 0, arg2 >>> 0);
     return addHeapObject(ret);
+};
+
+export const __wbindgen_is_string = function(arg0) {
+    var ret = typeof(getObject(arg0)) === 'string';
+    return ret;
 };
 
 export const __wbindgen_debug_string = function(arg0, arg1) {
