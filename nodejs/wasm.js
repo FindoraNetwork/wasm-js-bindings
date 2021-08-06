@@ -1,6 +1,5 @@
 let imports = {};
 imports['__wbindgen_placeholder__'] = module.exports;
-imports['env'] = require('env');
 let wasm;
 const { TextDecoder } = require(String.raw`util`);
 
@@ -389,66 +388,6 @@ function getArrayJsValueFromWasm0(ptr, len) {
     }
     return result;
 }
-/**
-* Generate balance from account to utxo tx.
-* @param {BigInt} amount
-* @param {XfrPublicKey} address
-* @param {XfrKeyPair} kp
-* @param {BigInt} nonce
-* @returns {string}
-*/
-module.exports.balance_from_account_to_utxo_by_xfr = function(amount, address, kp, nonce) {
-    try {
-        uint64CvtShim[0] = amount;
-        const low0 = u32CvtShim[0];
-        const high0 = u32CvtShim[1];
-        _assertClass(address, XfrPublicKey);
-        var ptr1 = address.ptr;
-        address.ptr = 0;
-        _assertClass(kp, XfrKeyPair);
-        var ptr2 = kp.ptr;
-        kp.ptr = 0;
-        uint64CvtShim[0] = nonce;
-        const low3 = u32CvtShim[0];
-        const high3 = u32CvtShim[1];
-        wasm.balance_from_account_to_utxo_by_xfr(8, low0, high0, ptr1, ptr2, low3, high3);
-        var r0 = getInt32Memory0()[8 / 4 + 0];
-        var r1 = getInt32Memory0()[8 / 4 + 1];
-        return getStringFromWasm0(r0, r1);
-    } finally {
-        wasm.__wbindgen_free(r0, r1);
-    }
-};
-
-/**
-* @param {BigInt} amount
-* @param {XfrPublicKey} address
-* @param {string} kp_phrase
-* @param {BigInt} nonce
-* @returns {string}
-*/
-module.exports.balance_from_account_to_utxo_by_eth = function(amount, address, kp_phrase, nonce) {
-    try {
-        uint64CvtShim[0] = amount;
-        const low0 = u32CvtShim[0];
-        const high0 = u32CvtShim[1];
-        _assertClass(address, XfrPublicKey);
-        var ptr1 = address.ptr;
-        address.ptr = 0;
-        var ptr2 = passStringToWasm0(kp_phrase, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len2 = WASM_VECTOR_LEN;
-        uint64CvtShim[0] = nonce;
-        const low3 = u32CvtShim[0];
-        const high3 = u32CvtShim[1];
-        wasm.balance_from_account_to_utxo_by_eth(8, low0, high0, ptr1, ptr2, len2, low3, high3);
-        var r0 = getInt32Memory0()[8 / 4 + 0];
-        var r1 = getInt32Memory0()[8 / 4 + 1];
-        return getStringFromWasm0(r0, r1);
-    } finally {
-        wasm.__wbindgen_free(r0, r1);
-    }
-};
-
 /**
 * Returns a JavaScript object containing decrypted owner record information,
 * where `amount` is the decrypted asset amount, and `asset_type` is the decrypted asset type code.
@@ -2491,20 +2430,6 @@ class TransactionBuilder {
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
         var ret = wasm.transactionbuilder_add_operation_claim_custom(ptr, keypair.ptr, low0, high0);
-        return TransactionBuilder.__wrap(ret);
-    }
-    /**
-    * @param {XfrKeyPair} keypair
-    * @param {string} s
-    * @returns {TransactionBuilder}
-    */
-    add_operation_convert_account(keypair, s) {
-        var ptr = this.ptr;
-        this.ptr = 0;
-        _assertClass(keypair, XfrKeyPair);
-        var ptr0 = passStringToWasm0(s, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len0 = WASM_VECTOR_LEN;
-        var ret = wasm.transactionbuilder_add_operation_convert_account(ptr, keypair.ptr, ptr0, len0);
         return TransactionBuilder.__wrap(ret);
     }
     /**
