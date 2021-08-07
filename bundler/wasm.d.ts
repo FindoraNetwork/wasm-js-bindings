@@ -97,23 +97,6 @@ export function create_debt_policy_info(ir_numerator: BigInt, ir_denominator: Bi
 */
 export function create_debt_memo(ir_numerator: BigInt, ir_denominator: BigInt, fiat_code: string, loan_amount: BigInt): string;
 /**
-* Generate balance from account to utxo tx.
-* @param {BigInt} amount 
-* @param {XfrPublicKey} address 
-* @param {XfrKeyPair} kp 
-* @param {BigInt} nonce 
-* @returns {string} 
-*/
-export function balance_from_account_to_utxo_by_xfr(amount: BigInt, address: XfrPublicKey, kp: XfrKeyPair, nonce: BigInt): string;
-/**
-* @param {BigInt} amount 
-* @param {XfrPublicKey} address 
-* @param {string} kp_phrase 
-* @param {BigInt} nonce 
-* @returns {string} 
-*/
-export function balance_from_account_to_utxo_by_eth(amount: BigInt, address: XfrPublicKey, kp_phrase: string, nonce: BigInt): string;
-/**
 * Returns a JavaScript object containing decrypted owner record information,
 * where `amount` is the decrypted asset amount, and `asset_type` is the decrypted asset type code.
 *
@@ -1073,12 +1056,6 @@ export class TransactionBuilder {
 * @returns {TransactionBuilder} 
 */
   add_operation_claim_custom(keypair: XfrKeyPair, am: BigInt): TransactionBuilder;
-/**
-* @param {XfrKeyPair} keypair 
-* @param {string} s 
-* @returns {TransactionBuilder} 
-*/
-  add_operation_convert_account(keypair: XfrKeyPair, s: string): TransactionBuilder;
 /**
 * Adds a serialized transfer asset operation to a transaction builder instance.
 * @param {string} op - a JSON-serialized transfer operation.
