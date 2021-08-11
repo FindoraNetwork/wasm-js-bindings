@@ -275,150 +275,12 @@ export function verify_authenticated_txn(state_commitment, authenticated_txn) {
 }
 
 /**
-* Performs a simple loan repayment fee calculation.
-*
-* The returned fee is a fraction of the `outstanding_balance`
-* where the interest rate is expressed as a fraction `ir_numerator` / `ir_denominator`.
-*
-* This function is specific to the  Lending Demo.
-* @param {BigInt} ir_numerator - Interest rate numerator.
-* @param {BigInt} ir_denominator - Interest rate denominator.
-* @param {BigInt} outstanding_balance - Amount of outstanding debt.
-* @ignore
-* @param {BigInt} ir_numerator
-* @param {BigInt} ir_denominator
-* @param {BigInt} outstanding_balance
-* @returns {BigInt}
-*/
-export function calculate_fee(ir_numerator, ir_denominator, outstanding_balance) {
-    try {
-        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-        uint64CvtShim[0] = ir_numerator;
-        const low0 = u32CvtShim[0];
-        const high0 = u32CvtShim[1];
-        uint64CvtShim[0] = ir_denominator;
-        const low1 = u32CvtShim[0];
-        const high1 = u32CvtShim[1];
-        uint64CvtShim[0] = outstanding_balance;
-        const low2 = u32CvtShim[0];
-        const high2 = u32CvtShim[1];
-        wasm.calculate_fee(retptr, low0, high0, low1, high1, low2, high2);
-        var r0 = getInt32Memory0()[retptr / 4 + 0];
-        var r1 = getInt32Memory0()[retptr / 4 + 1];
-        u32CvtShim[0] = r0;
-        u32CvtShim[1] = r1;
-        const n3 = uint64CvtShim[0];
-        return n3;
-    } finally {
-        wasm.__wbindgen_add_to_stack_pointer(16);
-    }
-}
-
-/**
-* Returns an address to use for cancelling debt tokens in a debt swap.
-* @ignore
+* ...
 * @returns {XfrPublicKey}
 */
 export function get_null_pk() {
     var ret = wasm.get_null_pk();
     return XfrPublicKey.__wrap(ret);
-}
-
-/**
-* @ignore
-* @returns {string}
-*/
-export function create_default_policy_info() {
-    try {
-        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-        wasm.create_default_policy_info(retptr);
-        var r0 = getInt32Memory0()[retptr / 4 + 0];
-        var r1 = getInt32Memory0()[retptr / 4 + 1];
-        return getStringFromWasm0(r0, r1);
-    } finally {
-        wasm.__wbindgen_add_to_stack_pointer(16);
-        wasm.__wbindgen_free(r0, r1);
-    }
-}
-
-/**
-* Create policy information needed for debt token asset types.
-* This data will be parsed by the policy evalautor to ensure
-* that all payment and fee amounts are correct.
-* # Arguments
-*
-* * `ir_numerator` - interest rate numerator
-* * `ir_denominator`- interest rate denominator
-* * `fiat_code` - Base64 string representing asset type used to pay off the loan
-* * `amount` - loan amount
-* @ignore
-* @param {BigInt} ir_numerator
-* @param {BigInt} ir_denominator
-* @param {string} fiat_code
-* @param {BigInt} loan_amount
-* @returns {string}
-*/
-export function create_debt_policy_info(ir_numerator, ir_denominator, fiat_code, loan_amount) {
-    try {
-        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-        uint64CvtShim[0] = ir_numerator;
-        const low0 = u32CvtShim[0];
-        const high0 = u32CvtShim[1];
-        uint64CvtShim[0] = ir_denominator;
-        const low1 = u32CvtShim[0];
-        const high1 = u32CvtShim[1];
-        var ptr2 = passStringToWasm0(fiat_code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len2 = WASM_VECTOR_LEN;
-        uint64CvtShim[0] = loan_amount;
-        const low3 = u32CvtShim[0];
-        const high3 = u32CvtShim[1];
-        wasm.create_debt_policy_info(retptr, low0, high0, low1, high1, ptr2, len2, low3, high3);
-        var r0 = getInt32Memory0()[retptr / 4 + 0];
-        var r1 = getInt32Memory0()[retptr / 4 + 1];
-        return getStringFromWasm0(r0, r1);
-    } finally {
-        wasm.__wbindgen_add_to_stack_pointer(16);
-        wasm.__wbindgen_free(r0, r1);
-    }
-}
-
-/**
-* Creates the memo needed for debt token asset types. The memo will be parsed by the policy evaluator to ensure
-* that all payment and fee amounts are correct.
-* @param {BigInt} ir_numerator  - Interest rate numerator.
-* @param {BigInt} ir_denominator - Interest rate denominator.
-* @param {string} fiat_code - Base64 string representing asset type used to pay off the loan.
-* @param {BigInt} loan_amount - Loan amount.
-* @throws Will throw an error if `fiat_code` fails to deserialize.
-* @ignore
-* @param {BigInt} ir_numerator
-* @param {BigInt} ir_denominator
-* @param {string} fiat_code
-* @param {BigInt} loan_amount
-* @returns {string}
-*/
-export function create_debt_memo(ir_numerator, ir_denominator, fiat_code, loan_amount) {
-    try {
-        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-        uint64CvtShim[0] = ir_numerator;
-        const low0 = u32CvtShim[0];
-        const high0 = u32CvtShim[1];
-        uint64CvtShim[0] = ir_denominator;
-        const low1 = u32CvtShim[0];
-        const high1 = u32CvtShim[1];
-        var ptr2 = passStringToWasm0(fiat_code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len2 = WASM_VECTOR_LEN;
-        uint64CvtShim[0] = loan_amount;
-        const low3 = u32CvtShim[0];
-        const high3 = u32CvtShim[1];
-        wasm.create_debt_memo(retptr, low0, high0, low1, high1, ptr2, len2, low3, high3);
-        var r0 = getInt32Memory0()[retptr / 4 + 0];
-        var r1 = getInt32Memory0()[retptr / 4 + 1];
-        return getStringFromWasm0(r0, r1);
-    } finally {
-        wasm.__wbindgen_add_to_stack_pointer(16);
-        wasm.__wbindgen_free(r0, r1);
-    }
 }
 
 function isLikeNone(x) {
@@ -2471,38 +2333,23 @@ export class TransactionBuilder {
     * @param {XfrKeyPair} key_pair
     * @param {string} memo
     * @param {string} token_code
-    * @param {string} policy_choice
+    * @param {string} _policy_choice
     * @param {AssetRules} asset_rules
     * @returns {TransactionBuilder}
     */
-    add_operation_create_asset_with_policy(key_pair, memo, token_code, policy_choice, asset_rules) {
+    add_operation_create_asset_with_policy(key_pair, memo, token_code, _policy_choice, asset_rules) {
         const ptr = this.__destroy_into_raw();
         _assertClass(key_pair, XfrKeyPair);
         var ptr0 = passStringToWasm0(memo, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
         var ptr1 = passStringToWasm0(token_code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len1 = WASM_VECTOR_LEN;
-        var ptr2 = passStringToWasm0(policy_choice, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var ptr2 = passStringToWasm0(_policy_choice, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len2 = WASM_VECTOR_LEN;
         _assertClass(asset_rules, AssetRules);
         var ptr3 = asset_rules.ptr;
         asset_rules.ptr = 0;
         var ret = wasm.transactionbuilder_add_operation_create_asset_with_policy(ptr, key_pair.ptr, ptr0, len0, ptr1, len1, ptr2, len2, ptr3);
-        return TransactionBuilder.__wrap(ret);
-    }
-    /**
-    * @ignore
-    * @param {string} token_code
-    * @param {string} which_check
-    * @returns {TransactionBuilder}
-    */
-    add_policy_option(token_code, which_check) {
-        const ptr = this.__destroy_into_raw();
-        var ptr0 = passStringToWasm0(token_code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len0 = WASM_VECTOR_LEN;
-        var ptr1 = passStringToWasm0(which_check, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len1 = WASM_VECTOR_LEN;
-        var ret = wasm.transactionbuilder_add_policy_option(ptr, ptr0, len0, ptr1, len1);
         return TransactionBuilder.__wrap(ret);
     }
     /**

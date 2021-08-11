@@ -35,67 +35,10 @@ export function asset_type_from_jsvalue(val: any): string;
 */
 export function verify_authenticated_txn(state_commitment: string, authenticated_txn: string): boolean;
 /**
-* Performs a simple loan repayment fee calculation.
-*
-* The returned fee is a fraction of the `outstanding_balance`
-* where the interest rate is expressed as a fraction `ir_numerator` / `ir_denominator`.
-*
-* This function is specific to the  Lending Demo.
-* @param {BigInt} ir_numerator - Interest rate numerator.
-* @param {BigInt} ir_denominator - Interest rate denominator.
-* @param {BigInt} outstanding_balance - Amount of outstanding debt.
-* @ignore
-* @param {BigInt} ir_numerator
-* @param {BigInt} ir_denominator
-* @param {BigInt} outstanding_balance
-* @returns {BigInt}
-*/
-export function calculate_fee(ir_numerator: BigInt, ir_denominator: BigInt, outstanding_balance: BigInt): BigInt;
-/**
-* Returns an address to use for cancelling debt tokens in a debt swap.
-* @ignore
+* ...
 * @returns {XfrPublicKey}
 */
 export function get_null_pk(): XfrPublicKey;
-/**
-* @ignore
-* @returns {string}
-*/
-export function create_default_policy_info(): string;
-/**
-* Create policy information needed for debt token asset types.
-* This data will be parsed by the policy evalautor to ensure
-* that all payment and fee amounts are correct.
-* # Arguments
-*
-* * `ir_numerator` - interest rate numerator
-* * `ir_denominator`- interest rate denominator
-* * `fiat_code` - Base64 string representing asset type used to pay off the loan
-* * `amount` - loan amount
-* @ignore
-* @param {BigInt} ir_numerator
-* @param {BigInt} ir_denominator
-* @param {string} fiat_code
-* @param {BigInt} loan_amount
-* @returns {string}
-*/
-export function create_debt_policy_info(ir_numerator: BigInt, ir_denominator: BigInt, fiat_code: string, loan_amount: BigInt): string;
-/**
-* Creates the memo needed for debt token asset types. The memo will be parsed by the policy evaluator to ensure
-* that all payment and fee amounts are correct.
-* @param {BigInt} ir_numerator  - Interest rate numerator.
-* @param {BigInt} ir_denominator - Interest rate denominator.
-* @param {string} fiat_code - Base64 string representing asset type used to pay off the loan.
-* @param {BigInt} loan_amount - Loan amount.
-* @throws Will throw an error if `fiat_code` fails to deserialize.
-* @ignore
-* @param {BigInt} ir_numerator
-* @param {BigInt} ir_denominator
-* @param {string} fiat_code
-* @param {BigInt} loan_amount
-* @returns {string}
-*/
-export function create_debt_memo(ir_numerator: BigInt, ir_denominator: BigInt, fiat_code: string, loan_amount: BigInt): string;
 /**
 * Returns a JavaScript object containing decrypted owner record information,
 * where `amount` is the decrypted asset amount, and `asset_type` is the decrypted asset type code.
@@ -979,18 +922,11 @@ export class TransactionBuilder {
 * @param {XfrKeyPair} key_pair
 * @param {string} memo
 * @param {string} token_code
-* @param {string} policy_choice
+* @param {string} _policy_choice
 * @param {AssetRules} asset_rules
 * @returns {TransactionBuilder}
 */
-  add_operation_create_asset_with_policy(key_pair: XfrKeyPair, memo: string, token_code: string, policy_choice: string, asset_rules: AssetRules): TransactionBuilder;
-/**
-* @ignore
-* @param {string} token_code
-* @param {string} which_check
-* @returns {TransactionBuilder}
-*/
-  add_policy_option(token_code: string, which_check: string): TransactionBuilder;
+  add_operation_create_asset_with_policy(key_pair: XfrKeyPair, memo: string, token_code: string, _policy_choice: string, asset_rules: AssetRules): TransactionBuilder;
 /**
 * Wraps around TransactionBuilder to add an asset issuance to a transaction builder instance.
 *
@@ -1349,11 +1285,7 @@ export interface InitOutput {
   readonly random_asset_type: (a: number) => void;
   readonly asset_type_from_jsvalue: (a: number, b: number) => void;
   readonly verify_authenticated_txn: (a: number, b: number, c: number, d: number) => number;
-  readonly calculate_fee: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => void;
   readonly get_null_pk: () => number;
-  readonly create_default_policy_info: (a: number) => void;
-  readonly create_debt_policy_info: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => void;
-  readonly create_debt_memo: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => void;
   readonly __wbg_transactionbuilder_free: (a: number) => void;
   readonly __wbg_feeinputs_free: (a: number) => void;
   readonly feeinputs_new: () => number;
@@ -1366,7 +1298,6 @@ export interface InitOutput {
   readonly transactionbuilder_new: (a: number, b: number) => number;
   readonly transactionbuilder_add_operation_create_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => number;
   readonly transactionbuilder_add_operation_create_asset_with_policy: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => number;
-  readonly transactionbuilder_add_policy_option: (a: number, b: number, c: number, d: number, e: number) => number;
   readonly transactionbuilder_add_basic_issue_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;
   readonly transactionbuilder_add_operation_update_memo: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly transactionbuilder_add_operation_delegate: (a: number, b: number, c: number, d: number) => number;
