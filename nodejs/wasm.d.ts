@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
 * Returns the git commit hash and commit date of the commit this library was built against.
-* @returns {string} 
+* @returns {string}
 */
 export function build_id(): string;
 /**
@@ -11,13 +11,13 @@ export function build_id(): string;
 * module:Findora-Wasm~TransactionBuilder#add_operation_create_asset|add_operation_create_asset}
 * for instructions on how to define an asset with a new
 * asset type
-* @returns {string} 
+* @returns {string}
 */
 export function random_asset_type(): string;
 /**
 * Generates asset type as a Base64 string from a JSON-serialized JavaScript value.
-* @param {any} val 
-* @returns {string} 
+* @param {any} val
+* @returns {string}
 */
 export function asset_type_from_jsvalue(val: any): string;
 /**
@@ -29,73 +29,16 @@ export function asset_type_from_jsvalue(val: any): string;
 * @see {@link module:Network~Network#getStateCommitment|Network.getStateCommitment}
 * for instructions on fetching a ledger state commitment.
 * @throws Will throw an error if the state commitment or the transaction fails to deserialize.
-* @param {string} state_commitment 
-* @param {string} authenticated_txn 
-* @returns {boolean} 
+* @param {string} state_commitment
+* @param {string} authenticated_txn
+* @returns {boolean}
 */
 export function verify_authenticated_txn(state_commitment: string, authenticated_txn: string): boolean;
 /**
-* Performs a simple loan repayment fee calculation.
-*
-* The returned fee is a fraction of the `outstanding_balance`
-* where the interest rate is expressed as a fraction `ir_numerator` / `ir_denominator`.
-*
-* This function is specific to the  Lending Demo.
-* @param {BigInt} ir_numerator - Interest rate numerator.
-* @param {BigInt} ir_denominator - Interest rate denominator.
-* @param {BigInt} outstanding_balance - Amount of outstanding debt.
-* @ignore
-* @param {BigInt} ir_numerator 
-* @param {BigInt} ir_denominator 
-* @param {BigInt} outstanding_balance 
-* @returns {BigInt} 
-*/
-export function calculate_fee(ir_numerator: BigInt, ir_denominator: BigInt, outstanding_balance: BigInt): BigInt;
-/**
-* Returns an address to use for cancelling debt tokens in a debt swap.
-* @ignore
-* @returns {XfrPublicKey} 
+* ...
+* @returns {XfrPublicKey}
 */
 export function get_null_pk(): XfrPublicKey;
-/**
-* @ignore
-* @returns {string} 
-*/
-export function create_default_policy_info(): string;
-/**
-* Create policy information needed for debt token asset types.
-* This data will be parsed by the policy evalautor to ensure
-* that all payment and fee amounts are correct.
-* # Arguments
-*
-* * `ir_numerator` - interest rate numerator
-* * `ir_denominator`- interest rate denominator
-* * `fiat_code` - Base64 string representing asset type used to pay off the loan
-* * `amount` - loan amount
-* @ignore
-* @param {BigInt} ir_numerator 
-* @param {BigInt} ir_denominator 
-* @param {string} fiat_code 
-* @param {BigInt} loan_amount 
-* @returns {string} 
-*/
-export function create_debt_policy_info(ir_numerator: BigInt, ir_denominator: BigInt, fiat_code: string, loan_amount: BigInt): string;
-/**
-* Creates the memo needed for debt token asset types. The memo will be parsed by the policy evaluator to ensure
-* that all payment and fee amounts are correct.
-* @param {BigInt} ir_numerator  - Interest rate numerator.
-* @param {BigInt} ir_denominator - Interest rate denominator.
-* @param {string} fiat_code - Base64 string representing asset type used to pay off the loan.
-* @param {BigInt} loan_amount - Loan amount.
-* @throws Will throw an error if `fiat_code` fails to deserialize.
-* @ignore
-* @param {BigInt} ir_numerator 
-* @param {BigInt} ir_denominator 
-* @param {string} fiat_code 
-* @param {BigInt} loan_amount 
-* @returns {string} 
-*/
-export function create_debt_memo(ir_numerator: BigInt, ir_denominator: BigInt, fiat_code: string, loan_amount: BigInt): string;
 /**
 * Returns a JavaScript object containing decrypted owner record information,
 * where `amount` is the decrypted asset amount, and `asset_type` is the decrypted asset type code.
@@ -105,60 +48,60 @@ export function create_debt_memo(ir_numerator: BigInt, ir_denominator: BigInt, f
 * @param {XfrKeyPair} keypair - Keypair of asset owner.
 * @see {@link module:Findora-Wasm~ClientAssetRecord#from_json_record|ClientAssetRecord.from_json_record} for information about how to construct an asset record object
 * from a JSON result returned from the ledger server.
-* @param {ClientAssetRecord} record 
-* @param {OwnerMemo | undefined} owner_memo 
-* @param {XfrKeyPair} keypair 
-* @returns {any} 
+* @param {ClientAssetRecord} record
+* @param {OwnerMemo | undefined} owner_memo
+* @param {XfrKeyPair} keypair
+* @returns {any}
 */
 export function open_client_asset_record(record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, keypair: XfrKeyPair): any;
 /**
 * Extracts the public key as a string from a transfer key pair.
-* @param {XfrKeyPair} key_pair 
-* @returns {string} 
+* @param {XfrKeyPair} key_pair
+* @returns {string}
 */
 export function get_pub_key_str(key_pair: XfrKeyPair): string;
 /**
 * Extracts the private key as a string from a transfer key pair.
-* @param {XfrKeyPair} key_pair 
-* @returns {string} 
+* @param {XfrKeyPair} key_pair
+* @returns {string}
 */
 export function get_priv_key_str(key_pair: XfrKeyPair): string;
 /**
 * Creates a new transfer key pair.
-* @returns {XfrKeyPair} 
+* @returns {XfrKeyPair}
 */
 export function new_keypair(): XfrKeyPair;
 /**
 * Generates a new keypair deterministically from a seed string and an optional name.
-* @param {string} seed_str 
-* @param {string | undefined} name 
-* @returns {XfrKeyPair} 
+* @param {string} seed_str
+* @param {string | undefined} name
+* @returns {XfrKeyPair}
 */
 export function new_keypair_from_seed(seed_str: string, name?: string): XfrKeyPair;
 /**
 * Returns base64 encoded representation of an XfrPublicKey.
-* @param {XfrPublicKey} key 
-* @returns {string} 
+* @param {XfrPublicKey} key
+* @returns {string}
 */
 export function public_key_to_base64(key: XfrPublicKey): string;
 /**
 * Converts a base64 encoded public key string to a public key.
-* @param {string} pk 
-* @returns {XfrPublicKey} 
+* @param {string} pk
+* @returns {XfrPublicKey}
 */
 export function public_key_from_base64(pk: string): XfrPublicKey;
 /**
 * Expresses a transfer key pair as a hex-encoded string.
 * To decode the string, use `keypair_from_str` function.
-* @param {XfrKeyPair} key_pair 
-* @returns {string} 
+* @param {XfrKeyPair} key_pair
+* @returns {string}
 */
 export function keypair_to_str(key_pair: XfrKeyPair): string;
 /**
 * Constructs a transfer key pair from a hex-encoded string.
 * The encode a key pair, use `keypair_to_str` function.
-* @param {string} str 
-* @returns {XfrKeyPair} 
+* @param {string} str
+* @returns {XfrKeyPair}
 */
 export function keypair_from_str(str: string): XfrKeyPair;
 /**
@@ -167,8 +110,8 @@ export function keypair_from_str(str: string): XfrKeyPair;
 * size: 3}]`. The size refers to byte-size of the credential. In this case, the "credit_score"
 * attribute is represented as a 3 byte string "760". `attributes` is the list of attribute types
 * that the issuer can sign off on.
-* @param {any} attributes 
-* @returns {CredentialIssuerKeyPair} 
+* @param {any} attributes
+* @returns {CredentialIssuerKeyPair}
 */
 export function wasm_credential_issuer_key_gen(attributes: any): CredentialIssuerKeyPair;
 /**
@@ -182,10 +125,10 @@ export function wasm_credential_issuer_key_gen(attributes: any): CredentialIssue
 * @throws Will throw an error during verification failure (i.e. the supplied ledger address is
 * incorrect, the commitment is tied to a different credential issuer, or the proof of knowledge is
 * invalid, etc.)
-* @param {CredIssuerPublicKey} issuer_pub_key 
-* @param {CredentialCommitment} commitment 
-* @param {CredentialPoK} pok 
-* @param {XfrPublicKey} xfr_pk 
+* @param {CredIssuerPublicKey} issuer_pub_key
+* @param {CredentialCommitment} commitment
+* @param {CredentialPoK} pok
+* @param {XfrPublicKey} xfr_pk
 */
 export function wasm_credential_verify_commitment(issuer_pub_key: CredIssuerPublicKey, commitment: CredentialCommitment, pok: CredentialPoK, xfr_pk: XfrPublicKey): void;
 /**
@@ -196,19 +139,19 @@ export function wasm_credential_verify_commitment(issuer_pub_key: CredIssuerPubl
 * @param {JsValue} reveal_fields - Array of strings representing attribute fields to reveal.
 * @throws Will throw an error if a reveal proof cannot be generated from the credential
 * or ```reveal_fields``` fails to deserialize.
-* @param {CredUserSecretKey} user_secret_key 
-* @param {Credential} credential 
-* @param {CredentialCommitmentKey} key 
-* @param {any} reveal_fields 
-* @returns {CredentialPoK} 
+* @param {CredUserSecretKey} user_secret_key
+* @param {Credential} credential
+* @param {CredentialCommitmentKey} key
+* @param {any} reveal_fields
+* @returns {CredentialPoK}
 */
 export function wasm_credential_open_commitment(user_secret_key: CredUserSecretKey, credential: Credential, key: CredentialCommitmentKey, reveal_fields: any): CredentialPoK;
 /**
 * Generates a new credential user key.
 * @param {CredIssuerPublicKey} issuer_pub_key - The credential issuer that can sign off on this
 * user's attributes.
-* @param {CredIssuerPublicKey} issuer_pub_key 
-* @returns {CredentialUserKeyPair} 
+* @param {CredIssuerPublicKey} issuer_pub_key
+* @returns {CredentialUserKeyPair}
 */
 export function wasm_credential_user_key_gen(issuer_pub_key: CredIssuerPublicKey): CredentialUserKeyPair;
 /**
@@ -218,10 +161,10 @@ export function wasm_credential_user_key_gen(issuer_pub_key: CredIssuerPublicKey
 * @param {JsValue} attributes - Array of attribute assignments of the form `[{name: "credit_score",
 * val: "760"}]`.
 * @throws Will throw an error if the signature cannot be generated.
-* @param {CredIssuerSecretKey} issuer_secret_key 
-* @param {CredUserPublicKey} user_public_key 
-* @param {any} attributes 
-* @returns {CredentialSignature} 
+* @param {CredIssuerSecretKey} issuer_secret_key
+* @param {CredUserPublicKey} user_public_key
+* @param {any} attributes
+* @returns {CredentialSignature}
 */
 export function wasm_credential_sign(issuer_secret_key: CredIssuerSecretKey, user_public_key: CredUserPublicKey, attributes: any): CredentialSignature;
 /**
@@ -230,10 +173,10 @@ export function wasm_credential_sign(issuer_secret_key: CredIssuerSecretKey, use
 * @param {CredentialSignature} signature - Credential issuer signature on attributes.
 * @param {JsValue} attributes - Array of attribute assignments of the form `[{name: "credit_score",
 * val: "760"}]'.
-* @param {CredIssuerPublicKey} issuer_public_key 
-* @param {CredentialSignature} signature 
-* @param {any} attributes 
-* @returns {Credential} 
+* @param {CredIssuerPublicKey} issuer_public_key
+* @param {CredentialSignature} signature
+* @param {any} attributes
+* @returns {Credential}
 */
 export function create_credential(issuer_public_key: CredIssuerPublicKey, signature: CredentialSignature, attributes: any): Credential;
 /**
@@ -242,10 +185,10 @@ export function create_credential(issuer_public_key: CredIssuerPublicKey, signat
 * @param {CredUserSecretKey} user_secret_key - Secret key of credential user.
 * @param {XfrPublicKey} user_public_key - Ledger signing key to link this credential to.
 * @param {Credential} credential - Credential object.
-* @param {CredUserSecretKey} user_secret_key 
-* @param {XfrPublicKey} user_public_key 
-* @param {Credential} credential 
-* @returns {CredentialCommitmentData} 
+* @param {CredUserSecretKey} user_secret_key
+* @param {XfrPublicKey} user_public_key
+* @param {Credential} credential
+* @returns {CredentialCommitmentData}
 */
 export function wasm_credential_commit(user_secret_key: CredUserSecretKey, user_public_key: XfrPublicKey, credential: Credential): CredentialCommitmentData;
 /**
@@ -254,10 +197,10 @@ export function wasm_credential_commit(user_secret_key: CredUserSecretKey, user_
 * @param {Credential} credential - Credential object.
 * @param {JsValue} reveal_fields - Array of string names representing credentials to reveal (i.e.
 * `["credit_score"]`).
-* @param {CredUserSecretKey} user_sk 
-* @param {Credential} credential 
-* @param {any} reveal_fields 
-* @returns {CredentialRevealSig} 
+* @param {CredUserSecretKey} user_sk
+* @param {Credential} credential
+* @param {any} reveal_fields
+* @returns {CredentialRevealSig}
 */
 export function wasm_credential_reveal(user_sk: CredUserSecretKey, credential: Credential, reveal_fields: any): CredentialRevealSig;
 /**
@@ -268,10 +211,10 @@ export function wasm_credential_reveal(user_sk: CredUserSecretKey, credential: C
 * @param {CredentialCommitment} commitment - Commitment to the credential.
 * @param {CredentialPoK} pok - Proof that the credential commitment is valid and commits
 * to the attribute values being revealed.
-* @param {CredIssuerPublicKey} issuer_pub_key 
-* @param {any} attributes 
-* @param {CredentialCommitment} commitment 
-* @param {CredentialPoK} pok 
+* @param {CredIssuerPublicKey} issuer_pub_key
+* @param {any} attributes
+* @param {CredentialCommitment} commitment
+* @param {CredentialPoK} pok
 */
 export function wasm_credential_verify(issuer_pub_key: CredIssuerPublicKey, attributes: any, commitment: CredentialCommitment, pok: CredentialPoK): void;
 /**
@@ -279,129 +222,129 @@ export function wasm_credential_verify(issuer_pub_key: CredIssuerPublicKey, attr
 * @param {JsValue} xfr_body - JSON of a transfer note from a transfer operation.
 * @param {AssetTracerKeyPair} tracer_keypair - Asset tracer keypair.
 * @param {JsValue} candidate_assets - List of asset types traced by the tracer keypair.
-* @param {any} xfr_body 
-* @param {AssetTracerKeyPair} tracer_keypair 
-* @param {any} _candidate_assets 
-* @returns {any} 
+* @param {any} xfr_body
+* @param {AssetTracerKeyPair} tracer_keypair
+* @param {any} _candidate_assets
+* @returns {any}
 */
 export function trace_assets(xfr_body: any, tracer_keypair: AssetTracerKeyPair, _candidate_assets: any): any;
 /**
 * Returns bech32 encoded representation of an XfrPublicKey.
-* @param {XfrPublicKey} key 
-* @returns {string} 
+* @param {XfrPublicKey} key
+* @returns {string}
 */
 export function public_key_to_bech32(key: XfrPublicKey): string;
 /**
 * Converts a bech32 encoded public key string to a public key.
-* @param {string} addr 
-* @returns {XfrPublicKey} 
+* @param {string} addr
+* @returns {XfrPublicKey}
 */
 export function public_key_from_bech32(addr: string): XfrPublicKey;
 /**
-* @param {string} pk 
-* @returns {string} 
+* @param {string} pk
+* @returns {string}
 */
 export function bech32_to_base64(pk: string): string;
 /**
-* @param {string} pk 
-* @returns {string} 
+* @param {string} pk
+* @returns {string}
 */
 export function base64_to_bech32(pk: string): string;
 /**
-* @param {string} key_pair 
-* @param {string} password 
-* @returns {Uint8Array} 
+* @param {string} key_pair
+* @param {string} password
+* @returns {Uint8Array}
 */
 export function encryption_pbkdf2_aes256gcm(key_pair: string, password: string): Uint8Array;
 /**
-* @param {Uint8Array} enc_key_pair 
-* @param {string} password 
-* @returns {string} 
+* @param {Uint8Array} enc_key_pair
+* @param {string} password
+* @returns {string}
 */
 export function decryption_pbkdf2_aes256gcm(enc_key_pair: Uint8Array, password: string): string;
 /**
-* @param {string} sk_str 
-* @returns {XfrKeyPair | undefined} 
+* @param {string} sk_str
+* @returns {XfrKeyPair | undefined}
 */
 export function create_keypair_from_secret(sk_str: string): XfrKeyPair | undefined;
 /**
-* @param {XfrKeyPair} kp 
-* @returns {XfrPublicKey} 
+* @param {XfrKeyPair} kp
+* @returns {XfrPublicKey}
 */
 export function get_pk_from_keypair(kp: XfrKeyPair): XfrPublicKey;
 /**
 * Randomly generate a 12words-length mnemonic.
-* @returns {string} 
+* @returns {string}
 */
 export function generate_mnemonic_default(): string;
 /**
 * Generate mnemonic with custom length and language.
 * - @param `wordslen`: acceptable value are one of [ 12, 15, 18, 21, 24 ]
 * - @param `lang`: acceptable value are one of [ "en", "zh", "zh_traditional", "fr", "it", "ko", "sp", "jp" ]
-* @param {number} wordslen 
-* @param {string} lang 
-* @returns {string} 
+* @param {number} wordslen
+* @param {string} lang
+* @returns {string}
 */
 export function generate_mnemonic_custom(wordslen: number, lang: string): string;
 /**
 * Restore the XfrKeyPair from a mnemonic with a default bip44-path,
 * that is "m/44'/917'/0'/0/0" ("m/44'/coin'/account'/change/address").
-* @param {string} phrase 
-* @returns {XfrKeyPair} 
+* @param {string} phrase
+* @returns {XfrKeyPair}
 */
 export function restore_keypair_from_mnemonic_default(phrase: string): XfrKeyPair;
 /**
 * Restore the XfrKeyPair from a mnemonic with custom params,
 * in bip44 form.
-* @param {string} phrase 
-* @param {string} lang 
-* @param {BipPath} path 
-* @returns {XfrKeyPair} 
+* @param {string} phrase
+* @param {string} lang
+* @param {BipPath} path
+* @returns {XfrKeyPair}
 */
 export function restore_keypair_from_mnemonic_bip44(phrase: string, lang: string, path: BipPath): XfrKeyPair;
 /**
 * Restore the XfrKeyPair from a mnemonic with custom params,
 * in bip49 form.
-* @param {string} phrase 
-* @param {string} lang 
-* @param {BipPath} path 
-* @returns {XfrKeyPair} 
+* @param {string} phrase
+* @param {string} lang
+* @param {BipPath} path
+* @returns {XfrKeyPair}
 */
 export function restore_keypair_from_mnemonic_bip49(phrase: string, lang: string, path: BipPath): XfrKeyPair;
 /**
 * ID of FRA, in `String` format.
-* @returns {string} 
+* @returns {string}
 */
 export function fra_get_asset_code(): string;
 /**
 * Fee smaller than this value will be denied.
-* @returns {BigInt} 
+* @returns {BigInt}
 */
 export function fra_get_minimal_fee(): BigInt;
 /**
 * The destination for fee to be transfered to.
-* @returns {XfrPublicKey} 
+* @returns {XfrPublicKey}
 */
 export function fra_get_dest_pubkey(): XfrPublicKey;
 /**
 * The system address used to reveive delegation principals.
-* @returns {string} 
+* @returns {string}
 */
 export function get_delegation_target_address(): string;
 /**
-* @returns {string} 
+* @returns {string}
 */
 export function get_coinbase_address(): string;
 /**
-* @returns {string} 
+* @returns {string}
 */
 export function get_coinbase_principal_address(): string;
 /**
-* @returns {BigInt} 
+* @returns {BigInt}
 */
 export function get_delegation_min_amount(): BigInt;
 /**
-* @returns {BigInt} 
+* @returns {BigInt}
 */
 export function get_delegation_max_amount(): BigInt;
 /**
@@ -427,29 +370,29 @@ export class AssetRules {
   free(): void;
 /**
 * Create a default set of asset rules. See class description for defaults.
-* @returns {AssetRules} 
+* @returns {AssetRules}
 */
   static new(): AssetRules;
 /**
 * Adds an asset tracing policy.
 * @param {TracingPolicy} policy - Tracing policy for the new asset.
-* @param {TracingPolicy} policy 
-* @returns {AssetRules} 
+* @param {TracingPolicy} policy
+* @returns {AssetRules}
 */
   add_tracing_policy(policy: TracingPolicy): AssetRules;
 /**
 * Set a cap on the number of units of this asset that can be issued.
 * @param {BigInt} max_units - Maximum number of units that can be issued.
-* @param {BigInt} max_units 
-* @returns {AssetRules} 
+* @param {BigInt} max_units
+* @returns {AssetRules}
 */
   set_max_units(max_units: BigInt): AssetRules;
 /**
 * Transferability toggle. Assets that are not transferable can only be transferred by the asset
 * issuer.
 * @param {boolean} transferable - Boolean indicating whether asset can be transferred.
-* @param {boolean} transferable 
-* @returns {AssetRules} 
+* @param {boolean} transferable
+* @returns {AssetRules}
 */
   set_transferable(transferable: boolean): AssetRules;
 /**
@@ -457,24 +400,24 @@ export class AssetRules {
 * @param {boolean} updatable - Boolean indicating whether asset memo can be updated.
 * @see {@link module:Findora-Wasm~TransactionBuilder#add_operation_update_memo|add_operation_update_memo} for more information about how to add
 * a memo update operation to a transaction.
-* @param {boolean} updatable 
-* @returns {AssetRules} 
+* @param {boolean} updatable
+* @returns {AssetRules}
 */
   set_updatable(updatable: boolean): AssetRules;
 /**
 * Co-signature rules. Assets with co-signatue rules require additional weighted signatures to
 * be transferred.
 * @param {SignatureRules} multisig_rules - Co-signature restrictions.
-* @param {SignatureRules} multisig_rules 
-* @returns {AssetRules} 
+* @param {SignatureRules} multisig_rules
+* @returns {AssetRules}
 */
   set_transfer_multisig_rules(multisig_rules: SignatureRules): AssetRules;
 /**
 * Set the decimal number of asset. Return error string if failed, otherwise return changed asset.
 * #param {Number} decimals - The number of decimals used to set its user representation.
 * Decimals should be 0 ~ 255.
-* @param {number} decimals 
-* @returns {AssetRules} 
+* @param {number} decimals
+* @returns {AssetRules}
 */
   set_decimals(decimals: number): AssetRules;
 }
@@ -489,7 +432,7 @@ export class AssetTracerKeyPair {
   free(): void;
 /**
 * Creates a new tracer key pair.
-* @returns {AssetTracerKeyPair} 
+* @returns {AssetTracerKeyPair}
 */
   static new(): AssetTracerKeyPair;
 }
@@ -521,13 +464,13 @@ export class AssetType {
 *
 * @see {@link module:Findora-Network~Network#getAssetProperties|Network.getAsset} for information about how to
 * fetch an asset type from the ledger server.
-* @param {any} json 
-* @returns {AssetType} 
+* @param {any} json
+* @returns {AssetType}
 */
   static from_json(json: any): AssetType;
 /**
 * Fetch the tracing policies associated with this asset type.
-* @returns {TracingPolicies} 
+* @returns {TracingPolicies}
 */
   get_tracing_policies(): TracingPolicies;
 }
@@ -544,8 +487,8 @@ export class AuthenticatedAssetRecord {
 * @param {string} state_commitment - String representing the state commitment.
 * @see {@link module:Findora-Network~Network#getStateCommitment|getStateCommitment} for instructions on fetching a ledger state commitment.
 * @throws Will throw an error if the state commitment fails to deserialize.
-* @param {string} state_commitment 
-* @returns {boolean} 
+* @param {string} state_commitment
+* @returns {boolean}
 */
   is_valid(state_commitment: string): boolean;
 /**
@@ -554,8 +497,8 @@ export class AuthenticatedAssetRecord {
 * @param {JsValue} val - JSON-encoded asset record fetched from ledger server.
 * @see {@link module:Findora-Network~Network#getUtxo|Network.getUtxo} for information about how to
 * fetch an asset record from the ledger server.
-* @param {any} record 
-* @returns {AuthenticatedAssetRecord} 
+* @param {any} record
+* @returns {AuthenticatedAssetRecord}
 */
   static from_json_record(record: any): AuthenticatedAssetRecord;
 }
@@ -565,11 +508,11 @@ export class AuthenticatedAssetRecord {
 export class BipPath {
   free(): void;
 /**
-* @param {number} coin 
-* @param {number} account 
-* @param {number} change 
-* @param {number} address 
-* @returns {BipPath} 
+* @param {number} coin
+* @param {number} account
+* @param {number} change
+* @param {number} address
+* @returns {BipPath}
 */
   static new(coin: number, account: number, change: number, address: number): BipPath;
 }
@@ -600,13 +543,13 @@ export class ClientAssetRecord {
 *
 * @see {@link module:Findora-Network~Network#getUtxo|Network.getUtxo} for information about how to
 * fetch an asset record from the ledger server.
-* @param {any} val 
-* @returns {ClientAssetRecord} 
+* @param {any} val
+* @returns {ClientAssetRecord}
 */
   static from_json(val: any): ClientAssetRecord;
 /**
 * ClientAssetRecord ==> JsValue
-* @returns {any} 
+* @returns {any}
 */
   to_json(): any;
 }
@@ -661,21 +604,21 @@ export class CredentialCommitmentData {
 * Returns the underlying credential commitment.
 * @see {@link module:Findora-Wasm.wasm_credential_verify_commitment|wasm_credential_verify_commitment} for information about how to verify a
 * credential commitment.
-* @returns {CredentialCommitment} 
+* @returns {CredentialCommitment}
 */
   get_commitment(): CredentialCommitment;
 /**
 * Returns the underlying proof of knowledge that the credential is valid.
 * @see {@link module:Findora-Wasm.wasm_credential_verify_commitment|wasm_credential_verify_commitment} for information about how to verify a
 * credential commitment.
-* @returns {CredentialPoK} 
+* @returns {CredentialPoK}
 */
   get_pok(): CredentialPoK;
 /**
 * Returns the key used to generate the commitment.
 * @see {@link module:Findora-Wasm.wasm_credential_open_commitment|wasm_credential_open_commitment} for information about how to open a
 * credential commitment.
-* @returns {CredentialCommitmentKey} 
+* @returns {CredentialCommitmentKey}
 */
   get_commit_key(): CredentialCommitmentKey;
 }
@@ -694,23 +637,23 @@ export class CredentialIssuerKeyPair {
   free(): void;
 /**
 * Returns the credential issuer's public key.
-* @returns {CredIssuerPublicKey} 
+* @returns {CredIssuerPublicKey}
 */
   get_pk(): CredIssuerPublicKey;
 /**
 * Returns the credential issuer's secret key.
-* @returns {CredIssuerSecretKey} 
+* @returns {CredIssuerSecretKey}
 */
   get_sk(): CredIssuerSecretKey;
 /**
 * Convert the key pair to a serialized value that can be used in the browser.
-* @returns {any} 
+* @returns {any}
 */
   to_json(): any;
 /**
 * Generate a key pair from a JSON-serialized JavaScript value.
-* @param {any} val 
-* @returns {CredentialIssuerKeyPair} 
+* @param {any} val
+* @returns {CredentialIssuerKeyPair}
 */
   static from_json(val: any): CredentialIssuerKeyPair;
 }
@@ -732,14 +675,14 @@ export class CredentialRevealSig {
 * Returns the underlying credential commitment.
 * @see {@link module:Findora-Wasm.wasm_credential_verify_commitment|wasm_credential_verify_commitment} for information about how to verify a
 * credential commitment.
-* @returns {CredentialCommitment} 
+* @returns {CredentialCommitment}
 */
   get_commitment(): CredentialCommitment;
 /**
 * Returns the underlying proof of knowledge that the credential is valid.
 * @see {@link module:Findora-Wasm.wasm_credential_verify_commitment|wasm_credential_verify_commitment} for information about how to verify a
 * credential commitment.
-* @returns {CredentialPoK} 
+* @returns {CredentialPoK}
 */
   get_pok(): CredentialPoK;
 }
@@ -756,23 +699,23 @@ export class CredentialUserKeyPair {
   free(): void;
 /**
 * Returns the credential issuer's public key.
-* @returns {CredUserPublicKey} 
+* @returns {CredUserPublicKey}
 */
   get_pk(): CredUserPublicKey;
 /**
 * Returns the credential issuer's secret key.
-* @returns {CredUserSecretKey} 
+* @returns {CredUserSecretKey}
 */
   get_sk(): CredUserSecretKey;
 /**
 * Convert the key pair to a serialized value that can be used in the browser.
-* @returns {any} 
+* @returns {any}
 */
   to_json(): any;
 /**
 * Generate a key pair from a JSON-serialized JavaScript value.
-* @param {any} val 
-* @returns {CredentialUserKeyPair} 
+* @param {any} val
+* @returns {CredentialUserKeyPair}
 */
   static from_json(val: any): CredentialUserKeyPair;
 }
@@ -781,24 +724,24 @@ export class CredentialUserKeyPair {
 export class FeeInputs {
   free(): void;
 /**
-* @returns {FeeInputs} 
+* @returns {FeeInputs}
 */
   static new(): FeeInputs;
 /**
-* @param {BigInt} am 
-* @param {TxoRef} tr 
-* @param {ClientAssetRecord} ar 
-* @param {OwnerMemo | undefined} om 
-* @param {XfrKeyPair} kp 
+* @param {BigInt} am
+* @param {TxoRef} tr
+* @param {ClientAssetRecord} ar
+* @param {OwnerMemo | undefined} om
+* @param {XfrKeyPair} kp
 */
   append(am: BigInt, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): void;
 /**
-* @param {BigInt} am 
-* @param {TxoRef} tr 
-* @param {ClientAssetRecord} ar 
-* @param {OwnerMemo | undefined} om 
-* @param {XfrKeyPair} kp 
-* @returns {FeeInputs} 
+* @param {BigInt} am
+* @param {TxoRef} tr
+* @param {ClientAssetRecord} ar
+* @param {OwnerMemo | undefined} om
+* @param {XfrKeyPair} kp
+* @returns {FeeInputs}
 */
   append2(am: BigInt, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): FeeInputs;
 }
@@ -810,18 +753,18 @@ export class Key {
 /**
 * Generate a random key.
 * Figure out how to store prng ref in browser: https://bugtracker.findora.org/issues/63
-* @returns {Key} 
+* @returns {Key}
 */
   static gen_random(): Key;
 /**
 * Returns a base64 encoded version of the Key.
-* @returns {string} 
+* @returns {string}
 */
   to_base64(): string;
 /**
 * Generates a Key from a base64-encoded String.
-* @param {string} string 
-* @returns {Key} 
+* @param {string} string
+* @returns {Key}
 */
   static from_base64(string: string): Key;
 }
@@ -841,13 +784,13 @@ export class OwnerMemo {
 *   "blind_share":[91,251,44,28,7,221,67,155,175,213,25,183,70,90,119,232,212,238,226,142,159,200,54,19,60,115,38,221,248,202,74,248],
 *   "lock":{"ciphertext":[119,54,117,136,125,133,112,193],"encoded_rand":"8KDql2JphPB5WLd7-aYE1bxTQAcweFSmrqymLvPDntM="}
 * }
-* @param {any} val 
-* @returns {OwnerMemo} 
+* @param {any} val
+* @returns {OwnerMemo}
 */
   static from_json(val: any): OwnerMemo;
 /**
 * Creates a clone of the owner memo.
-* @returns {OwnerMemo} 
+* @returns {OwnerMemo}
 */
   clone(): OwnerMemo;
 }
@@ -861,7 +804,7 @@ export class PublicParams {
   free(): void;
 /**
 * Generates a new set of parameters.
-* @returns {PublicParams} 
+* @returns {PublicParams}
 */
   static new(): PublicParams;
 }
@@ -878,9 +821,9 @@ export class SignatureRules {
 * @param {JsValue} weights - Array of public key weights of the form `[["kAb...", BigInt(5)]]', where the
 * first element of each tuple is a base64 encoded public key and the second is the key's
 * associated weight.
-* @param {BigInt} threshold 
-* @param {any} weights 
-* @returns {SignatureRules} 
+* @param {BigInt} threshold
+* @param {any} weights
+* @returns {SignatureRules}
 */
   static new(threshold: BigInt, weights: any): SignatureRules;
 }
@@ -898,16 +841,16 @@ export class TracingPolicies {
 export class TracingPolicy {
   free(): void;
 /**
-* @param {AssetTracerKeyPair} tracing_key 
-* @returns {TracingPolicy} 
+* @param {AssetTracerKeyPair} tracing_key
+* @returns {TracingPolicy}
 */
   static new_with_tracing(tracing_key: AssetTracerKeyPair): TracingPolicy;
 /**
-* @param {AssetTracerKeyPair} tracing_key 
-* @param {CredIssuerPublicKey} cred_issuer_key 
-* @param {any} reveal_map 
-* @param {boolean} tracing 
-* @returns {TracingPolicy} 
+* @param {AssetTracerKeyPair} tracing_key
+* @param {CredIssuerPublicKey} cred_issuer_key
+* @param {any} reveal_map
+* @param {boolean} tracing
+* @returns {TracingPolicy}
 */
   static new_with_identity_tracing(tracing_key: AssetTracerKeyPair, cred_issuer_key: CredIssuerPublicKey, reveal_map: any, tracing: boolean): TracingPolicy;
 }
@@ -919,8 +862,8 @@ export class TransactionBuilder {
 /**
 * @param am: amount to pay
 * @param kp: owner's XfrKeyPair
-* @param {XfrKeyPair} kp 
-* @returns {TransactionBuilder} 
+* @param {XfrKeyPair} kp
+* @returns {TransactionBuilder}
 */
   add_fee_relative_auto(kp: XfrKeyPair): TransactionBuilder;
 /**
@@ -928,28 +871,28 @@ export class TransactionBuilder {
 *
 * - TxoRef::Relative("Element index of the result")
 * - ClientAssetRecord::from_json("Element of the result")
-* @returns {any[]} 
+* @returns {any[]}
 */
   get_relative_outputs(): any[];
 /**
 * As the last operation of any transaction,
 * add a static fee to the transaction.
-* @param {FeeInputs} inputs 
-* @returns {TransactionBuilder} 
+* @param {FeeInputs} inputs
+* @returns {TransactionBuilder}
 */
   add_fee(inputs: FeeInputs): TransactionBuilder;
 /**
 * A simple fee checker for mainnet v1.0.
 *
 * SEE [check_fee](ledger::data_model::Transaction::check_fee)
-* @returns {boolean} 
+* @returns {boolean}
 */
   check_fee(): boolean;
 /**
 * Create a new transaction builder.
 * @param {BigInt} seq_id - Unique sequence ID to prevent replay attacks.
-* @param {BigInt} seq_id 
-* @returns {TransactionBuilder} 
+* @param {BigInt} seq_id
+* @returns {TransactionBuilder}
 */
   static new(seq_id: BigInt): TransactionBuilder;
 /**
@@ -967,30 +910,23 @@ export class TransactionBuilder {
 * If empty, a token code will be chosen at random.
 * @param {AssetRules} asset_rules - Asset rules object specifying which simple policies apply
 * to the asset.
-* @param {XfrKeyPair} key_pair 
-* @param {string} memo 
-* @param {string} token_code 
-* @param {AssetRules} asset_rules 
-* @returns {TransactionBuilder} 
+* @param {XfrKeyPair} key_pair
+* @param {string} memo
+* @param {string} token_code
+* @param {AssetRules} asset_rules
+* @returns {TransactionBuilder}
 */
   add_operation_create_asset(key_pair: XfrKeyPair, memo: string, token_code: string, asset_rules: AssetRules): TransactionBuilder;
 /**
 * @ignore
-* @param {XfrKeyPair} key_pair 
-* @param {string} memo 
-* @param {string} token_code 
-* @param {string} policy_choice 
-* @param {AssetRules} asset_rules 
-* @returns {TransactionBuilder} 
+* @param {XfrKeyPair} key_pair
+* @param {string} memo
+* @param {string} token_code
+* @param {string} _policy_choice
+* @param {AssetRules} asset_rules
+* @returns {TransactionBuilder}
 */
-  add_operation_create_asset_with_policy(key_pair: XfrKeyPair, memo: string, token_code: string, policy_choice: string, asset_rules: AssetRules): TransactionBuilder;
-/**
-* @ignore
-* @param {string} token_code 
-* @param {string} which_check 
-* @returns {TransactionBuilder} 
-*/
-  add_policy_option(token_code: string, which_check: string): TransactionBuilder;
+  add_operation_create_asset_with_policy(key_pair: XfrKeyPair, memo: string, token_code: string, _policy_choice: string, asset_rules: AssetRules): TransactionBuilder;
 /**
 * Wraps around TransactionBuilder to add an asset issuance to a transaction builder instance.
 *
@@ -1003,13 +939,13 @@ export class TransactionBuilder {
 * @param {BigInt} amount - Amount to be issued.
 * @param {boolean} conf_amount - `true` means the asset amount is confidential, and `false` means it's nonconfidential.
 * @param {PublicParams} zei_params - Public parameters necessary to generate asset records.
-* @param {XfrKeyPair} key_pair 
-* @param {string} code 
-* @param {BigInt} seq_num 
-* @param {BigInt} amount 
-* @param {boolean} conf_amount 
-* @param {PublicParams} zei_params 
-* @returns {TransactionBuilder} 
+* @param {XfrKeyPair} key_pair
+* @param {string} code
+* @param {BigInt} seq_num
+* @param {BigInt} amount
+* @param {boolean} conf_amount
+* @param {PublicParams} zei_params
+* @returns {TransactionBuilder}
 */
   add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: BigInt, amount: BigInt, conf_amount: boolean, zei_params: PublicParams): TransactionBuilder;
 /**
@@ -1021,39 +957,39 @@ export class TransactionBuilder {
 * @param {String} new_memo - The new asset memo.
 * @see {@link module:Findora-Wasm~AssetRules#set_updatable|AssetRules.set_updatable} for more information about how
 * to define an updatable asset.
-* @param {XfrKeyPair} auth_key_pair 
-* @param {string} code 
-* @param {string} new_memo 
-* @returns {TransactionBuilder} 
+* @param {XfrKeyPair} auth_key_pair
+* @param {string} code
+* @param {string} new_memo
+* @returns {TransactionBuilder}
 */
   add_operation_update_memo(auth_key_pair: XfrKeyPair, code: string, new_memo: string): TransactionBuilder;
 /**
-* @param {XfrKeyPair} keypair 
-* @param {string} validator 
-* @returns {TransactionBuilder} 
+* @param {XfrKeyPair} keypair
+* @param {string} validator
+* @returns {TransactionBuilder}
 */
   add_operation_delegate(keypair: XfrKeyPair, validator: string): TransactionBuilder;
 /**
-* @param {XfrKeyPair} keypair 
-* @returns {TransactionBuilder} 
+* @param {XfrKeyPair} keypair
+* @returns {TransactionBuilder}
 */
   add_operation_undelegate(keypair: XfrKeyPair): TransactionBuilder;
 /**
-* @param {XfrKeyPair} keypair 
-* @param {BigInt} am 
-* @param {string} target_validator 
-* @returns {TransactionBuilder} 
+* @param {XfrKeyPair} keypair
+* @param {BigInt} am
+* @param {string} target_validator
+* @returns {TransactionBuilder}
 */
   add_operation_undelegate_partially(keypair: XfrKeyPair, am: BigInt, target_validator: string): TransactionBuilder;
 /**
-* @param {XfrKeyPair} keypair 
-* @returns {TransactionBuilder} 
+* @param {XfrKeyPair} keypair
+* @returns {TransactionBuilder}
 */
   add_operation_claim(keypair: XfrKeyPair): TransactionBuilder;
 /**
-* @param {XfrKeyPair} keypair 
-* @param {BigInt} am 
-* @returns {TransactionBuilder} 
+* @param {XfrKeyPair} keypair
+* @param {BigInt} am
+* @returns {TransactionBuilder}
 */
   add_operation_claim_custom(keypair: XfrKeyPair, am: BigInt): TransactionBuilder;
 /**
@@ -1061,37 +997,37 @@ export class TransactionBuilder {
 * @param {string} op - a JSON-serialized transfer operation.
 * @see {@link module:Findora-Wasm~TransferOperationBuilder} for details on constructing a transfer operation.
 * @throws Will throw an error if `op` fails to deserialize.
-* @param {string} op 
-* @returns {TransactionBuilder} 
+* @param {string} op
+* @returns {TransactionBuilder}
 */
   add_transfer_operation(op: string): TransactionBuilder;
 /**
-* @param {XfrKeyPair} kp 
-* @returns {TransactionBuilder} 
+* @param {XfrKeyPair} kp
+* @returns {TransactionBuilder}
 */
   sign(kp: XfrKeyPair): TransactionBuilder;
 /**
 * Extracts the serialized form of a transaction.
-* @returns {string} 
+* @returns {string}
 */
   transaction(): string;
 /**
 * Calculates transaction handle.
-* @returns {string} 
+* @returns {string}
 */
   transaction_handle(): string;
 /**
 * Fetches a client record from a transaction.
 * @param {number} idx - Record to fetch. Records are added to the transaction builder sequentially.
-* @param {number} idx 
-* @returns {ClientAssetRecord} 
+* @param {number} idx
+* @returns {ClientAssetRecord}
 */
   get_owner_record(idx: number): ClientAssetRecord;
 /**
 * Fetches an owner memo from a transaction
 * @param {number} idx - Owner memo to fetch. Owner memos are added to the transaction builder sequentially.
-* @param {number} idx 
-* @returns {OwnerMemo | undefined} 
+* @param {number} idx
+* @returns {OwnerMemo | undefined}
 */
   get_owner_memo(idx: number): OwnerMemo | undefined;
 }
@@ -1102,12 +1038,12 @@ export class TransferOperationBuilder {
   free(): void;
 /**
 * Create a new transfer operation builder.
-* @returns {TransferOperationBuilder} 
+* @returns {TransferOperationBuilder}
 */
   static new(): TransferOperationBuilder;
 /**
 * @ignore
-* @returns {string} 
+* @returns {string}
 */
   debug(): string;
 /**
@@ -1125,13 +1061,13 @@ export class TransferOperationBuilder {
 * references.
 * @see {@link module:Findora-Network~Network#getUtxo|Network.getUtxo} for details on fetching blind asset records.
 * @throws Will throw an error if `oar` or `txo_ref` fail to deserialize.
-* @param {TxoRef} txo_ref 
-* @param {ClientAssetRecord} asset_record 
-* @param {OwnerMemo | undefined} owner_memo 
-* @param {TracingPolicies} tracing_policies 
-* @param {XfrKeyPair} key 
-* @param {BigInt} amount 
-* @returns {TransferOperationBuilder} 
+* @param {TxoRef} txo_ref
+* @param {ClientAssetRecord} asset_record
+* @param {OwnerMemo | undefined} owner_memo
+* @param {TracingPolicies} tracing_policies
+* @param {XfrKeyPair} key
+* @param {BigInt} amount
+* @returns {TransferOperationBuilder}
 */
   add_input_with_tracing(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, tracing_policies: TracingPolicies, key: XfrKeyPair, amount: BigInt): TransferOperationBuilder;
 /**
@@ -1146,12 +1082,12 @@ export class TransferOperationBuilder {
 * references.
 * @see {@link module:Findora-Network~Network#getUtxo|Network.getUtxo} for details on fetching blind asset records.
 * @throws Will throw an error if `oar` or `txo_ref` fail to deserialize.
-* @param {TxoRef} txo_ref 
-* @param {ClientAssetRecord} asset_record 
-* @param {OwnerMemo | undefined} owner_memo 
-* @param {XfrKeyPair} key 
-* @param {BigInt} amount 
-* @returns {TransferOperationBuilder} 
+* @param {TxoRef} txo_ref
+* @param {ClientAssetRecord} asset_record
+* @param {OwnerMemo | undefined} owner_memo
+* @param {XfrKeyPair} key
+* @param {BigInt} amount
+* @returns {TransferOperationBuilder}
 */
   add_input_no_tracing(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, key: XfrKeyPair, amount: BigInt): TransferOperationBuilder;
 /**
@@ -1165,13 +1101,13 @@ export class TransferOperationBuilder {
 * @param conf_amount {boolean} - `true` means the output's asset amount is confidential, and `false` means it's nonconfidential.
 * @param conf_type {boolean} - `true` means the output's asset type is confidential, and `false` means it's nonconfidential.
 * @throws Will throw an error if `code` fails to deserialize.
-* @param {BigInt} amount 
-* @param {XfrPublicKey} recipient 
-* @param {TracingPolicies} tracing_policies 
-* @param {string} code 
-* @param {boolean} conf_amount 
-* @param {boolean} conf_type 
-* @returns {TransferOperationBuilder} 
+* @param {BigInt} amount
+* @param {XfrPublicKey} recipient
+* @param {TracingPolicies} tracing_policies
+* @param {string} code
+* @param {boolean} conf_amount
+* @param {boolean} conf_type
+* @returns {TransferOperationBuilder}
 */
   add_output_with_tracing(amount: BigInt, recipient: XfrPublicKey, tracing_policies: TracingPolicies, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
 /**
@@ -1183,19 +1119,19 @@ export class TransferOperationBuilder {
 * @param conf_amount {boolean} - `true` means the output's asset amount is confidential, and `false` means it's nonconfidential.
 * @param conf_type {boolean} - `true` means the output's asset type is confidential, and `false` means it's nonconfidential.
 * @throws Will throw an error if `code` fails to deserialize.
-* @param {BigInt} amount 
-* @param {XfrPublicKey} recipient 
-* @param {string} code 
-* @param {boolean} conf_amount 
-* @param {boolean} conf_type 
-* @returns {TransferOperationBuilder} 
+* @param {BigInt} amount
+* @param {XfrPublicKey} recipient
+* @param {string} code
+* @param {boolean} conf_amount
+* @param {boolean} conf_type
+* @returns {TransferOperationBuilder}
 */
   add_output_no_tracing(amount: BigInt, recipient: XfrPublicKey, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to ensure the transfer inputs and outputs are balanced.
 * This function will add change outputs for all unspent portions of input records.
 * @throws Will throw an error if the transaction cannot be balanced.
-* @returns {TransferOperationBuilder} 
+* @returns {TransferOperationBuilder}
 */
   balance(): TransferOperationBuilder;
 /**
@@ -1203,7 +1139,7 @@ export class TransferOperationBuilder {
 *
 * @throws Will throw an error if input and output amounts do not add up.
 * @throws Will throw an error if not all record owners have signed the transaction.
-* @returns {TransferOperationBuilder} 
+* @returns {TransferOperationBuilder}
 */
   create(): TransferOperationBuilder;
 /**
@@ -1212,26 +1148,26 @@ export class TransferOperationBuilder {
 * All input owners must sign.
 *
 * @param {XfrKeyPair} kp - key pair of one of the input owners.
-* @param {XfrKeyPair} kp 
-* @returns {TransferOperationBuilder} 
+* @param {XfrKeyPair} kp
+* @returns {TransferOperationBuilder}
 */
   sign(kp: XfrKeyPair): TransferOperationBuilder;
 /**
 * Co-sign an input index
 * @param {XfrKeyPair} kp - Co-signature key.
 * @params {Number} input_idx - Input index to apply co-signature to.
-* @param {XfrKeyPair} kp 
-* @param {number} input_idx 
-* @returns {TransferOperationBuilder} 
+* @param {XfrKeyPair} kp
+* @param {number} input_idx
+* @returns {TransferOperationBuilder}
 */
   add_cosignature(kp: XfrKeyPair, input_idx: number): TransferOperationBuilder;
 /**
-* @returns {string} 
+* @returns {string}
 */
   builder(): string;
 /**
 * Wraps around TransferOperationBuilder to extract an operation expression as JSON.
-* @returns {string} 
+* @returns {string}
 */
   transaction(): string;
 }
@@ -1250,8 +1186,8 @@ export class TxoRef {
 *
 * # Arguments
 * @param {BigInt} idx -  Relative TXO (transaction output) SID.
-* @param {BigInt} idx 
-* @returns {TxoRef} 
+* @param {BigInt} idx
+* @returns {TxoRef}
 */
   static relative(idx: BigInt): TxoRef;
 /**
@@ -1262,8 +1198,8 @@ export class TxoRef {
 *
 * # Arguments
 * @param {BigInt} idx -  Txo (transaction output) SID.
-* @param {BigInt} idx 
-* @returns {TxoRef} 
+* @param {BigInt} idx
+* @returns {TxoRef}
 */
   static absolute(idx: BigInt): TxoRef;
 }
@@ -1272,7 +1208,7 @@ export class TxoRef {
 export class XfrKeyPair {
   free(): void;
 /**
-* @returns {XfrPublicKey} 
+* @returns {XfrPublicKey}
 */
   pub_key: XfrPublicKey;
 }
