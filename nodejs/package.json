@@ -1,7 +1,7 @@
 {
   "name": "wasm",
   "collaborators": [
-    "FindoraNetwork"
+    "ngolub <ngolub@stanford.edu>"
   ],
   "description": "",
   "version": "0.1.0",
