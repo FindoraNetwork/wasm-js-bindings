@@ -1,6 +1,5 @@
 let imports = {};
 imports['__wbindgen_placeholder__'] = module.exports;
-imports['env'] = require('env');
 let wasm;
 const { TextDecoder, TextEncoder } = require(`util`);
 
@@ -304,46 +303,6 @@ function getArrayJsValueFromWasm0(ptr, len) {
     }
     return result;
 }
-/**
-* Build transfer from account balance to utxo tx.
-* @param {XfrPublicKey} recipient - UTXO Asset receiver.
-* @param {u64} amount - Transfer amount.
-* @param {string} eth_phrase - Ethereum wallet mnemonic.
-* @param {string} password - Ethereum wallet password.
-* @param {u64} nonce - Transaction nonce for sender.
-* @param {XfrPublicKey} recipient
-* @param {BigInt} amount
-* @param {string} eth_phrase
-* @param {string} password
-* @param {BigInt} nonce
-* @returns {string}
-*/
-module.exports.transfer_to_utxo_from_account = function(recipient, amount, eth_phrase, password, nonce) {
-    try {
-        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-        _assertClass(recipient, XfrPublicKey);
-        var ptr0 = recipient.ptr;
-        recipient.ptr = 0;
-        uint64CvtShim[0] = amount;
-        const low1 = u32CvtShim[0];
-        const high1 = u32CvtShim[1];
-        var ptr2 = passStringToWasm0(eth_phrase, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len2 = WASM_VECTOR_LEN;
-        var ptr3 = passStringToWasm0(password, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len3 = WASM_VECTOR_LEN;
-        uint64CvtShim[0] = nonce;
-        const low4 = u32CvtShim[0];
-        const high4 = u32CvtShim[1];
-        wasm.transfer_to_utxo_from_account(retptr, ptr0, low1, high1, ptr2, len2, ptr3, len3, low4, high4);
-        var r0 = getInt32Memory0()[retptr / 4 + 0];
-        var r1 = getInt32Memory0()[retptr / 4 + 1];
-        return getStringFromWasm0(r0, r1);
-    } finally {
-        wasm.__wbindgen_add_to_stack_pointer(16);
-        wasm.__wbindgen_free(r0, r1);
-    }
-};
-
 /**
 * Returns a JavaScript object containing decrypted owner record information,
 * where `amount` is the decrypted asset amount, and `asset_type` is the decrypted asset type code.
@@ -2539,22 +2498,6 @@ class TransactionBuilder {
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
         var ret = wasm.transactionbuilder_add_operation_claim_custom(ptr, keypair.ptr, low0, high0);
-        return TransactionBuilder.__wrap(ret);
-    }
-    /**
-    * Adds an operation to the transaction builder that support transfer utxo asset to ethereum address.
-    * @param {XfrKeyPair} keypair - Asset creator key pair.
-    * @param {String} ethereum_address - The address to receive Ethereum assets.
-    * @param {XfrKeyPair} keypair
-    * @param {string} ethereum_address
-    * @returns {TransactionBuilder}
-    */
-    add_operation_convert_account(keypair, ethereum_address) {
-        const ptr = this.__destroy_into_raw();
-        _assertClass(keypair, XfrKeyPair);
-        var ptr0 = passStringToWasm0(ethereum_address, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len0 = WASM_VECTOR_LEN;
-        var ret = wasm.transactionbuilder_add_operation_convert_account(ptr, keypair.ptr, ptr0, len0);
         return TransactionBuilder.__wrap(ret);
     }
     /**

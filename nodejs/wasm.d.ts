@@ -40,21 +40,6 @@ export function verify_authenticated_txn(state_commitment: string, authenticated
 */
 export function get_null_pk(): XfrPublicKey;
 /**
-* Build transfer from account balance to utxo tx.
-* @param {XfrPublicKey} recipient - UTXO Asset receiver.
-* @param {u64} amount - Transfer amount.
-* @param {string} eth_phrase - Ethereum wallet mnemonic.
-* @param {string} password - Ethereum wallet password.
-* @param {u64} nonce - Transaction nonce for sender.
-* @param {XfrPublicKey} recipient
-* @param {BigInt} amount
-* @param {string} eth_phrase
-* @param {string} password
-* @param {BigInt} nonce
-* @returns {string}
-*/
-export function transfer_to_utxo_from_account(recipient: XfrPublicKey, amount: BigInt, eth_phrase: string, password: string, nonce: BigInt): string;
-/**
 * Returns a JavaScript object containing decrypted owner record information,
 * where `amount` is the decrypted asset amount, and `asset_type` is the decrypted asset type code.
 *
@@ -1007,15 +992,6 @@ export class TransactionBuilder {
 * @returns {TransactionBuilder}
 */
   add_operation_claim_custom(keypair: XfrKeyPair, am: BigInt): TransactionBuilder;
-/**
-* Adds an operation to the transaction builder that support transfer utxo asset to ethereum address.
-* @param {XfrKeyPair} keypair - Asset creator key pair.
-* @param {String} ethereum_address - The address to receive Ethereum assets.
-* @param {XfrKeyPair} keypair
-* @param {string} ethereum_address
-* @returns {TransactionBuilder}
-*/
-  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string): TransactionBuilder;
 /**
 * Adds a serialized transfer asset operation to a transaction builder instance.
 * @param {string} op - a JSON-serialized transfer operation.
