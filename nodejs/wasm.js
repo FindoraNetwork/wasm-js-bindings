@@ -308,17 +308,15 @@ function getArrayJsValueFromWasm0(ptr, len) {
 * Build transfer from account balance to utxo tx.
 * @param {XfrPublicKey} recipient - UTXO Asset receiver.
 * @param {u64} amount - Transfer amount.
-* @param {string} eth_phrase - Ethereum wallet mnemonic.
-* @param {string} password - Ethereum wallet password.
+* @param {string} sk - Ethereum wallet private key.
 * @param {u64} nonce - Transaction nonce for sender.
 * @param {XfrPublicKey} recipient
 * @param {BigInt} amount
-* @param {string} eth_phrase
-* @param {string} password
+* @param {string} sk
 * @param {BigInt} nonce
 * @returns {string}
 */
-module.exports.transfer_to_utxo_from_account = function(recipient, amount, eth_phrase, password, nonce) {
+module.exports.transfer_to_utxo_from_account = function(recipient, amount, sk, nonce) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         _assertClass(recipient, XfrPublicKey);
@@ -327,14 +325,75 @@ module.exports.transfer_to_utxo_from_account = function(recipient, amount, eth_p
         uint64CvtShim[0] = amount;
         const low1 = u32CvtShim[0];
         const high1 = u32CvtShim[1];
-        var ptr2 = passStringToWasm0(eth_phrase, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var ptr2 = passStringToWasm0(sk, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len2 = WASM_VECTOR_LEN;
-        var ptr3 = passStringToWasm0(password, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len3 = WASM_VECTOR_LEN;
         uint64CvtShim[0] = nonce;
-        const low4 = u32CvtShim[0];
-        const high4 = u32CvtShim[1];
-        wasm.transfer_to_utxo_from_account(retptr, ptr0, low1, high1, ptr2, len2, ptr3, len3, low4, high4);
+        const low3 = u32CvtShim[0];
+        const high3 = u32CvtShim[1];
+        wasm.transfer_to_utxo_from_account(retptr, ptr0, low1, high1, ptr2, len2, low3, high3);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(r0, r1);
+    }
+};
+
+/**
+* Recover ecdsa private key from mnemonic.
+* @param {string} phrase
+* @param {string} password
+* @returns {string}
+*/
+module.exports.recover_sk_from_mnemonic = function(phrase, password) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        var ptr0 = passStringToWasm0(phrase, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        var ptr1 = passStringToWasm0(password, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len1 = WASM_VECTOR_LEN;
+        wasm.recover_sk_from_mnemonic(retptr, ptr0, len0, ptr1, len1);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(r0, r1);
+    }
+};
+
+/**
+* Recover ethereum address from ecdsa private key, eg. 0x73c71...
+* @param {string} sk
+* @returns {string}
+*/
+module.exports.recover_address_from_sk = function(sk) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        var ptr0 = passStringToWasm0(sk, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.recover_address_from_sk(retptr, ptr0, len0);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(r0, r1);
+    }
+};
+
+/**
+* Serialize ethereum address used to abci query nonce.
+* @param {string} address
+* @returns {string}
+*/
+module.exports.get_serialized_address = function(address) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        var ptr0 = passStringToWasm0(address, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.get_serialized_address(retptr, ptr0, len0);
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
