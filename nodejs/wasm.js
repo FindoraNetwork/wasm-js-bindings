@@ -1,6 +1,5 @@
 let imports = {};
 imports['__wbindgen_placeholder__'] = module.exports;
-imports['env'] = require('env');
 let wasm;
 const { TextDecoder, TextEncoder } = require(`util`);
 
