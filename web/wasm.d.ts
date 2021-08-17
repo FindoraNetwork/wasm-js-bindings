@@ -40,38 +40,6 @@ export function verify_authenticated_txn(state_commitment: string, authenticated
 */
 export function get_null_pk(): XfrPublicKey;
 /**
-* Build transfer from account balance to utxo tx.
-* @param {XfrPublicKey} recipient - UTXO Asset receiver.
-* @param {u64} amount - Transfer amount.
-* @param {string} sk - Ethereum wallet private key.
-* @param {u64} nonce - Transaction nonce for sender.
-* @param {XfrPublicKey} recipient
-* @param {BigInt} amount
-* @param {string} sk
-* @param {BigInt} nonce
-* @returns {string}
-*/
-export function transfer_to_utxo_from_account(recipient: XfrPublicKey, amount: BigInt, sk: string, nonce: BigInt): string;
-/**
-* Recover ecdsa private key from mnemonic.
-* @param {string} phrase
-* @param {string} password
-* @returns {string}
-*/
-export function recover_sk_from_mnemonic(phrase: string, password: string): string;
-/**
-* Recover ethereum address from ecdsa private key, eg. 0x73c71...
-* @param {string} sk
-* @returns {string}
-*/
-export function recover_address_from_sk(sk: string): string;
-/**
-* Serialize ethereum address used to abci query nonce.
-* @param {string} address
-* @returns {string}
-*/
-export function get_serialized_address(address: string): string;
-/**
 * Returns a JavaScript object containing decrypted owner record information,
 * where `amount` is the decrypted asset amount, and `asset_type` is the decrypted asset type code.
 *
@@ -1025,15 +993,6 @@ export class TransactionBuilder {
 */
   add_operation_claim_custom(keypair: XfrKeyPair, am: BigInt): TransactionBuilder;
 /**
-* Adds an operation to the transaction builder that support transfer utxo asset to ethereum address.
-* @param {XfrKeyPair} keypair - Asset creator key pair.
-* @param {String} ethereum_address - The address to receive Ethereum assets.
-* @param {XfrKeyPair} keypair
-* @param {string} ethereum_address
-* @returns {TransactionBuilder}
-*/
-  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string): TransactionBuilder;
-/**
 * Adds a serialized transfer asset operation to a transaction builder instance.
 * @param {string} op - a JSON-serialized transfer operation.
 * @see {@link module:Findora-Wasm~TransferOperationBuilder} for details on constructing a transfer operation.
@@ -1346,17 +1305,12 @@ export interface InitOutput {
   readonly transactionbuilder_add_operation_undelegate_partially: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly transactionbuilder_add_operation_claim: (a: number, b: number) => number;
   readonly transactionbuilder_add_operation_claim_custom: (a: number, b: number, c: number, d: number) => number;
-  readonly transactionbuilder_add_operation_convert_account: (a: number, b: number, c: number, d: number) => number;
   readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number) => number;
   readonly transactionbuilder_sign: (a: number, b: number) => number;
   readonly transactionbuilder_transaction: (a: number, b: number) => void;
   readonly transactionbuilder_transaction_handle: (a: number, b: number) => void;
   readonly transactionbuilder_get_owner_record: (a: number, b: number) => number;
   readonly transactionbuilder_get_owner_memo: (a: number, b: number) => number;
-  readonly transfer_to_utxo_from_account: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => void;
-  readonly recover_sk_from_mnemonic: (a: number, b: number, c: number, d: number, e: number) => void;
-  readonly recover_address_from_sk: (a: number, b: number, c: number) => void;
-  readonly get_serialized_address: (a: number, b: number, c: number) => void;
   readonly __wbg_transferoperationbuilder_free: (a: number) => void;
   readonly transferoperationbuilder_new: () => number;
   readonly transferoperationbuilder_debug: (a: number, b: number) => void;
