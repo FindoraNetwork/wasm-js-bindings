@@ -746,29 +746,6 @@ export class FeeInputs {
   append2(am: BigInt, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): FeeInputs;
 }
 /**
-* Key for hashes in the ledger's custom data store.
-*/
-export class Key {
-  free(): void;
-/**
-* Generate a random key.
-* Figure out how to store prng ref in browser: https://bugtracker.findora.org/issues/63
-* @returns {Key}
-*/
-  static gen_random(): Key;
-/**
-* Returns a base64 encoded version of the Key.
-* @returns {string}
-*/
-  to_base64(): string;
-/**
-* Generates a Key from a base64-encoded String.
-* @param {string} string
-* @returns {Key}
-*/
-  static from_base64(string: string): Key;
-}
-/**
 * Asset owner memo. Contains information needed to decrypt an asset record.
 * @see {@link module:Findora-Wasm.ClientAssetRecord|ClientAssetRecord} for more details about asset records.
 */

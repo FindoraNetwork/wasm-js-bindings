@@ -1934,66 +1934,6 @@ export class FeeInputs {
     }
 }
 /**
-* Key for hashes in the ledger's custom data store.
-*/
-export class Key {
-
-    static __wrap(ptr) {
-        const obj = Object.create(Key.prototype);
-        obj.ptr = ptr;
-
-        return obj;
-    }
-
-    __destroy_into_raw() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
-        return ptr;
-    }
-
-    free() {
-        const ptr = this.__destroy_into_raw();
-        wasm.__wbg_key_free(ptr);
-    }
-    /**
-    * Generate a random key.
-    * Figure out how to store prng ref in browser: https://bugtracker.findora.org/issues/63
-    * @returns {Key}
-    */
-    static gen_random() {
-        var ret = wasm.key_gen_random();
-        return Key.__wrap(ret);
-    }
-    /**
-    * Returns a base64 encoded version of the Key.
-    * @returns {string}
-    */
-    to_base64() {
-        try {
-            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.key_to_base64(retptr, this.ptr);
-            var r0 = getInt32Memory0()[retptr / 4 + 0];
-            var r1 = getInt32Memory0()[retptr / 4 + 1];
-            return getStringFromWasm0(r0, r1);
-        } finally {
-            wasm.__wbindgen_add_to_stack_pointer(16);
-            wasm.__wbindgen_free(r0, r1);
-        }
-    }
-    /**
-    * Generates a Key from a base64-encoded String.
-    * @param {string} string
-    * @returns {Key}
-    */
-    static from_base64(string) {
-        var ptr0 = passStringToWasm0(string, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len0 = WASM_VECTOR_LEN;
-        var ret = wasm.key_from_base64(ptr0, len0);
-        return Key.__wrap(ret);
-    }
-}
-/**
 * Asset owner memo. Contains information needed to decrypt an asset record.
 * @see {@link module:Findora-Wasm.ClientAssetRecord|ClientAssetRecord} for more details about asset records.
 */
