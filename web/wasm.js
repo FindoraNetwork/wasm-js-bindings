@@ -2717,20 +2717,6 @@ export class TransferOperationBuilder {
         return TransferOperationBuilder.__wrap(ret);
     }
     /**
-    * Co-sign an input index
-    * @param {XfrKeyPair} kp - Co-signature key.
-    * @params {Number} input_idx - Input index to apply co-signature to.
-    * @param {XfrKeyPair} kp
-    * @param {number} input_idx
-    * @returns {TransferOperationBuilder}
-    */
-    add_cosignature(kp, input_idx) {
-        const ptr = this.__destroy_into_raw();
-        _assertClass(kp, XfrKeyPair);
-        var ret = wasm.transferoperationbuilder_add_cosignature(ptr, kp.ptr, input_idx);
-        return TransferOperationBuilder.__wrap(ret);
-    }
-    /**
     * @returns {string}
     */
     builder() {
