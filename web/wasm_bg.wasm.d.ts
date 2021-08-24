@@ -80,12 +80,17 @@ export function transactionbuilder_add_operation_undelegate(a: number, b: number
 export function transactionbuilder_add_operation_undelegate_partially(a: number, b: number, c: number, d: number, e: number, f: number): number;
 export function transactionbuilder_add_operation_claim(a: number, b: number): number;
 export function transactionbuilder_add_operation_claim_custom(a: number, b: number, c: number, d: number): number;
+export function transactionbuilder_add_operation_convert_account(a: number, b: number, c: number, d: number): number;
 export function transactionbuilder_add_transfer_operation(a: number, b: number, c: number): number;
 export function transactionbuilder_sign(a: number, b: number): number;
 export function transactionbuilder_transaction(a: number, b: number): void;
 export function transactionbuilder_transaction_handle(a: number, b: number): void;
 export function transactionbuilder_get_owner_record(a: number, b: number): number;
 export function transactionbuilder_get_owner_memo(a: number, b: number): number;
+export function transfer_to_utxo_from_account(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number): void;
+export function recover_sk_from_mnemonic(a: number, b: number, c: number, d: number, e: number): void;
+export function recover_address_from_sk(a: number, b: number, c: number): void;
+export function get_serialized_address(a: number, b: number, c: number): void;
 export function __wbg_transferoperationbuilder_free(a: number): void;
 export function transferoperationbuilder_new(): number;
 export function transferoperationbuilder_debug(a: number, b: number): void;
