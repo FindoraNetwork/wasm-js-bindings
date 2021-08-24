@@ -1130,15 +1130,6 @@ export class TransferOperationBuilder {
 */
   sign(kp: XfrKeyPair): TransferOperationBuilder;
 /**
-* Co-sign an input index
-* @param {XfrKeyPair} kp - Co-signature key.
-* @params {Number} input_idx - Input index to apply co-signature to.
-* @param {XfrKeyPair} kp
-* @param {number} input_idx
-* @returns {TransferOperationBuilder}
-*/
-  add_cosignature(kp: XfrKeyPair, input_idx: number): TransferOperationBuilder;
-/**
 * @returns {string}
 */
   builder(): string;
