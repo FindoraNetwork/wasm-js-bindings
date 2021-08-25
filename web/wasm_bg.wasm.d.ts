@@ -96,7 +96,6 @@ export function transferoperationbuilder_add_output_no_tracing(a: number, b: num
 export function transferoperationbuilder_balance(a: number): number;
 export function transferoperationbuilder_create(a: number): number;
 export function transferoperationbuilder_sign(a: number, b: number): number;
-export function transferoperationbuilder_add_cosignature(a: number, b: number, c: number): number;
 export function transferoperationbuilder_builder(a: number, b: number): void;
 export function transferoperationbuilder_transaction(a: number, b: number): void;
 export function open_client_asset_record(a: number, b: number, c: number): number;
