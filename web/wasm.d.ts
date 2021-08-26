@@ -1130,15 +1130,6 @@ export class TransferOperationBuilder {
 */
   sign(kp: XfrKeyPair): TransferOperationBuilder;
 /**
-* Co-sign an input index
-* @param {XfrKeyPair} kp - Co-signature key.
-* @params {Number} input_idx - Input index to apply co-signature to.
-* @param {XfrKeyPair} kp
-* @param {number} input_idx
-* @returns {TransferOperationBuilder}
-*/
-  add_cosignature(kp: XfrKeyPair, input_idx: number): TransferOperationBuilder;
-/**
 * @returns {string}
 */
   builder(): string;
@@ -1294,7 +1285,6 @@ export interface InitOutput {
   readonly transferoperationbuilder_balance: (a: number) => number;
   readonly transferoperationbuilder_create: (a: number) => number;
   readonly transferoperationbuilder_sign: (a: number, b: number) => number;
-  readonly transferoperationbuilder_add_cosignature: (a: number, b: number, c: number) => number;
   readonly transferoperationbuilder_builder: (a: number, b: number) => void;
   readonly transferoperationbuilder_transaction: (a: number, b: number) => void;
   readonly open_client_asset_record: (a: number, b: number, c: number) => number;
