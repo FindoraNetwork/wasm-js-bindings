@@ -88,7 +88,6 @@ export function transactionbuilder_get_owner_record(a: number, b: number): numbe
 export function transactionbuilder_get_owner_memo(a: number, b: number): number;
 export function __wbg_transferoperationbuilder_free(a: number): void;
 export function transferoperationbuilder_new(): number;
-export function transferoperationbuilder_debug(a: number, b: number): void;
 export function transferoperationbuilder_add_input_with_tracing(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number): number;
 export function transferoperationbuilder_add_input_no_tracing(a: number, b: number, c: number, d: number, e: number, f: number, g: number): number;
 export function transferoperationbuilder_add_output_with_tracing(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number): number;

@@ -1019,11 +1019,6 @@ export class TransferOperationBuilder {
 */
   static new(): TransferOperationBuilder;
 /**
-* @ignore
-* @returns {string}
-*/
-  debug(): string;
-/**
 * Wraps around TransferOperationBuilder to add an input to a transfer operation builder.
 * @param {TxoRef} txo_ref - Absolute or relative utxo reference
 * @param {string} asset_record - Serialized client asset record to serve as transfer input. This record must exist on the
