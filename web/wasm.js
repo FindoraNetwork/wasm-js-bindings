@@ -1,3 +1,4 @@
+import * as __wbg_star0 from 'env';
 
 let wasm;
 
@@ -3054,6 +3055,7 @@ async function init(input) {
         var ret = wasm.memory;
         return addHeapObject(ret);
     };
+    imports['env'] = __wbg_star0;
 
     if (typeof input === 'string' || (typeof Request === 'function' && input instanceof Request) || (typeof URL === 'function' && input instanceof URL)) {
         input = fetch(input);
