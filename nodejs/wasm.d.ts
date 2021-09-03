@@ -40,38 +40,6 @@ export function verify_authenticated_txn(state_commitment: string, authenticated
 */
 export function get_null_pk(): XfrPublicKey;
 /**
-* Build transfer from account balance to utxo tx.
-* @param {XfrPublicKey} recipient - UTXO Asset receiver.
-* @param {u64} amount - Transfer amount.
-* @param {string} sk - Ethereum wallet private key.
-* @param {u64} nonce - Transaction nonce for sender.
-* @param {XfrPublicKey} recipient
-* @param {BigInt} amount
-* @param {string} sk
-* @param {BigInt} nonce
-* @returns {string}
-*/
-export function transfer_to_utxo_from_account(recipient: XfrPublicKey, amount: BigInt, sk: string, nonce: BigInt): string;
-/**
-* Recover ecdsa private key from mnemonic.
-* @param {string} phrase
-* @param {string} password
-* @returns {string}
-*/
-export function recover_sk_from_mnemonic(phrase: string, password: string): string;
-/**
-* Recover ethereum address from ecdsa private key, eg. 0x73c71...
-* @param {string} sk
-* @returns {string}
-*/
-export function recover_address_from_sk(sk: string): string;
-/**
-* Serialize ethereum address used to abci query nonce.
-* @param {string} address
-* @returns {string}
-*/
-export function get_serialized_address(address: string): string;
-/**
 * Returns a JavaScript object containing decrypted owner record information,
 * where `amount` is the decrypted asset amount, and `asset_type` is the decrypted asset type code.
 *
@@ -1002,15 +970,6 @@ export class TransactionBuilder {
 */
   add_operation_claim_custom(keypair: XfrKeyPair, am: BigInt): TransactionBuilder;
 /**
-* Adds an operation to the transaction builder that support transfer utxo asset to ethereum address.
-* @param {XfrKeyPair} keypair - Asset creator key pair.
-* @param {String} ethereum_address - The address to receive Ethereum assets.
-* @param {XfrKeyPair} keypair
-* @param {string} ethereum_address
-* @returns {TransactionBuilder}
-*/
-  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string): TransactionBuilder;
-/**
 * Adds a serialized transfer asset operation to a transaction builder instance.
 * @param {string} op - a JSON-serialized transfer operation.
 * @see {@link module:Findora-Wasm~TransferOperationBuilder} for details on constructing a transfer operation.
@@ -1059,11 +1018,6 @@ export class TransferOperationBuilder {
 * @returns {TransferOperationBuilder}
 */
   static new(): TransferOperationBuilder;
-/**
-* @ignore
-* @returns {string}
-*/
-  debug(): string;
 /**
 * Wraps around TransferOperationBuilder to add an input to a transfer operation builder.
 * @param {TxoRef} txo_ref - Absolute or relative utxo reference
