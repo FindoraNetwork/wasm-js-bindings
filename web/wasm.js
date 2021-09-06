@@ -1,3 +1,4 @@
+import * as __wbg_star0 from 'env';
 
 let wasm;
 
@@ -2522,22 +2523,6 @@ export class TransferOperationBuilder {
         return TransferOperationBuilder.__wrap(ret);
     }
     /**
-    * @ignore
-    * @returns {string}
-    */
-    debug() {
-        try {
-            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.transferoperationbuilder_debug(retptr, this.ptr);
-            var r0 = getInt32Memory0()[retptr / 4 + 0];
-            var r1 = getInt32Memory0()[retptr / 4 + 1];
-            return getStringFromWasm0(r0, r1);
-        } finally {
-            wasm.__wbindgen_add_to_stack_pointer(16);
-            wasm.__wbindgen_free(r0, r1);
-        }
-    }
-    /**
     * Wraps around TransferOperationBuilder to add an input to a transfer operation builder.
     * @param {TxoRef} txo_ref - Absolute or relative utxo reference
     * @param {string} asset_record - Serialized client asset record to serve as transfer input. This record must exist on the
@@ -3070,6 +3055,7 @@ async function init(input) {
         var ret = wasm.memory;
         return addHeapObject(ret);
     };
+    imports['env'] = __wbg_star0;
 
     if (typeof input === 'string' || (typeof Request === 'function' && input instanceof Request) || (typeof URL === 'function' && input instanceof URL)) {
         input = fetch(input);

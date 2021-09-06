@@ -1,5 +1,6 @@
 let imports = {};
 imports['__wbindgen_placeholder__'] = module.exports;
+imports['env'] = require('env');
 let wasm;
 const { TextDecoder, TextEncoder } = require(`util`);
 
@@ -2548,22 +2549,6 @@ class TransferOperationBuilder {
     static new() {
         var ret = wasm.transferoperationbuilder_new();
         return TransferOperationBuilder.__wrap(ret);
-    }
-    /**
-    * @ignore
-    * @returns {string}
-    */
-    debug() {
-        try {
-            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.transferoperationbuilder_debug(retptr, this.ptr);
-            var r0 = getInt32Memory0()[retptr / 4 + 0];
-            var r1 = getInt32Memory0()[retptr / 4 + 1];
-            return getStringFromWasm0(r0, r1);
-        } finally {
-            wasm.__wbindgen_add_to_stack_pointer(16);
-            wasm.__wbindgen_free(r0, r1);
-        }
     }
     /**
     * Wraps around TransferOperationBuilder to add an input to a transfer operation builder.

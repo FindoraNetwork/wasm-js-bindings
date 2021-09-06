@@ -1019,11 +1019,6 @@ export class TransferOperationBuilder {
 */
   static new(): TransferOperationBuilder;
 /**
-* @ignore
-* @returns {string}
-*/
-  debug(): string;
-/**
 * Wraps around TransferOperationBuilder to add an input to a transfer operation builder.
 * @param {TxoRef} txo_ref - Absolute or relative utxo reference
 * @param {string} asset_record - Serialized client asset record to serve as transfer input. This record must exist on the
@@ -1277,7 +1272,6 @@ export interface InitOutput {
   readonly transactionbuilder_get_owner_memo: (a: number, b: number) => number;
   readonly __wbg_transferoperationbuilder_free: (a: number) => void;
   readonly transferoperationbuilder_new: () => number;
-  readonly transferoperationbuilder_debug: (a: number, b: number) => void;
   readonly transferoperationbuilder_add_input_with_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => number;
   readonly transferoperationbuilder_add_input_no_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => number;
   readonly transferoperationbuilder_add_output_with_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => number;
