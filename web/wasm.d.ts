@@ -1212,7 +1212,6 @@ export class TxoRef {
 export class XfrKeyPair {
   free(): void;
 /**
-* @returns {XfrPublicKey}
 */
   pub_key: XfrPublicKey;
 }
