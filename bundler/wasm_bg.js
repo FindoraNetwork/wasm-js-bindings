@@ -305,6 +305,105 @@ function getArrayJsValueFromWasm0(ptr, len) {
     return result;
 }
 /**
+* Build transfer from account balance to utxo tx.
+* @param {XfrPublicKey} recipient - UTXO Asset receiver.
+* @param {u64} amount - Transfer amount.
+* @param {string} sk - Ethereum wallet private key.
+* @param {u64} nonce - Transaction nonce for sender.
+* @param {XfrPublicKey} recipient
+* @param {BigInt} amount
+* @param {string} sk
+* @param {BigInt} nonce
+* @returns {string}
+*/
+export function transfer_to_utxo_from_account(recipient, amount, sk, nonce) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        _assertClass(recipient, XfrPublicKey);
+        var ptr0 = recipient.ptr;
+        recipient.ptr = 0;
+        uint64CvtShim[0] = amount;
+        const low1 = u32CvtShim[0];
+        const high1 = u32CvtShim[1];
+        var ptr2 = passStringToWasm0(sk, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len2 = WASM_VECTOR_LEN;
+        uint64CvtShim[0] = nonce;
+        const low3 = u32CvtShim[0];
+        const high3 = u32CvtShim[1];
+        wasm.transfer_to_utxo_from_account(retptr, ptr0, low1, high1, ptr2, len2, low3, high3);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
+/**
+* Recover ecdsa private key from mnemonic.
+* @param {string} phrase
+* @param {string} password
+* @returns {string}
+*/
+export function recover_sk_from_mnemonic(phrase, password) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        var ptr0 = passStringToWasm0(phrase, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        var ptr1 = passStringToWasm0(password, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len1 = WASM_VECTOR_LEN;
+        wasm.recover_sk_from_mnemonic(retptr, ptr0, len0, ptr1, len1);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
+/**
+* Recover ethereum address from ecdsa private key, eg. 0x73c71...
+* @param {string} sk
+* @returns {string}
+*/
+export function recover_address_from_sk(sk) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        var ptr0 = passStringToWasm0(sk, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.recover_address_from_sk(retptr, ptr0, len0);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
+/**
+* Serialize ethereum address used to abci query nonce.
+* @param {string} address
+* @returns {string}
+*/
+export function get_serialized_address(address) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        var ptr0 = passStringToWasm0(address, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.get_serialized_address(retptr, ptr0, len0);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
+/**
 * Returns a JavaScript object containing decrypted owner record information,
 * where `amount` is the decrypted asset amount, and `asset_type` is the decrypted asset type code.
 *
@@ -2353,15 +2452,19 @@ export class TransactionBuilder {
     }
     /**
     * @param {XfrKeyPair} keypair
+    * @param {BigInt} amount
     * @param {string} validator
     * @returns {TransactionBuilder}
     */
-    add_operation_delegate(keypair, validator) {
+    add_operation_delegate(keypair, amount, validator) {
         const ptr = this.__destroy_into_raw();
         _assertClass(keypair, XfrKeyPair);
-        var ptr0 = passStringToWasm0(validator, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len0 = WASM_VECTOR_LEN;
-        var ret = wasm.transactionbuilder_add_operation_delegate(ptr, keypair.ptr, ptr0, len0);
+        uint64CvtShim[0] = amount;
+        const low0 = u32CvtShim[0];
+        const high0 = u32CvtShim[1];
+        var ptr1 = passStringToWasm0(validator, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len1 = WASM_VECTOR_LEN;
+        var ret = wasm.transactionbuilder_add_operation_delegate(ptr, keypair.ptr, low0, high0, ptr1, len1);
         return TransactionBuilder.__wrap(ret);
     }
     /**
@@ -2413,6 +2516,22 @@ export class TransactionBuilder {
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
         var ret = wasm.transactionbuilder_add_operation_claim_custom(ptr, keypair.ptr, low0, high0);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
+    * Adds an operation to the transaction builder that support transfer utxo asset to ethereum address.
+    * @param {XfrKeyPair} keypair - Asset creator key pair.
+    * @param {String} ethereum_address - The address to receive Ethereum assets.
+    * @param {XfrKeyPair} keypair
+    * @param {string} ethereum_address
+    * @returns {TransactionBuilder}
+    */
+    add_operation_convert_account(keypair, ethereum_address) {
+        const ptr = this.__destroy_into_raw();
+        _assertClass(keypair, XfrKeyPair);
+        var ptr0 = passStringToWasm0(ethereum_address, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        var ret = wasm.transactionbuilder_add_operation_convert_account(ptr, keypair.ptr, ptr0, len0);
         return TransactionBuilder.__wrap(ret);
     }
     /**
@@ -2882,12 +3001,12 @@ export function __wbindgen_object_drop_ref(arg0) {
     takeObject(arg0);
 };
 
-export function __wbg_randomFillSync_64cc7d048f228ca8() { return handleError(function (arg0, arg1, arg2) {
-    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
-}, arguments) };
-
 export function __wbg_getRandomValues_98117e9a7e993920() { return handleError(function (arg0, arg1) {
     getObject(arg0).getRandomValues(getObject(arg1));
+}, arguments) };
+
+export function __wbg_randomFillSync_64cc7d048f228ca8() { return handleError(function (arg0, arg1, arg2) {
+    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
 }, arguments) };
 
 export function __wbg_process_2f24d6544ea7b200(arg0) {
@@ -2974,12 +3093,12 @@ export function __wbg_randomFillSync_d2ba53160aec6aba(arg0, arg1, arg2) {
     getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
 };
 
-export function __wbg_newnoargs_ac91a24e57fcaec8(arg0, arg1) {
+export function __wbg_newnoargs_be86524d73f67598(arg0, arg1) {
     var ret = new Function(getStringFromWasm0(arg0, arg1));
     return addHeapObject(ret);
 };
 
-export function __wbg_call_9e1eb05d905a21d9() { return handleError(function (arg0, arg1) {
+export function __wbg_call_888d259a5fefc347() { return handleError(function (arg0, arg1) {
     var ret = getObject(arg0).call(getObject(arg1));
     return addHeapObject(ret);
 }, arguments) };
@@ -2989,51 +3108,51 @@ export function __wbindgen_object_clone_ref(arg0) {
     return addHeapObject(ret);
 };
 
-export function __wbg_self_bce917bbd61b0be0() { return handleError(function () {
+export function __wbg_self_c6fbdfc2918d5e58() { return handleError(function () {
     var ret = self.self;
     return addHeapObject(ret);
 }, arguments) };
 
-export function __wbg_window_08048ce184ae3496() { return handleError(function () {
+export function __wbg_window_baec038b5ab35c54() { return handleError(function () {
     var ret = window.window;
     return addHeapObject(ret);
 }, arguments) };
 
-export function __wbg_globalThis_d6f1ff349571af81() { return handleError(function () {
+export function __wbg_globalThis_3f735a5746d41fbd() { return handleError(function () {
     var ret = globalThis.globalThis;
     return addHeapObject(ret);
 }, arguments) };
 
-export function __wbg_global_63b22b64d239db75() { return handleError(function () {
+export function __wbg_global_1bc0b39582740e95() { return handleError(function () {
     var ret = global.global;
     return addHeapObject(ret);
 }, arguments) };
 
-export function __wbg_buffer_fbad716641c158a5(arg0) {
+export function __wbg_buffer_397eaa4d72ee94dd(arg0) {
     var ret = getObject(arg0).buffer;
     return addHeapObject(ret);
 };
 
-export function __wbg_new_c9e78bd69716df92(arg0) {
+export function __wbg_new_a7ce447f15ff496f(arg0) {
     var ret = new Uint8Array(getObject(arg0));
     return addHeapObject(ret);
 };
 
-export function __wbg_set_2fd4486048716f38(arg0, arg1, arg2) {
+export function __wbg_set_969ad0a60e51d320(arg0, arg1, arg2) {
     getObject(arg0).set(getObject(arg1), arg2 >>> 0);
 };
 
-export function __wbg_length_82dd1e63e9c75f09(arg0) {
+export function __wbg_length_1eb8fc608a0d4cdb(arg0) {
     var ret = getObject(arg0).length;
     return ret;
 };
 
-export function __wbg_newwithlength_a9f6c1fd1bf4e5e4(arg0) {
+export function __wbg_newwithlength_929232475839a482(arg0) {
     var ret = new Uint8Array(arg0 >>> 0);
     return addHeapObject(ret);
 };
 
-export function __wbg_subarray_e80c85d931be89c4(arg0, arg1, arg2) {
+export function __wbg_subarray_8b658422a224f479(arg0, arg1, arg2) {
     var ret = getObject(arg0).subarray(arg1 >>> 0, arg2 >>> 0);
     return addHeapObject(ret);
 };
