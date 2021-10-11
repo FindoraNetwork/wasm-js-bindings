@@ -1,6 +1,5 @@
 let imports = {};
 imports['__wbindgen_placeholder__'] = module.exports;
-imports['env'] = require('env');
 let wasm;
 const { TextDecoder, TextEncoder } = require(`util`);
 
@@ -3031,6 +3030,16 @@ module.exports.__wbindgen_object_drop_ref = function(arg0) {
     takeObject(arg0);
 };
 
+module.exports.__wbindgen_object_clone_ref = function(arg0) {
+    var ret = getObject(arg0);
+    return addHeapObject(ret);
+};
+
+module.exports.__wbg_now_559193109055ebad = function(arg0) {
+    var ret = getObject(arg0).now();
+    return ret;
+};
+
 module.exports.__wbg_getRandomValues_98117e9a7e993920 = function() { return handleError(function (arg0, arg1) {
     getObject(arg0).getRandomValues(getObject(arg1));
 }, arguments) };
@@ -3128,15 +3137,15 @@ module.exports.__wbg_newnoargs_be86524d73f67598 = function(arg0, arg1) {
     return addHeapObject(ret);
 };
 
+module.exports.__wbg_get_4d0f21c2f823742e = function() { return handleError(function (arg0, arg1) {
+    var ret = Reflect.get(getObject(arg0), getObject(arg1));
+    return addHeapObject(ret);
+}, arguments) };
+
 module.exports.__wbg_call_888d259a5fefc347 = function() { return handleError(function (arg0, arg1) {
     var ret = getObject(arg0).call(getObject(arg1));
     return addHeapObject(ret);
 }, arguments) };
-
-module.exports.__wbindgen_object_clone_ref = function(arg0) {
-    var ret = getObject(arg0);
-    return addHeapObject(ret);
-};
 
 module.exports.__wbg_self_c6fbdfc2918d5e58 = function() { return handleError(function () {
     var ret = self.self;
