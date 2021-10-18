@@ -778,29 +778,6 @@ export class FeeInputs {
   append2(am: BigInt, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): FeeInputs;
 }
 /**
-* Key for hashes in the ledger's custom data store.
-*/
-export class Key {
-  free(): void;
-/**
-* Generate a random key.
-* Figure out how to store prng ref in browser: https://bugtracker.findora.org/issues/63
-* @returns {Key}
-*/
-  static gen_random(): Key;
-/**
-* Returns a base64 encoded version of the Key.
-* @returns {string}
-*/
-  to_base64(): string;
-/**
-* Generates a Key from a base64-encoded String.
-* @param {string} string
-* @returns {Key}
-*/
-  static from_base64(string: string): Key;
-}
-/**
 * Asset owner memo. Contains information needed to decrypt an asset record.
 * @see {@link module:Findora-Wasm.ClientAssetRecord|ClientAssetRecord} for more details about asset records.
 */
@@ -997,10 +974,11 @@ export class TransactionBuilder {
   add_operation_update_memo(auth_key_pair: XfrKeyPair, code: string, new_memo: string): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
+* @param {BigInt} amount
 * @param {string} validator
 * @returns {TransactionBuilder}
 */
-  add_operation_delegate(keypair: XfrKeyPair, validator: string): TransactionBuilder;
+  add_operation_delegate(keypair: XfrKeyPair, amount: BigInt, validator: string): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
 * @returns {TransactionBuilder}
@@ -1030,9 +1008,10 @@ export class TransactionBuilder {
 * @param {String} ethereum_address - The address to receive Ethereum assets.
 * @param {XfrKeyPair} keypair
 * @param {string} ethereum_address
+* @param {BigInt} amount
 * @returns {TransactionBuilder}
 */
-  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string): TransactionBuilder;
+  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string, amount: BigInt): TransactionBuilder;
 /**
 * Adds a serialized transfer asset operation to a transaction builder instance.
 * @param {string} op - a JSON-serialized transfer operation.
@@ -1082,11 +1061,6 @@ export class TransferOperationBuilder {
 * @returns {TransferOperationBuilder}
 */
   static new(): TransferOperationBuilder;
-/**
-* @ignore
-* @returns {string}
-*/
-  debug(): string;
 /**
 * Wraps around TransferOperationBuilder to add an input to a transfer operation builder.
 * @param {TxoRef} txo_ref - Absolute or relative utxo reference
@@ -1194,15 +1168,6 @@ export class TransferOperationBuilder {
 */
   sign(kp: XfrKeyPair): TransferOperationBuilder;
 /**
-* Co-sign an input index
-* @param {XfrKeyPair} kp - Co-signature key.
-* @params {Number} input_idx - Input index to apply co-signature to.
-* @param {XfrKeyPair} kp
-* @param {number} input_idx
-* @returns {TransferOperationBuilder}
-*/
-  add_cosignature(kp: XfrKeyPair, input_idx: number): TransferOperationBuilder;
-/**
 * @returns {string}
 */
   builder(): string;
@@ -1249,7 +1214,6 @@ export class TxoRef {
 export class XfrKeyPair {
   free(): void;
 /**
-* @returns {XfrPublicKey}
 */
   pub_key: XfrPublicKey;
 }
@@ -1315,10 +1279,6 @@ export interface InitOutput {
   readonly assetrules_set_updatable: (a: number, b: number) => number;
   readonly assetrules_set_transfer_multisig_rules: (a: number, b: number) => number;
   readonly assetrules_set_decimals: (a: number, b: number) => number;
-  readonly __wbg_key_free: (a: number) => void;
-  readonly key_gen_random: () => number;
-  readonly key_to_base64: (a: number, b: number) => void;
-  readonly key_from_base64: (a: number, b: number) => number;
   readonly __wbg_credentialsignature_free: (a: number) => void;
   readonly credentialrevealsig_get_pok: (a: number) => number;
   readonly credentialrevealsig_get_commitment: (a: number) => number;
@@ -1341,12 +1301,12 @@ export interface InitOutput {
   readonly transactionbuilder_add_operation_create_asset_with_policy: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => number;
   readonly transactionbuilder_add_basic_issue_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;
   readonly transactionbuilder_add_operation_update_memo: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
-  readonly transactionbuilder_add_operation_delegate: (a: number, b: number, c: number, d: number) => number;
+  readonly transactionbuilder_add_operation_delegate: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly transactionbuilder_add_operation_undelegate: (a: number, b: number) => number;
   readonly transactionbuilder_add_operation_undelegate_partially: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly transactionbuilder_add_operation_claim: (a: number, b: number) => number;
   readonly transactionbuilder_add_operation_claim_custom: (a: number, b: number, c: number, d: number) => number;
-  readonly transactionbuilder_add_operation_convert_account: (a: number, b: number, c: number, d: number) => number;
+  readonly transactionbuilder_add_operation_convert_account: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number) => number;
   readonly transactionbuilder_sign: (a: number, b: number) => number;
   readonly transactionbuilder_transaction: (a: number, b: number) => void;
@@ -1359,7 +1319,6 @@ export interface InitOutput {
   readonly get_serialized_address: (a: number, b: number, c: number) => void;
   readonly __wbg_transferoperationbuilder_free: (a: number) => void;
   readonly transferoperationbuilder_new: () => number;
-  readonly transferoperationbuilder_debug: (a: number, b: number) => void;
   readonly transferoperationbuilder_add_input_with_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => number;
   readonly transferoperationbuilder_add_input_no_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => number;
   readonly transferoperationbuilder_add_output_with_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => number;
@@ -1367,7 +1326,6 @@ export interface InitOutput {
   readonly transferoperationbuilder_balance: (a: number) => number;
   readonly transferoperationbuilder_create: (a: number) => number;
   readonly transferoperationbuilder_sign: (a: number, b: number) => number;
-  readonly transferoperationbuilder_add_cosignature: (a: number, b: number, c: number) => number;
   readonly transferoperationbuilder_builder: (a: number, b: number) => void;
   readonly transferoperationbuilder_transaction: (a: number, b: number) => void;
   readonly open_client_asset_record: (a: number, b: number, c: number) => number;

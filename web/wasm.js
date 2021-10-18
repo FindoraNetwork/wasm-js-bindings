@@ -2033,66 +2033,6 @@ export class FeeInputs {
     }
 }
 /**
-* Key for hashes in the ledger's custom data store.
-*/
-export class Key {
-
-    static __wrap(ptr) {
-        const obj = Object.create(Key.prototype);
-        obj.ptr = ptr;
-
-        return obj;
-    }
-
-    __destroy_into_raw() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
-        return ptr;
-    }
-
-    free() {
-        const ptr = this.__destroy_into_raw();
-        wasm.__wbg_key_free(ptr);
-    }
-    /**
-    * Generate a random key.
-    * Figure out how to store prng ref in browser: https://bugtracker.findora.org/issues/63
-    * @returns {Key}
-    */
-    static gen_random() {
-        var ret = wasm.key_gen_random();
-        return Key.__wrap(ret);
-    }
-    /**
-    * Returns a base64 encoded version of the Key.
-    * @returns {string}
-    */
-    to_base64() {
-        try {
-            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.key_to_base64(retptr, this.ptr);
-            var r0 = getInt32Memory0()[retptr / 4 + 0];
-            var r1 = getInt32Memory0()[retptr / 4 + 1];
-            return getStringFromWasm0(r0, r1);
-        } finally {
-            wasm.__wbindgen_add_to_stack_pointer(16);
-            wasm.__wbindgen_free(r0, r1);
-        }
-    }
-    /**
-    * Generates a Key from a base64-encoded String.
-    * @param {string} string
-    * @returns {Key}
-    */
-    static from_base64(string) {
-        var ptr0 = passStringToWasm0(string, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len0 = WASM_VECTOR_LEN;
-        var ret = wasm.key_from_base64(ptr0, len0);
-        return Key.__wrap(ret);
-    }
-}
-/**
 * Asset owner memo. Contains information needed to decrypt an asset record.
 * @see {@link module:Findora-Wasm.ClientAssetRecord|ClientAssetRecord} for more details about asset records.
 */
@@ -2509,15 +2449,19 @@ export class TransactionBuilder {
     }
     /**
     * @param {XfrKeyPair} keypair
+    * @param {BigInt} amount
     * @param {string} validator
     * @returns {TransactionBuilder}
     */
-    add_operation_delegate(keypair, validator) {
+    add_operation_delegate(keypair, amount, validator) {
         const ptr = this.__destroy_into_raw();
         _assertClass(keypair, XfrKeyPair);
-        var ptr0 = passStringToWasm0(validator, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len0 = WASM_VECTOR_LEN;
-        var ret = wasm.transactionbuilder_add_operation_delegate(ptr, keypair.ptr, ptr0, len0);
+        uint64CvtShim[0] = amount;
+        const low0 = u32CvtShim[0];
+        const high0 = u32CvtShim[1];
+        var ptr1 = passStringToWasm0(validator, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len1 = WASM_VECTOR_LEN;
+        var ret = wasm.transactionbuilder_add_operation_delegate(ptr, keypair.ptr, low0, high0, ptr1, len1);
         return TransactionBuilder.__wrap(ret);
     }
     /**
@@ -2577,14 +2521,18 @@ export class TransactionBuilder {
     * @param {String} ethereum_address - The address to receive Ethereum assets.
     * @param {XfrKeyPair} keypair
     * @param {string} ethereum_address
+    * @param {BigInt} amount
     * @returns {TransactionBuilder}
     */
-    add_operation_convert_account(keypair, ethereum_address) {
+    add_operation_convert_account(keypair, ethereum_address, amount) {
         const ptr = this.__destroy_into_raw();
         _assertClass(keypair, XfrKeyPair);
         var ptr0 = passStringToWasm0(ethereum_address, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        var ret = wasm.transactionbuilder_add_operation_convert_account(ptr, keypair.ptr, ptr0, len0);
+        uint64CvtShim[0] = amount;
+        const low1 = u32CvtShim[0];
+        const high1 = u32CvtShim[1];
+        var ret = wasm.transactionbuilder_add_operation_convert_account(ptr, keypair.ptr, ptr0, len0, low1, high1);
         return TransactionBuilder.__wrap(ret);
     }
     /**
@@ -2695,22 +2643,6 @@ export class TransferOperationBuilder {
     static new() {
         var ret = wasm.transferoperationbuilder_new();
         return TransferOperationBuilder.__wrap(ret);
-    }
-    /**
-    * @ignore
-    * @returns {string}
-    */
-    debug() {
-        try {
-            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.transferoperationbuilder_debug(retptr, this.ptr);
-            var r0 = getInt32Memory0()[retptr / 4 + 0];
-            var r1 = getInt32Memory0()[retptr / 4 + 1];
-            return getStringFromWasm0(r0, r1);
-        } finally {
-            wasm.__wbindgen_add_to_stack_pointer(16);
-            wasm.__wbindgen_free(r0, r1);
-        }
     }
     /**
     * Wraps around TransferOperationBuilder to add an input to a transfer operation builder.
@@ -2892,20 +2824,6 @@ export class TransferOperationBuilder {
         return TransferOperationBuilder.__wrap(ret);
     }
     /**
-    * Co-sign an input index
-    * @param {XfrKeyPair} kp - Co-signature key.
-    * @params {Number} input_idx - Input index to apply co-signature to.
-    * @param {XfrKeyPair} kp
-    * @param {number} input_idx
-    * @returns {TransferOperationBuilder}
-    */
-    add_cosignature(kp, input_idx) {
-        const ptr = this.__destroy_into_raw();
-        _assertClass(kp, XfrKeyPair);
-        var ret = wasm.transferoperationbuilder_add_cosignature(ptr, kp.ptr, input_idx);
-        return TransferOperationBuilder.__wrap(ret);
-    }
-    /**
     * @returns {string}
     */
     builder() {
@@ -3022,7 +2940,6 @@ export class XfrKeyPair {
         wasm.__wbg_xfrkeypair_free(ptr);
     }
     /**
-    * @returns {XfrPublicKey}
     */
     get pub_key() {
         var ret = wasm.__wbg_get_xfrkeypair_pub_key(this.ptr);
@@ -3122,11 +3039,15 @@ async function init(input) {
         var ret = getObject(arg0);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbg_getRandomValues_98117e9a7e993920 = function() { return handleError(function (arg0, arg1) {
-        getObject(arg0).getRandomValues(getObject(arg1));
-    }, arguments) };
+    imports.wbg.__wbg_now_559193109055ebad = function(arg0) {
+        var ret = getObject(arg0).now();
+        return ret;
+    };
     imports.wbg.__wbg_randomFillSync_64cc7d048f228ca8 = function() { return handleError(function (arg0, arg1, arg2) {
         getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
+    }, arguments) };
+    imports.wbg.__wbg_getRandomValues_98117e9a7e993920 = function() { return handleError(function (arg0, arg1) {
+        getObject(arg0).getRandomValues(getObject(arg1));
     }, arguments) };
     imports.wbg.__wbg_process_2f24d6544ea7b200 = function(arg0) {
         var ret = getObject(arg0).process;
@@ -3145,10 +3066,10 @@ async function init(input) {
         var ret = getObject(arg0).node;
         return addHeapObject(ret);
     };
-    imports.wbg.__wbg_modulerequire_3440a4bcf44437db = function() { return handleError(function (arg0, arg1) {
-        var ret = module.require(getStringFromWasm0(arg0, arg1));
-        return addHeapObject(ret);
-    }, arguments) };
+    imports.wbg.__wbindgen_is_string = function(arg0) {
+        var ret = typeof(getObject(arg0)) === 'string';
+        return ret;
+    };
     imports.wbg.__wbg_crypto_98fc271021c7d2ad = function(arg0) {
         var ret = getObject(arg0).crypto;
         return addHeapObject(ret);
@@ -3157,18 +3078,14 @@ async function init(input) {
         var ret = getObject(arg0).msCrypto;
         return addHeapObject(ret);
     };
+    imports.wbg.__wbg_modulerequire_3440a4bcf44437db = function() { return handleError(function (arg0, arg1) {
+        var ret = module.require(getStringFromWasm0(arg0, arg1));
+        return addHeapObject(ret);
+    }, arguments) };
     imports.wbg.__wbg_self_86b4b13392c7af56 = function() { return handleError(function () {
         var ret = self.self;
         return addHeapObject(ret);
     }, arguments) };
-    imports.wbg.__wbg_static_accessor_MODULE_452b4680e8614c81 = function() {
-        var ret = module;
-        return addHeapObject(ret);
-    };
-    imports.wbg.__wbg_require_f5521a5b85ad2542 = function(arg0, arg1, arg2) {
-        var ret = getObject(arg0).require(getStringFromWasm0(arg1, arg2));
-        return addHeapObject(ret);
-    };
     imports.wbg.__wbg_crypto_b8c92eaac23d0d80 = function(arg0) {
         var ret = getObject(arg0).crypto;
         return addHeapObject(ret);
@@ -3181,6 +3098,14 @@ async function init(input) {
         var ret = getObject(arg0) === undefined;
         return ret;
     };
+    imports.wbg.__wbg_static_accessor_MODULE_452b4680e8614c81 = function() {
+        var ret = module;
+        return addHeapObject(ret);
+    };
+    imports.wbg.__wbg_require_f5521a5b85ad2542 = function(arg0, arg1, arg2) {
+        var ret = getObject(arg0).require(getStringFromWasm0(arg1, arg2));
+        return addHeapObject(ret);
+    };
     imports.wbg.__wbg_getRandomValues_dd27e6b0652b3236 = function(arg0) {
         var ret = getObject(arg0).getRandomValues;
         return addHeapObject(ret);
@@ -3191,56 +3116,56 @@ async function init(input) {
     imports.wbg.__wbg_randomFillSync_d2ba53160aec6aba = function(arg0, arg1, arg2) {
         getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
     };
-    imports.wbg.__wbg_newnoargs_68424965d85fcb08 = function(arg0, arg1) {
+    imports.wbg.__wbg_newnoargs_be86524d73f67598 = function(arg0, arg1) {
         var ret = new Function(getStringFromWasm0(arg0, arg1));
         return addHeapObject(ret);
     };
-    imports.wbg.__wbg_call_9698e9b9c4668ae0 = function() { return handleError(function (arg0, arg1) {
+    imports.wbg.__wbg_get_4d0f21c2f823742e = function() { return handleError(function (arg0, arg1) {
+        var ret = Reflect.get(getObject(arg0), getObject(arg1));
+        return addHeapObject(ret);
+    }, arguments) };
+    imports.wbg.__wbg_call_888d259a5fefc347 = function() { return handleError(function (arg0, arg1) {
         var ret = getObject(arg0).call(getObject(arg1));
         return addHeapObject(ret);
     }, arguments) };
-    imports.wbg.__wbg_self_3df7c33e222cd53b = function() { return handleError(function () {
+    imports.wbg.__wbg_self_c6fbdfc2918d5e58 = function() { return handleError(function () {
         var ret = self.self;
         return addHeapObject(ret);
     }, arguments) };
-    imports.wbg.__wbg_window_0f90182e6c405ff2 = function() { return handleError(function () {
+    imports.wbg.__wbg_window_baec038b5ab35c54 = function() { return handleError(function () {
         var ret = window.window;
         return addHeapObject(ret);
     }, arguments) };
-    imports.wbg.__wbg_globalThis_787cfd4f25a35141 = function() { return handleError(function () {
+    imports.wbg.__wbg_globalThis_3f735a5746d41fbd = function() { return handleError(function () {
         var ret = globalThis.globalThis;
         return addHeapObject(ret);
     }, arguments) };
-    imports.wbg.__wbg_global_af2eb7b1369372ed = function() { return handleError(function () {
+    imports.wbg.__wbg_global_1bc0b39582740e95 = function() { return handleError(function () {
         var ret = global.global;
         return addHeapObject(ret);
     }, arguments) };
-    imports.wbg.__wbg_buffer_eb2155f17856c20b = function(arg0) {
+    imports.wbg.__wbg_buffer_397eaa4d72ee94dd = function(arg0) {
         var ret = getObject(arg0).buffer;
         return addHeapObject(ret);
     };
-    imports.wbg.__wbg_length_0b194abde938d0c6 = function(arg0) {
-        var ret = getObject(arg0).length;
-        return ret;
-    };
-    imports.wbg.__wbg_new_ff8b26f7b2d7e2fb = function(arg0) {
+    imports.wbg.__wbg_new_a7ce447f15ff496f = function(arg0) {
         var ret = new Uint8Array(getObject(arg0));
         return addHeapObject(ret);
     };
-    imports.wbg.__wbg_set_67cdd115b9cb141f = function(arg0, arg1, arg2) {
+    imports.wbg.__wbg_set_969ad0a60e51d320 = function(arg0, arg1, arg2) {
         getObject(arg0).set(getObject(arg1), arg2 >>> 0);
     };
-    imports.wbg.__wbg_newwithlength_a49b32b2030b93c3 = function(arg0) {
+    imports.wbg.__wbg_length_1eb8fc608a0d4cdb = function(arg0) {
+        var ret = getObject(arg0).length;
+        return ret;
+    };
+    imports.wbg.__wbg_newwithlength_929232475839a482 = function(arg0) {
         var ret = new Uint8Array(arg0 >>> 0);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbg_subarray_1bb315d30e0c968c = function(arg0, arg1, arg2) {
+    imports.wbg.__wbg_subarray_8b658422a224f479 = function(arg0, arg1, arg2) {
         var ret = getObject(arg0).subarray(arg1 >>> 0, arg2 >>> 0);
         return addHeapObject(ret);
-    };
-    imports.wbg.__wbindgen_is_string = function(arg0) {
-        var ret = typeof(getObject(arg0)) === 'string';
-        return ret;
     };
     imports.wbg.__wbindgen_debug_string = function(arg0, arg1) {
         var ret = debugString(getObject(arg1));
