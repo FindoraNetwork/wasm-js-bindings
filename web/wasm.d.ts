@@ -1279,9 +1279,9 @@ export interface InitOutput {
   readonly assetrules_set_updatable: (a: number, b: number) => number;
   readonly assetrules_set_transfer_multisig_rules: (a: number, b: number) => number;
   readonly assetrules_set_decimals: (a: number, b: number) => number;
+  readonly credentialrevealsig_get_commitment: (a: number) => number;
   readonly __wbg_credentialsignature_free: (a: number) => void;
   readonly credentialrevealsig_get_pok: (a: number) => number;
-  readonly credentialrevealsig_get_commitment: (a: number) => number;
   readonly build_id: (a: number) => void;
   readonly random_asset_type: (a: number) => void;
   readonly asset_type_from_jsvalue: (a: number, b: number) => void;
