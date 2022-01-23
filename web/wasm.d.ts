@@ -35,79 +35,42 @@ export function asset_type_from_jsvalue(val: any): string;
 */
 export function verify_authenticated_txn(state_commitment: string, authenticated_txn: string): boolean;
 /**
-* Given a serialized state commitment and an authenticated custom data result, returns true if the custom data result correctly
-* hashes up to the state commitment and false otherwise.
-* @param {string} state_commitment - String representing the state commitment.
-* @param {JsValue} authenticated_txn - JSON-encoded value representing the authenticated custom
-* data result.
-* @throws Will throw an error if the state commitment or the authenticated result fail to deserialize.
-* @param {string} state_commitment
-* @param {any} authenticated_res
-* @returns {boolean}
-*/
-export function verify_authenticated_custom_data_result(state_commitment: string, authenticated_res: any): boolean;
-/**
-* Performs a simple loan repayment fee calculation.
-*
-* The returned fee is a fraction of the `outstanding_balance`
-* where the interest rate is expressed as a fraction `ir_numerator` / `ir_denominator`.
-*
-* This function is specific to the  Lending Demo.
-* @param {BigInt} ir_numerator - Interest rate numerator.
-* @param {BigInt} ir_denominator - Interest rate denominator.
-* @param {BigInt} outstanding_balance - Amount of outstanding debt.
-* @ignore
-* @param {BigInt} ir_numerator
-* @param {BigInt} ir_denominator
-* @param {BigInt} outstanding_balance
-* @returns {BigInt}
-*/
-export function calculate_fee(ir_numerator: BigInt, ir_denominator: BigInt, outstanding_balance: BigInt): BigInt;
-/**
-* Returns an address to use for cancelling debt tokens in a debt swap.
-* @ignore
+* ...
 * @returns {XfrPublicKey}
 */
 export function get_null_pk(): XfrPublicKey;
 /**
-* @ignore
+* Build transfer from account balance to utxo tx.
+* @param {XfrPublicKey} recipient - UTXO Asset receiver.
+* @param {u64} amount - Transfer amount.
+* @param {string} sk - Ethereum wallet private key.
+* @param {u64} nonce - Transaction nonce for sender.
+* @param {XfrPublicKey} recipient
+* @param {BigInt} amount
+* @param {string} sk
+* @param {BigInt} nonce
 * @returns {string}
 */
-export function create_default_policy_info(): string;
+export function transfer_to_utxo_from_account(recipient: XfrPublicKey, amount: BigInt, sk: string, nonce: BigInt): string;
 /**
-* Create policy information needed for debt token asset types.
-* This data will be parsed by the policy evalautor to ensure
-* that all payment and fee amounts are correct.
-* # Arguments
-*
-* * `ir_numerator` - interest rate numerator
-* * `ir_denominator`- interest rate denominator
-* * `fiat_code` - Base64 string representing asset type used to pay off the loan
-* * `amount` - loan amount
-* @ignore
-* @param {BigInt} ir_numerator
-* @param {BigInt} ir_denominator
-* @param {string} fiat_code
-* @param {BigInt} loan_amount
+* Recover ecdsa private key from mnemonic.
+* @param {string} phrase
+* @param {string} password
 * @returns {string}
 */
-export function create_debt_policy_info(ir_numerator: BigInt, ir_denominator: BigInt, fiat_code: string, loan_amount: BigInt): string;
+export function recover_sk_from_mnemonic(phrase: string, password: string): string;
 /**
-* Creates the memo needed for debt token asset types. The memo will be parsed by the policy evaluator to ensure
-* that all payment and fee amounts are correct.
-* @param {BigInt} ir_numerator  - Interest rate numerator.
-* @param {BigInt} ir_denominator - Interest rate denominator.
-* @param {string} fiat_code - Base64 string representing asset type used to pay off the loan.
-* @param {BigInt} loan_amount - Loan amount.
-* @throws Will throw an error if `fiat_code` fails to deserialize.
-* @ignore
-* @param {BigInt} ir_numerator
-* @param {BigInt} ir_denominator
-* @param {string} fiat_code
-* @param {BigInt} loan_amount
+* Recover ethereum address from ecdsa private key, eg. 0x73c71...
+* @param {string} sk
 * @returns {string}
 */
-export function create_debt_memo(ir_numerator: BigInt, ir_denominator: BigInt, fiat_code: string, loan_amount: BigInt): string;
+export function recover_address_from_sk(sk: string): string;
+/**
+* Serialize ethereum address used to abci query nonce.
+* @param {string} address
+* @returns {string}
+*/
+export function get_serialized_address(address: string): string;
 /**
 * Returns a JavaScript object containing decrypted owner record information,
 * where `amount` is the decrypted asset amount, and `asset_type` is the decrypted asset type code.
@@ -396,6 +359,27 @@ export function fra_get_minimal_fee(): BigInt;
 */
 export function fra_get_dest_pubkey(): XfrPublicKey;
 /**
+* The system address used to reveive delegation principals.
+* @returns {string}
+*/
+export function get_delegation_target_address(): string;
+/**
+* @returns {string}
+*/
+export function get_coinbase_address(): string;
+/**
+* @returns {string}
+*/
+export function get_coinbase_principal_address(): string;
+/**
+* @returns {BigInt}
+*/
+export function get_delegation_min_amount(): BigInt;
+/**
+* @returns {BigInt}
+*/
+export function get_delegation_max_amount(): BigInt;
+/**
 * When an asset is defined, several options governing the assets must be
 * specified:
 * 1. **Traceable**: Records and identities of traceable assets can be decrypted by a provided tracing key. By defaults, assets do not have
@@ -521,34 +505,6 @@ export class AssetType {
 * @returns {TracingPolicies}
 */
   get_tracing_policies(): TracingPolicies;
-}
-/**
-* Authenticated address identity registry value. Contains a proof that the AIR result is stored
-* on the ledger.
-*/
-export class AuthenticatedAIRResult {
-  free(): void;
-/**
-* Construct an AIRResult from the JSON-encoded value returned by the ledger.
-* @see {@link module:Findora-Network~Network#getAIRResult|Network.getAIRResult} for information about how to fetch a
-* value from the address identity registry.
-* @param {any} json
-* @returns {AuthenticatedAIRResult}
-*/
-  static from_json(json: any): AuthenticatedAIRResult;
-/**
-* Returns true if the authenticated AIR result proofs verify succesfully. If the proofs are
-* valid, the identity commitment contained in the AIR result is a valid part of the ledger.
-* @param {string} state_commitment - String representing the ledger state commitment.
-* @param {string} state_commitment
-* @returns {boolean}
-*/
-  is_valid(state_commitment: string): boolean;
-/**
-* Returns the underlying credential commitment of the AIR result.
-* @returns {CredentialCommitment | undefined}
-*/
-  get_commitment(): CredentialCommitment | undefined;
 }
 /**
 * Object representing an authenticable asset record. Clients can validate authentication proofs
@@ -822,74 +778,6 @@ export class FeeInputs {
   append2(am: BigInt, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): FeeInputs;
 }
 /**
-* Blinding factor for a custom data operation. A blinding factor adds a random value to the
-* custom data being hashed to make the hash hiding.
-*/
-export class KVBlind {
-  free(): void;
-/**
-* Generate a random blinding factor.
-* @returns {KVBlind}
-*/
-  static gen_random(): KVBlind;
-/**
-* Convert the key pair to a JSON-encoded value that can be used in the browser.
-* @returns {any}
-*/
-  to_json(): any;
-/**
-* Create a KVBlind from a JSON-encoded value.
-* @param {any} val
-* @returns {KVBlind}
-*/
-  static from_json(val: any): KVBlind;
-}
-/**
-* Hash that can be stored in the ledger's custom data store.
-*/
-export class KVHash {
-  free(): void;
-/**
-* Generate a new custom data hash without a blinding factor.
-* @param {JsValue} data - Data to hash. Must be an array of bytes.
-* @param {any} data
-* @returns {KVHash}
-*/
-  static new_no_blind(data: any): KVHash;
-/**
-* Generate a new custom data hash with a blinding factor.
-* @param {JsValue} data - Data to hash. Must be an array of bytes.
-* @param {KVBlind} kv_blind - Optional blinding factor.
-* @param {any} data
-* @param {KVBlind} kv_blind
-* @returns {KVHash}
-*/
-  static new_with_blind(data: any, kv_blind: KVBlind): KVHash;
-}
-/**
-* Key for hashes in the ledger's custom data store.
-*/
-export class Key {
-  free(): void;
-/**
-* Generate a random key.
-* Figure out how to store prng ref in browser: https://bugtracker.findora.org/issues/63
-* @returns {Key}
-*/
-  static gen_random(): Key;
-/**
-* Returns a base64 encoded version of the Key.
-* @returns {string}
-*/
-  to_base64(): string;
-/**
-* Generates a Key from a base64-encoded String.
-* @param {string} string
-* @returns {Key}
-*/
-  static from_base64(string: string): Key;
-}
-/**
 * Asset owner memo. Contains information needed to decrypt an asset record.
 * @see {@link module:Findora-Wasm.ClientAssetRecord|ClientAssetRecord} for more details about asset records.
 */
@@ -983,11 +871,10 @@ export class TransactionBuilder {
 /**
 * @param am: amount to pay
 * @param kp: owner's XfrKeyPair
-* @param {BigInt} am
 * @param {XfrKeyPair} kp
 * @returns {TransactionBuilder}
 */
-  add_fee_relative_auto(am: BigInt, kp: XfrKeyPair): TransactionBuilder;
+  add_fee_relative_auto(kp: XfrKeyPair): TransactionBuilder;
 /**
 * Use this func to get the necessary infomations for generating `Relative Inputs`
 *
@@ -1044,18 +931,11 @@ export class TransactionBuilder {
 * @param {XfrKeyPair} key_pair
 * @param {string} memo
 * @param {string} token_code
-* @param {string} policy_choice
+* @param {string} _policy_choice
 * @param {AssetRules} asset_rules
 * @returns {TransactionBuilder}
 */
-  add_operation_create_asset_with_policy(key_pair: XfrKeyPair, memo: string, token_code: string, policy_choice: string, asset_rules: AssetRules): TransactionBuilder;
-/**
-* @ignore
-* @param {string} token_code
-* @param {string} which_check
-* @returns {TransactionBuilder}
-*/
-  add_policy_option(token_code: string, which_check: string): TransactionBuilder;
+  add_operation_create_asset_with_policy(key_pair: XfrKeyPair, memo: string, token_code: string, _policy_choice: string, asset_rules: AssetRules): TransactionBuilder;
 /**
 * Wraps around TransactionBuilder to add an asset issuance to a transaction builder instance.
 *
@@ -1078,54 +958,6 @@ export class TransactionBuilder {
 */
   add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: BigInt, amount: BigInt, conf_amount: boolean, zei_params: PublicParams): TransactionBuilder;
 /**
-* Adds an operation to the transaction builder that appends a credential commitment to the address
-* identity registry.
-* @param {XfrKeyPair} key_pair - Ledger key that is tied to the credential.
-* @param {CredUserPublicKey} user_public_key - Public key of the credential user.
-* @param {CredIssuerPublicKey} issuer_public_key - Public key of the credential issuer.
-* @param {CredentialCommitment} commitment - Credential commitment to add to the address identity registry.
-* @param {CredPoK} pok- Proof that the credential commitment is valid.
-* @see {@link module:Findora-Wasm.wasm_credential_commit|wasm_credential_commit} for information about how to generate a credential
-* commitment.
-* @param {XfrKeyPair} key_pair
-* @param {CredUserPublicKey} user_public_key
-* @param {CredIssuerPublicKey} issuer_public_key
-* @param {CredentialCommitment} commitment
-* @param {CredentialPoK} pok
-* @returns {TransactionBuilder}
-*/
-  add_operation_air_assign(key_pair: XfrKeyPair, user_public_key: CredUserPublicKey, issuer_public_key: CredIssuerPublicKey, commitment: CredentialCommitment, pok: CredentialPoK): TransactionBuilder;
-/**
-* Adds an operation to the transaction builder that removes a hash from ledger's custom data
-* store.
-* @param {XfrKeyPair} auth_key_pair - Key pair that is authorized to delete the hash at the
-* provided key.
-* @param {Key} key - The key of the custom data store whose value will be cleared if the
-* transaction validates.
-* @param {BigInt} seq_num - Nonce to prevent replays.
-* @param {XfrKeyPair} auth_key_pair
-* @param {Key} key
-* @param {BigInt} seq_num
-* @returns {TransactionBuilder}
-*/
-  add_operation_kv_update_no_hash(auth_key_pair: XfrKeyPair, key: Key, seq_num: BigInt): TransactionBuilder;
-/**
-* Adds an operation to the transaction builder that adds a hash to the ledger's custom data
-* store.
-* @param {XfrKeyPair} auth_key_pair - Key pair that is authorized to add the hash at the
-* provided key.
-* @param {Key} key - The key of the custom data store the value will be added to if the
-* transaction validates.
-* @param {KVHash} hash - The hash to add to the custom data store.
-* @param {BigInt} seq_num - Nonce to prevent replays.
-* @param {XfrKeyPair} auth_key_pair
-* @param {Key} key
-* @param {BigInt} seq_num
-* @param {KVHash} kv_hash
-* @returns {TransactionBuilder}
-*/
-  add_operation_kv_update_with_hash(auth_key_pair: XfrKeyPair, key: Key, seq_num: BigInt, kv_hash: KVHash): TransactionBuilder;
-/**
 * Adds an operation to the transaction builder that adds a hash to the ledger's custom data
 * store.
 * @param {XfrKeyPair} auth_key_pair - Asset creator key pair.
@@ -1140,6 +972,46 @@ export class TransactionBuilder {
 * @returns {TransactionBuilder}
 */
   add_operation_update_memo(auth_key_pair: XfrKeyPair, code: string, new_memo: string): TransactionBuilder;
+/**
+* @param {XfrKeyPair} keypair
+* @param {BigInt} amount
+* @param {string} validator
+* @returns {TransactionBuilder}
+*/
+  add_operation_delegate(keypair: XfrKeyPair, amount: BigInt, validator: string): TransactionBuilder;
+/**
+* @param {XfrKeyPair} keypair
+* @returns {TransactionBuilder}
+*/
+  add_operation_undelegate(keypair: XfrKeyPair): TransactionBuilder;
+/**
+* @param {XfrKeyPair} keypair
+* @param {BigInt} am
+* @param {string} target_validator
+* @returns {TransactionBuilder}
+*/
+  add_operation_undelegate_partially(keypair: XfrKeyPair, am: BigInt, target_validator: string): TransactionBuilder;
+/**
+* @param {XfrKeyPair} keypair
+* @returns {TransactionBuilder}
+*/
+  add_operation_claim(keypair: XfrKeyPair): TransactionBuilder;
+/**
+* @param {XfrKeyPair} keypair
+* @param {BigInt} am
+* @returns {TransactionBuilder}
+*/
+  add_operation_claim_custom(keypair: XfrKeyPair, am: BigInt): TransactionBuilder;
+/**
+* Adds an operation to the transaction builder that support transfer utxo asset to ethereum address.
+* @param {XfrKeyPair} keypair - Asset creator key pair.
+* @param {String} ethereum_address - The address to receive Ethereum assets.
+* @param {XfrKeyPair} keypair
+* @param {string} ethereum_address
+* @param {BigInt} amount
+* @returns {TransactionBuilder}
+*/
+  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string, amount: BigInt): TransactionBuilder;
 /**
 * Adds a serialized transfer asset operation to a transaction builder instance.
 * @param {string} op - a JSON-serialized transfer operation.
@@ -1159,6 +1031,11 @@ export class TransactionBuilder {
 * @returns {string}
 */
   transaction(): string;
+/**
+* Calculates transaction handle.
+* @returns {string}
+*/
+  transaction_handle(): string;
 /**
 * Fetches a client record from a transaction.
 * @param {number} idx - Record to fetch. Records are added to the transaction builder sequentially.
@@ -1184,11 +1061,6 @@ export class TransferOperationBuilder {
 * @returns {TransferOperationBuilder}
 */
   static new(): TransferOperationBuilder;
-/**
-* @ignore
-* @returns {string}
-*/
-  debug(): string;
 /**
 * Wraps around TransferOperationBuilder to add an input to a transfer operation builder.
 * @param {TxoRef} txo_ref - Absolute or relative utxo reference
@@ -1296,15 +1168,6 @@ export class TransferOperationBuilder {
 */
   sign(kp: XfrKeyPair): TransferOperationBuilder;
 /**
-* Co-sign an input index
-* @param {XfrKeyPair} kp - Co-signature key.
-* @params {Number} input_idx - Input index to apply co-signature to.
-* @param {XfrKeyPair} kp
-* @param {number} input_idx
-* @returns {TransferOperationBuilder}
-*/
-  add_cosignature(kp: XfrKeyPair, input_idx: number): TransferOperationBuilder;
-/**
 * @returns {string}
 */
   builder(): string;
@@ -1351,7 +1214,6 @@ export class TxoRef {
 export class XfrKeyPair {
   free(): void;
 /**
-* @returns {XfrPublicKey}
 */
   pub_key: XfrPublicKey;
 }
@@ -1371,20 +1233,19 @@ export interface InitOutput {
   readonly txoref_relative: (a: number, b: number) => number;
   readonly txoref_absolute: (a: number, b: number) => number;
   readonly __wbg_authenticatedassetrecord_free: (a: number) => void;
-  readonly authenticatedassetrecord_is_valid: (a: number, b: number, c: number) => number;
-  readonly authenticatedassetrecord_from_json_record: (a: number) => number;
+  readonly authenticatedassetrecord_is_valid: (a: number, b: number, c: number, d: number) => void;
+  readonly authenticatedassetrecord_from_json_record: (a: number, b: number) => void;
   readonly __wbg_clientassetrecord_free: (a: number) => void;
-  readonly clientassetrecord_from_json: (a: number) => number;
-  readonly clientassetrecord_to_json: (a: number) => number;
+  readonly clientassetrecord_from_json: (a: number, b: number) => void;
+  readonly clientassetrecord_to_json: (a: number, b: number) => void;
   readonly __wbg_assettracerkeypair_free: (a: number) => void;
   readonly assettracerkeypair_new: () => number;
   readonly __wbg_ownermemo_free: (a: number) => void;
-  readonly ownermemo_from_json: (a: number) => number;
+  readonly ownermemo_from_json: (a: number, b: number) => void;
   readonly ownermemo_clone: (a: number) => number;
   readonly __wbg_credentialuserkeypair_free: (a: number) => void;
   readonly __wbg_credentialissuerkeypair_free: (a: number) => void;
   readonly __wbg_credentialrevealsig_free: (a: number) => void;
-  readonly credentialrevealsig_get_pok: (a: number) => number;
   readonly __wbg_credentialcommitmentdata_free: (a: number) => void;
   readonly credentialcommitmentdata_get_commitment: (a: number) => number;
   readonly credentialcommitmentdata_get_pok: (a: number) => number;
@@ -1392,28 +1253,24 @@ export interface InitOutput {
   readonly __wbg_credentialcommitment_free: (a: number) => void;
   readonly __wbg_credentialpok_free: (a: number) => void;
   readonly __wbg_credentialcommitmentkey_free: (a: number) => void;
-  readonly __wbg_authenticatedairresult_free: (a: number) => void;
   readonly __wbg_assettype_free: (a: number) => void;
-  readonly assettype_from_json: (a: number) => number;
+  readonly assettype_from_json: (a: number, b: number) => void;
   readonly assettype_get_tracing_policies: (a: number) => number;
-  readonly authenticatedairresult_from_json: (a: number) => number;
-  readonly authenticatedairresult_is_valid: (a: number, b: number, c: number) => number;
-  readonly authenticatedairresult_get_commitment: (a: number) => number;
   readonly __wbg_credential_free: (a: number) => void;
   readonly credentialissuerkeypair_get_pk: (a: number) => number;
   readonly credentialissuerkeypair_get_sk: (a: number) => number;
   readonly credentialissuerkeypair_to_json: (a: number) => number;
-  readonly credentialissuerkeypair_from_json: (a: number) => number;
+  readonly credentialissuerkeypair_from_json: (a: number, b: number) => void;
   readonly credentialuserkeypair_get_pk: (a: number) => number;
   readonly credentialuserkeypair_get_sk: (a: number) => number;
   readonly credentialuserkeypair_to_json: (a: number) => number;
-  readonly credentialuserkeypair_from_json: (a: number) => number;
+  readonly credentialuserkeypair_from_json: (a: number, b: number) => void;
   readonly __wbg_signaturerules_free: (a: number) => void;
-  readonly signaturerules_new: (a: number, b: number, c: number) => number;
+  readonly signaturerules_new: (a: number, b: number, c: number, d: number) => void;
   readonly __wbg_tracingpolicies_free: (a: number) => void;
   readonly __wbg_tracingpolicy_free: (a: number) => void;
   readonly tracingpolicy_new_with_tracing: (a: number) => number;
-  readonly tracingpolicy_new_with_identity_tracing: (a: number, b: number, c: number, d: number) => number;
+  readonly tracingpolicy_new_with_identity_tracing: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly __wbg_assetrules_free: (a: number) => void;
   readonly assetrules_new: () => number;
   readonly assetrules_add_tracing_policy: (a: number, b: number) => number;
@@ -1421,83 +1278,77 @@ export interface InitOutput {
   readonly assetrules_set_transferable: (a: number, b: number) => number;
   readonly assetrules_set_updatable: (a: number, b: number) => number;
   readonly assetrules_set_transfer_multisig_rules: (a: number, b: number) => number;
-  readonly assetrules_set_decimals: (a: number, b: number) => number;
-  readonly kvblind_gen_random: () => number;
-  readonly kvblind_to_json: (a: number) => number;
-  readonly kvblind_from_json: (a: number) => number;
-  readonly __wbg_key_free: (a: number) => void;
-  readonly key_gen_random: () => number;
-  readonly key_to_base64: (a: number, b: number) => void;
-  readonly key_from_base64: (a: number, b: number) => number;
-  readonly kvhash_new_no_blind: (a: number) => number;
-  readonly kvhash_new_with_blind: (a: number, b: number) => number;
+  readonly assetrules_set_decimals: (a: number, b: number, c: number) => void;
+  readonly credentialrevealsig_get_commitment: (a: number) => number;
+  readonly __wbg_credentialsignature_free: (a: number) => void;
+  readonly credentialrevealsig_get_pok: (a: number) => number;
   readonly build_id: (a: number) => void;
   readonly random_asset_type: (a: number) => void;
   readonly asset_type_from_jsvalue: (a: number, b: number) => void;
-  readonly verify_authenticated_txn: (a: number, b: number, c: number, d: number) => number;
-  readonly verify_authenticated_custom_data_result: (a: number, b: number, c: number) => number;
-  readonly calculate_fee: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => void;
+  readonly verify_authenticated_txn: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly get_null_pk: () => number;
-  readonly create_default_policy_info: (a: number) => void;
-  readonly create_debt_policy_info: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => void;
-  readonly create_debt_memo: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => void;
   readonly __wbg_transactionbuilder_free: (a: number) => void;
   readonly __wbg_feeinputs_free: (a: number) => void;
   readonly feeinputs_new: () => number;
   readonly feeinputs_append: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => void;
   readonly feeinputs_append2: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => number;
-  readonly transactionbuilder_add_fee_relative_auto: (a: number, b: number, c: number, d: number) => number;
+  readonly transactionbuilder_add_fee_relative_auto: (a: number, b: number, c: number) => void;
   readonly transactionbuilder_get_relative_outputs: (a: number, b: number) => void;
-  readonly transactionbuilder_add_fee: (a: number, b: number) => number;
+  readonly transactionbuilder_add_fee: (a: number, b: number, c: number) => void;
   readonly transactionbuilder_check_fee: (a: number) => number;
   readonly transactionbuilder_new: (a: number, b: number) => number;
-  readonly transactionbuilder_add_operation_create_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => number;
-  readonly transactionbuilder_add_operation_create_asset_with_policy: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => number;
-  readonly transactionbuilder_add_policy_option: (a: number, b: number, c: number, d: number, e: number) => number;
-  readonly transactionbuilder_add_basic_issue_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;
-  readonly transactionbuilder_add_operation_air_assign: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
-  readonly transactionbuilder_add_operation_kv_update_no_hash: (a: number, b: number, c: number, d: number, e: number) => number;
-  readonly transactionbuilder_add_operation_kv_update_with_hash: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
-  readonly transactionbuilder_add_operation_update_memo: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
-  readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number) => number;
-  readonly transactionbuilder_sign: (a: number, b: number) => number;
+  readonly transactionbuilder_add_operation_create_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => void;
+  readonly transactionbuilder_add_operation_create_asset_with_policy: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => void;
+  readonly transactionbuilder_add_basic_issue_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number, k: number) => void;
+  readonly transactionbuilder_add_operation_update_memo: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => void;
+  readonly transactionbuilder_add_operation_delegate: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => void;
+  readonly transactionbuilder_add_operation_undelegate: (a: number, b: number, c: number) => void;
+  readonly transactionbuilder_add_operation_undelegate_partially: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => void;
+  readonly transactionbuilder_add_operation_claim: (a: number, b: number, c: number) => void;
+  readonly transactionbuilder_add_operation_claim_custom: (a: number, b: number, c: number, d: number, e: number) => void;
+  readonly transactionbuilder_add_operation_convert_account: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => void;
+  readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number, d: number) => void;
+  readonly transactionbuilder_sign: (a: number, b: number, c: number) => void;
   readonly transactionbuilder_transaction: (a: number, b: number) => void;
+  readonly transactionbuilder_transaction_handle: (a: number, b: number) => void;
   readonly transactionbuilder_get_owner_record: (a: number, b: number) => number;
   readonly transactionbuilder_get_owner_memo: (a: number, b: number) => number;
+  readonly transfer_to_utxo_from_account: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => void;
+  readonly recover_sk_from_mnemonic: (a: number, b: number, c: number, d: number, e: number) => void;
+  readonly recover_address_from_sk: (a: number, b: number, c: number) => void;
+  readonly get_serialized_address: (a: number, b: number, c: number) => void;
   readonly __wbg_transferoperationbuilder_free: (a: number) => void;
   readonly transferoperationbuilder_new: () => number;
-  readonly transferoperationbuilder_debug: (a: number, b: number) => void;
-  readonly transferoperationbuilder_add_input_with_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => number;
-  readonly transferoperationbuilder_add_input_no_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => number;
-  readonly transferoperationbuilder_add_output_with_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => number;
-  readonly transferoperationbuilder_add_output_no_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => number;
-  readonly transferoperationbuilder_balance: (a: number) => number;
-  readonly transferoperationbuilder_create: (a: number) => number;
-  readonly transferoperationbuilder_sign: (a: number, b: number) => number;
-  readonly transferoperationbuilder_add_cosignature: (a: number, b: number, c: number) => number;
+  readonly transferoperationbuilder_add_input_with_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => void;
+  readonly transferoperationbuilder_add_input_no_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => void;
+  readonly transferoperationbuilder_add_output_with_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => void;
+  readonly transferoperationbuilder_add_output_no_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => void;
+  readonly transferoperationbuilder_balance: (a: number, b: number) => void;
+  readonly transferoperationbuilder_create: (a: number, b: number) => void;
+  readonly transferoperationbuilder_sign: (a: number, b: number, c: number) => void;
   readonly transferoperationbuilder_builder: (a: number, b: number) => void;
   readonly transferoperationbuilder_transaction: (a: number, b: number) => void;
-  readonly open_client_asset_record: (a: number, b: number, c: number) => number;
+  readonly open_client_asset_record: (a: number, b: number, c: number, d: number) => void;
   readonly get_pub_key_str: (a: number, b: number) => void;
   readonly get_priv_key_str: (a: number, b: number) => void;
   readonly new_keypair: () => number;
   readonly new_keypair_from_seed: (a: number, b: number, c: number, d: number) => number;
   readonly public_key_to_base64: (a: number, b: number) => void;
-  readonly public_key_from_base64: (a: number, b: number) => number;
+  readonly public_key_from_base64: (a: number, b: number, c: number) => void;
   readonly keypair_to_str: (a: number, b: number) => void;
   readonly keypair_from_str: (a: number, b: number) => number;
   readonly wasm_credential_issuer_key_gen: (a: number) => number;
-  readonly wasm_credential_verify_commitment: (a: number, b: number, c: number, d: number) => void;
-  readonly wasm_credential_open_commitment: (a: number, b: number, c: number, d: number) => number;
+  readonly wasm_credential_verify_commitment: (a: number, b: number, c: number, d: number, e: number) => void;
+  readonly wasm_credential_open_commitment: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly wasm_credential_user_key_gen: (a: number) => number;
-  readonly wasm_credential_sign: (a: number, b: number, c: number) => number;
+  readonly wasm_credential_sign: (a: number, b: number, c: number, d: number) => void;
   readonly create_credential: (a: number, b: number, c: number) => number;
-  readonly wasm_credential_commit: (a: number, b: number, c: number) => number;
-  readonly wasm_credential_reveal: (a: number, b: number, c: number) => number;
-  readonly wasm_credential_verify: (a: number, b: number, c: number, d: number) => void;
-  readonly trace_assets: (a: number, b: number, c: number) => number;
+  readonly wasm_credential_commit: (a: number, b: number, c: number, d: number) => void;
+  readonly wasm_credential_reveal: (a: number, b: number, c: number, d: number) => void;
+  readonly wasm_credential_verify: (a: number, b: number, c: number, d: number, e: number) => void;
+  readonly trace_assets: (a: number, b: number, c: number, d: number) => void;
   readonly public_key_to_bech32: (a: number, b: number) => void;
-  readonly public_key_from_bech32: (a: number, b: number) => number;
+  readonly public_key_from_bech32: (a: number, b: number, c: number) => void;
   readonly bech32_to_base64: (a: number, b: number, c: number) => void;
   readonly base64_to_bech32: (a: number, b: number, c: number) => void;
   readonly encryption_pbkdf2_aes256gcm: (a: number, b: number, c: number, d: number, e: number) => void;
@@ -1508,16 +1359,17 @@ export interface InitOutput {
   readonly generate_mnemonic_custom: (a: number, b: number, c: number, d: number) => void;
   readonly __wbg_bippath_free: (a: number) => void;
   readonly bippath_new: (a: number, b: number, c: number, d: number) => number;
-  readonly restore_keypair_from_mnemonic_default: (a: number, b: number) => number;
-  readonly restore_keypair_from_mnemonic_bip44: (a: number, b: number, c: number, d: number, e: number) => number;
-  readonly restore_keypair_from_mnemonic_bip49: (a: number, b: number, c: number, d: number, e: number) => number;
+  readonly restore_keypair_from_mnemonic_default: (a: number, b: number, c: number) => void;
+  readonly restore_keypair_from_mnemonic_bip44: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
+  readonly restore_keypair_from_mnemonic_bip49: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
   readonly fra_get_asset_code: (a: number) => void;
   readonly fra_get_minimal_fee: (a: number) => void;
   readonly fra_get_dest_pubkey: () => number;
-  readonly __wbg_credentialsignature_free: (a: number) => void;
-  readonly __wbg_kvhash_free: (a: number) => void;
-  readonly __wbg_kvblind_free: (a: number) => void;
-  readonly credentialrevealsig_get_commitment: (a: number) => number;
+  readonly get_coinbase_address: (a: number) => void;
+  readonly get_delegation_min_amount: (a: number) => void;
+  readonly get_delegation_max_amount: (a: number) => void;
+  readonly get_delegation_target_address: (a: number) => void;
+  readonly get_coinbase_principal_address: (a: number) => void;
   readonly __wbg_credissuersecretkey_free: (a: number) => void;
   readonly __wbg_credissuerpublickey_free: (a: number) => void;
   readonly __wbg_creduserpublickey_free: (a: number) => void;

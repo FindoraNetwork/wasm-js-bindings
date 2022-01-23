@@ -1,12 +1,19 @@
 {
   "name": "wasm",
   "collaborators": [
-    "ngolub <ngolub@stanford.edu>"
+    "FindoraNetwork"
   ],
-  "version": "0.1.0",
+  "description": "",
+  "version": "0.2.11",
+  "license": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
   "files": [
     "wasm_bg.wasm",
     "wasm.js",
+    "wasm_bg.js",
     "wasm.d.ts"
   ],
   "module": "wasm.js",
