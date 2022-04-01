@@ -1357,9 +1357,11 @@ export class TransactionBuilder {
 * @param {XfrKeyPair} keypair
 * @param {string} ethereum_address
 * @param {BigInt} amount
+* @param {string | undefined} asset
+* @param {string | undefined} lowlevel_data
 * @returns {TransactionBuilder}
 */
-  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string, amount: BigInt): TransactionBuilder;
+  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string, amount: BigInt, asset?: string, lowlevel_data?: string): TransactionBuilder;
 /**
 * Adds a serialized transfer asset operation to a transaction builder instance.
 * @param {string} op - a JSON-serialized transfer operation.

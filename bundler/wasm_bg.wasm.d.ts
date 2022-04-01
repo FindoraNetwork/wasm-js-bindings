@@ -99,7 +99,7 @@ export function transactionbuilder_add_operation_undelegate(a: number, b: number
 export function transactionbuilder_add_operation_undelegate_partially(a: number, b: number, c: number, d: number, e: number, f: number): number;
 export function transactionbuilder_add_operation_claim(a: number, b: number): number;
 export function transactionbuilder_add_operation_claim_custom(a: number, b: number, c: number, d: number): number;
-export function transactionbuilder_add_operation_convert_account(a: number, b: number, c: number, d: number, e: number, f: number): number;
+export function transactionbuilder_add_operation_convert_account(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number): number;
 export function transactionbuilder_add_transfer_operation(a: number, b: number, c: number): number;
 export function transactionbuilder_sign(a: number, b: number): number;
 export function transactionbuilder_transaction(a: number, b: number): void;

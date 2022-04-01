@@ -1357,9 +1357,11 @@ export class TransactionBuilder {
 * @param {XfrKeyPair} keypair
 * @param {string} ethereum_address
 * @param {BigInt} amount
+* @param {string | undefined} asset
+* @param {string | undefined} lowlevel_data
 * @returns {TransactionBuilder}
 */
-  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string, amount: BigInt): TransactionBuilder;
+  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string, amount: BigInt, asset?: string, lowlevel_data?: string): TransactionBuilder;
 /**
 * Adds a serialized transfer asset operation to a transaction builder instance.
 * @param {string} op - a JSON-serialized transfer operation.
@@ -1684,7 +1686,7 @@ export interface InitOutput {
   readonly transactionbuilder_add_operation_undelegate_partially: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly transactionbuilder_add_operation_claim: (a: number, b: number) => number;
   readonly transactionbuilder_add_operation_claim_custom: (a: number, b: number, c: number, d: number) => number;
-  readonly transactionbuilder_add_operation_convert_account: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
+  readonly transactionbuilder_add_operation_convert_account: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;
   readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number) => number;
   readonly transactionbuilder_sign: (a: number, b: number) => number;
   readonly transactionbuilder_transaction: (a: number, b: number) => void;
