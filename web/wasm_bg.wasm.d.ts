@@ -85,6 +85,7 @@ export function transactionbuilder_get_relative_outputs(a: number, b: number): v
 export function transactionbuilder_add_fee(a: number, b: number): number;
 export function transactionbuilder_check_fee(a: number): number;
 export function transactionbuilder_new(a: number, b: number): number;
+export function transactionbuilder_from_string(a: number, b: number): number;
 export function transactionbuilder_add_operation_create_asset(a: number, b: number, c: number, d: number, e: number, f: number, g: number): number;
 export function transactionbuilder_add_operation_create_asset_with_policy(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number): number;
 export function transactionbuilder_add_basic_issue_asset(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number): number;

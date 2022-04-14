@@ -1173,6 +1173,12 @@ export class TransactionBuilder {
 */
   static new(seq_id: BigInt): TransactionBuilder;
 /**
+* Deserialize transaction builder from string.
+* @param {string} s
+* @returns {TransactionBuilder}
+*/
+  static from_string(s: string): TransactionBuilder;
+/**
 * Wraps around TransactionBuilder to add an asset definition operation to a transaction builder instance.
 * @example <caption> Error handling </caption>
 * try {
@@ -1672,6 +1678,7 @@ export interface InitOutput {
   readonly transactionbuilder_add_fee: (a: number, b: number) => number;
   readonly transactionbuilder_check_fee: (a: number) => number;
   readonly transactionbuilder_new: (a: number, b: number) => number;
+  readonly transactionbuilder_from_string: (a: number, b: number) => number;
   readonly transactionbuilder_add_operation_create_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => number;
   readonly transactionbuilder_add_operation_create_asset_with_policy: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => number;
   readonly transactionbuilder_add_basic_issue_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;

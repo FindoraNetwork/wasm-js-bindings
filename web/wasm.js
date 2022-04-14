@@ -3103,6 +3103,17 @@ export class TransactionBuilder {
         return TransactionBuilder.__wrap(ret);
     }
     /**
+    * Deserialize transaction builder from string.
+    * @param {string} s
+    * @returns {TransactionBuilder}
+    */
+    static from_string(s) {
+        var ptr0 = passStringToWasm0(s, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        var ret = wasm.transactionbuilder_from_string(ptr0, len0);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
     * Wraps around TransactionBuilder to add an asset definition operation to a transaction builder instance.
     * @example <caption> Error handling </caption>
     * try {

@@ -1173,6 +1173,12 @@ export class TransactionBuilder {
 */
   static new(seq_id: BigInt): TransactionBuilder;
 /**
+* Deserialize transaction builder from string.
+* @param {string} s
+* @returns {TransactionBuilder}
+*/
+  static from_string(s: string): TransactionBuilder;
+/**
 * Wraps around TransactionBuilder to add an asset definition operation to a transaction builder instance.
 * @example <caption> Error handling </caption>
 * try {
