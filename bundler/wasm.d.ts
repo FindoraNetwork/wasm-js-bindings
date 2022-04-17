@@ -113,19 +113,17 @@ export function get_open_abar(abar: AnonBlindAssetRecord, memo: OwnerMemo, keypa
 * @param {AnonBlindAssetRecord} abar - ABAR for which balance needs to be queried
 * @param {OwnerMemo} memo - memo corresponding to the abar
 * @param keypair {AXfrKeyPair} - AXfrKeyPair of the ABAR owner
-* @param randomized_keypair {AXfrKeyPair} - Randomized AXfrKeyPair of the ABAR owner
 * @param dec_key {XSecretKey} - Decryption key of the abar owner to open the Owner Memo
 * @param MTLeafInfo {mt_leaf_info} - the Merkle proof of the ABAR from commitment tree
 * @throws Will throw an error if abar fails to open
 * @param {AnonBlindAssetRecord} abar
 * @param {OwnerMemo} memo
 * @param {AXfrKeyPair} keypair
-* @param {AXfrKeyPair} randomized_keypair
 * @param {XSecretKey} dec_key
 * @param {MTLeafInfo} mt_leaf_info
 * @returns {string}
 */
-export function gen_nullifier_hash(abar: AnonBlindAssetRecord, memo: OwnerMemo, keypair: AXfrKeyPair, randomized_keypair: AXfrKeyPair, dec_key: XSecretKey, mt_leaf_info: MTLeafInfo): string;
+export function gen_nullifier_hash(abar: AnonBlindAssetRecord, memo: OwnerMemo, keypair: AXfrKeyPair, dec_key: XSecretKey, mt_leaf_info: MTLeafInfo): string;
 /**
 * Returns a JavaScript object containing decrypted owner record information,
 * where `amount` is the decrypted asset amount, and `asset_type` is the decrypted asset type code.
@@ -440,18 +438,6 @@ export function get_delegation_max_amount(): BigInt;
 */
 export function axfr_pubkey_from_string(key_str: string): AXfrPubKey;
 /**
-* @param {AXfrPubKey} pub_key
-* @param {string} randomizer_str
-* @returns {any}
-*/
-export function randomize_axfr_pubkey(pub_key: AXfrPubKey, randomizer_str: string): any;
-/**
-* @param {AXfrKeyPair} keypair
-* @param {string} randomizer_str
-* @returns {any}
-*/
-export function randomize_axfr_keypair(keypair: AXfrKeyPair, randomizer_str: string): any;
-/**
 * @param {string} key_str
 * @returns {AXfrKeyPair}
 */
@@ -491,11 +477,7 @@ export class AnonBlindAssetRecord {
 /**
 * @returns {BLSScalar}
 */
-  amount_type_commitment: BLSScalar;
-/**
-* @returns {AXfrPubKey}
-*/
-  public_key: AXfrPubKey;
+  commitment: BLSScalar;
 }
 /**
 * AnonKeys is used to store keys for Anon proofs
@@ -581,20 +563,20 @@ export class AnonTransferOperationBuilder {
 */
   set_fra_remainder_receiver(from_pubkey: XPublicKey): AnonTransferOperationBuilder;
 /**
-* get_randomizers returns a list of all the randomizers for receiver public keys
+* get_commitments returns a list of all the commitments for receiver public keys
 * @returns {any}
 */
-  get_randomizers(): any;
+  get_commitments(): any;
 /**
-* get_randomizer_map returns a hashmap of all the randomizers mapped to public key, asset, amount
+* get_commitment_map returns a hashmap of all the commitments mapped to public key, asset, amount
 * @returns {any}
 */
-  get_randomizer_map(): any;
+  get_commitment_map(): any;
 /**
-* build_and_sign is used to build proof and sign the Transfer Operation
+* build is used to build proof the Transfer Operation
 * @returns {AnonTransferOperationBuilder}
 */
-  build_and_sign(): AnonTransferOperationBuilder;
+  build(): AnonTransferOperationBuilder;
 /**
 * transaction returns the prepared Anon Transfer Operation
 * @param nonce {NoReplayToken} - nonce of the txn to be added to the operation
@@ -758,6 +740,26 @@ export class AuthenticatedAssetRecord {
   static from_json_record(record: any): AuthenticatedAssetRecord;
 }
 /**
+* The wrapped struct for `ark_bls12_381::G1Projective`
+*/
+export class BLSG1 {
+  free(): void;
+}
+/**
+* The wrapped struct for `ark_bls12_381::G2Projective`
+*/
+export class BLSG2 {
+  free(): void;
+}
+/**
+* The wrapped struct for `Fp12<ark_bls12_381::Fq12Parameters>`,
+* which is the pairing result
+*/
+export class BLSGt {
+  free(): void;
+}
+/**
+* The wrapped struct for `ark_bls12_381::Fr`
 */
 export class BLSScalar {
   free(): void;
@@ -1072,20 +1074,6 @@ export class OwnerMemo {
   clone(): OwnerMemo;
 }
 /**
-* Public parameters necessary for generating asset records. Generating this is expensive and
-* should be done as infrequently as possible.
-* @see {@link module:Findora-Wasm~TransactionBuilder#add_basic_issue_asset|add_basic_issue_asset}
-* for information using public parameters to create issuance asset records.
-*/
-export class PublicParams {
-  free(): void;
-/**
-* Generates a new set of parameters.
-* @returns {PublicParams}
-*/
-  static new(): PublicParams;
-}
-/**
 * Stores threshold and weights for a multisignature requirement.
 */
 export class SignatureRules {
@@ -1159,6 +1147,13 @@ export class TransactionBuilder {
 */
   add_fee(inputs: FeeInputs): TransactionBuilder;
 /**
+* As the last operation of BarToAbar transaction,
+* add a static fee to the transaction.
+* @param {FeeInputs} inputs
+* @returns {TransactionBuilder}
+*/
+  add_fee_bar_to_abar(inputs: FeeInputs): TransactionBuilder;
+/**
 * A simple fee checker for mainnet v1.0.
 *
 * SEE [check_fee](ledger::data_model::Transaction::check_fee)
@@ -1221,16 +1216,14 @@ export class TransactionBuilder {
 * @param {BigInt} seq_num - Issuance sequence number. Every subsequent issuance of a given asset type must have a higher sequence number than before.
 * @param {BigInt} amount - Amount to be issued.
 * @param {boolean} conf_amount - `true` means the asset amount is confidential, and `false` means it's nonconfidential.
-* @param {PublicParams} zei_params - Public parameters necessary to generate asset records.
 * @param {XfrKeyPair} key_pair
 * @param {string} code
 * @param {BigInt} seq_num
 * @param {BigInt} amount
 * @param {boolean} conf_amount
-* @param {PublicParams} zei_params
 * @returns {TransactionBuilder}
 */
-  add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: BigInt, amount: BigInt, conf_amount: boolean, zei_params: PublicParams): TransactionBuilder;
+  add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: BigInt, amount: BigInt, conf_amount: boolean): TransactionBuilder;
 /**
 * Adds an operation to the transaction builder that adds a hash to the ledger's custom data
 * store.
@@ -1285,26 +1278,10 @@ export class TransactionBuilder {
 */
   add_operation_abar_to_bar(input: AnonBlindAssetRecord, owner_memo: OwnerMemo, mt_leaf_info: MTLeafInfo, from_keypair: AXfrKeyPair, from_dec_key: XSecretKey, recipient: XfrPublicKey, conf_amount: boolean, conf_type: boolean): TransactionBuilder;
 /**
-* Adds an anon fee operation to transaction builder for abar to a bar.
-*
-* @param {AnonBlindAssetRecord} input - the ABAR to be used for fee
-* @param {OwnerMemo} owner_memo - the corresponding owner_memo of the fee ABAR
-* @param {MTLeafInfo} mt_leaf_info - the Merkle Proof of the ABAR
-* @param {AXfrKeyPair} from_keypair - the owners Anon Key pair
-* @param {XSecretKey} from_dec_key - the owners decryption key
-* @param {AnonBlindAssetRecord} input
-* @param {OwnerMemo} owner_memo
-* @param {MTLeafInfo} mt_leaf_info
-* @param {AXfrKeyPair} from_keypair
-* @param {XSecretKey} from_dec_key
-* @returns {TransactionBuilder}
-*/
-  add_operation_anon_fee(input: AnonBlindAssetRecord, owner_memo: OwnerMemo, mt_leaf_info: MTLeafInfo, from_keypair: AXfrKeyPair, from_dec_key: XSecretKey): TransactionBuilder;
-/**
-* Returns a list of randomizer base58 strings as json
+* Returns a list of commitment base64 strings as json
 * @returns {any}
 */
-  get_randomizers(): any;
+  get_commitments(): any;
 /**
 * Adds an operation to transaction builder which transfer a Anon Blind Asset Record
 *

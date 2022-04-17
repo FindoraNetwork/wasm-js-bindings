@@ -113,19 +113,17 @@ export function get_open_abar(abar: AnonBlindAssetRecord, memo: OwnerMemo, keypa
 * @param {AnonBlindAssetRecord} abar - ABAR for which balance needs to be queried
 * @param {OwnerMemo} memo - memo corresponding to the abar
 * @param keypair {AXfrKeyPair} - AXfrKeyPair of the ABAR owner
-* @param randomized_keypair {AXfrKeyPair} - Randomized AXfrKeyPair of the ABAR owner
 * @param dec_key {XSecretKey} - Decryption key of the abar owner to open the Owner Memo
 * @param MTLeafInfo {mt_leaf_info} - the Merkle proof of the ABAR from commitment tree
 * @throws Will throw an error if abar fails to open
 * @param {AnonBlindAssetRecord} abar
 * @param {OwnerMemo} memo
 * @param {AXfrKeyPair} keypair
-* @param {AXfrKeyPair} randomized_keypair
 * @param {XSecretKey} dec_key
 * @param {MTLeafInfo} mt_leaf_info
 * @returns {string}
 */
-export function gen_nullifier_hash(abar: AnonBlindAssetRecord, memo: OwnerMemo, keypair: AXfrKeyPair, randomized_keypair: AXfrKeyPair, dec_key: XSecretKey, mt_leaf_info: MTLeafInfo): string;
+export function gen_nullifier_hash(abar: AnonBlindAssetRecord, memo: OwnerMemo, keypair: AXfrKeyPair, dec_key: XSecretKey, mt_leaf_info: MTLeafInfo): string;
 /**
 * Returns a JavaScript object containing decrypted owner record information,
 * where `amount` is the decrypted asset amount, and `asset_type` is the decrypted asset type code.
@@ -440,18 +438,6 @@ export function get_delegation_max_amount(): BigInt;
 */
 export function axfr_pubkey_from_string(key_str: string): AXfrPubKey;
 /**
-* @param {AXfrPubKey} pub_key
-* @param {string} randomizer_str
-* @returns {any}
-*/
-export function randomize_axfr_pubkey(pub_key: AXfrPubKey, randomizer_str: string): any;
-/**
-* @param {AXfrKeyPair} keypair
-* @param {string} randomizer_str
-* @returns {any}
-*/
-export function randomize_axfr_keypair(keypair: AXfrKeyPair, randomizer_str: string): any;
-/**
 * @param {string} key_str
 * @returns {AXfrKeyPair}
 */
@@ -491,11 +477,7 @@ export class AnonBlindAssetRecord {
 /**
 * @returns {BLSScalar}
 */
-  amount_type_commitment: BLSScalar;
-/**
-* @returns {AXfrPubKey}
-*/
-  public_key: AXfrPubKey;
+  commitment: BLSScalar;
 }
 /**
 * AnonKeys is used to store keys for Anon proofs
@@ -581,20 +563,20 @@ export class AnonTransferOperationBuilder {
 */
   set_fra_remainder_receiver(from_pubkey: XPublicKey): AnonTransferOperationBuilder;
 /**
-* get_randomizers returns a list of all the randomizers for receiver public keys
+* get_commitments returns a list of all the commitments for receiver public keys
 * @returns {any}
 */
-  get_randomizers(): any;
+  get_commitments(): any;
 /**
-* get_randomizer_map returns a hashmap of all the randomizers mapped to public key, asset, amount
+* get_commitment_map returns a hashmap of all the commitments mapped to public key, asset, amount
 * @returns {any}
 */
-  get_randomizer_map(): any;
+  get_commitment_map(): any;
 /**
-* build_and_sign is used to build proof and sign the Transfer Operation
+* build is used to build proof the Transfer Operation
 * @returns {AnonTransferOperationBuilder}
 */
-  build_and_sign(): AnonTransferOperationBuilder;
+  build(): AnonTransferOperationBuilder;
 /**
 * transaction returns the prepared Anon Transfer Operation
 * @param nonce {NoReplayToken} - nonce of the txn to be added to the operation
@@ -758,6 +740,26 @@ export class AuthenticatedAssetRecord {
   static from_json_record(record: any): AuthenticatedAssetRecord;
 }
 /**
+* The wrapped struct for `ark_bls12_381::G1Projective`
+*/
+export class BLSG1 {
+  free(): void;
+}
+/**
+* The wrapped struct for `ark_bls12_381::G2Projective`
+*/
+export class BLSG2 {
+  free(): void;
+}
+/**
+* The wrapped struct for `Fp12<ark_bls12_381::Fq12Parameters>`,
+* which is the pairing result
+*/
+export class BLSGt {
+  free(): void;
+}
+/**
+* The wrapped struct for `ark_bls12_381::Fr`
 */
 export class BLSScalar {
   free(): void;
@@ -1072,20 +1074,6 @@ export class OwnerMemo {
   clone(): OwnerMemo;
 }
 /**
-* Public parameters necessary for generating asset records. Generating this is expensive and
-* should be done as infrequently as possible.
-* @see {@link module:Findora-Wasm~TransactionBuilder#add_basic_issue_asset|add_basic_issue_asset}
-* for information using public parameters to create issuance asset records.
-*/
-export class PublicParams {
-  free(): void;
-/**
-* Generates a new set of parameters.
-* @returns {PublicParams}
-*/
-  static new(): PublicParams;
-}
-/**
 * Stores threshold and weights for a multisignature requirement.
 */
 export class SignatureRules {
@@ -1159,6 +1147,13 @@ export class TransactionBuilder {
 */
   add_fee(inputs: FeeInputs): TransactionBuilder;
 /**
+* As the last operation of BarToAbar transaction,
+* add a static fee to the transaction.
+* @param {FeeInputs} inputs
+* @returns {TransactionBuilder}
+*/
+  add_fee_bar_to_abar(inputs: FeeInputs): TransactionBuilder;
+/**
 * A simple fee checker for mainnet v1.0.
 *
 * SEE [check_fee](ledger::data_model::Transaction::check_fee)
@@ -1221,16 +1216,14 @@ export class TransactionBuilder {
 * @param {BigInt} seq_num - Issuance sequence number. Every subsequent issuance of a given asset type must have a higher sequence number than before.
 * @param {BigInt} amount - Amount to be issued.
 * @param {boolean} conf_amount - `true` means the asset amount is confidential, and `false` means it's nonconfidential.
-* @param {PublicParams} zei_params - Public parameters necessary to generate asset records.
 * @param {XfrKeyPair} key_pair
 * @param {string} code
 * @param {BigInt} seq_num
 * @param {BigInt} amount
 * @param {boolean} conf_amount
-* @param {PublicParams} zei_params
 * @returns {TransactionBuilder}
 */
-  add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: BigInt, amount: BigInt, conf_amount: boolean, zei_params: PublicParams): TransactionBuilder;
+  add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: BigInt, amount: BigInt, conf_amount: boolean): TransactionBuilder;
 /**
 * Adds an operation to the transaction builder that adds a hash to the ledger's custom data
 * store.
@@ -1285,26 +1278,10 @@ export class TransactionBuilder {
 */
   add_operation_abar_to_bar(input: AnonBlindAssetRecord, owner_memo: OwnerMemo, mt_leaf_info: MTLeafInfo, from_keypair: AXfrKeyPair, from_dec_key: XSecretKey, recipient: XfrPublicKey, conf_amount: boolean, conf_type: boolean): TransactionBuilder;
 /**
-* Adds an anon fee operation to transaction builder for abar to a bar.
-*
-* @param {AnonBlindAssetRecord} input - the ABAR to be used for fee
-* @param {OwnerMemo} owner_memo - the corresponding owner_memo of the fee ABAR
-* @param {MTLeafInfo} mt_leaf_info - the Merkle Proof of the ABAR
-* @param {AXfrKeyPair} from_keypair - the owners Anon Key pair
-* @param {XSecretKey} from_dec_key - the owners decryption key
-* @param {AnonBlindAssetRecord} input
-* @param {OwnerMemo} owner_memo
-* @param {MTLeafInfo} mt_leaf_info
-* @param {AXfrKeyPair} from_keypair
-* @param {XSecretKey} from_dec_key
-* @returns {TransactionBuilder}
-*/
-  add_operation_anon_fee(input: AnonBlindAssetRecord, owner_memo: OwnerMemo, mt_leaf_info: MTLeafInfo, from_keypair: AXfrKeyPair, from_dec_key: XSecretKey): TransactionBuilder;
-/**
-* Returns a list of randomizer base58 strings as json
+* Returns a list of commitment base64 strings as json
 * @returns {any}
 */
-  get_randomizers(): any;
+  get_commitments(): any;
 /**
 * Adds an operation to transaction builder which transfer a Anon Blind Asset Record
 *
@@ -1594,8 +1571,6 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly __wbg_publicparams_free: (a: number) => void;
-  readonly publicparams_new: () => number;
   readonly __wbg_txoref_free: (a: number) => void;
   readonly txoref_relative: (a: number, b: number) => number;
   readonly txoref_absolute: (a: number, b: number) => number;
@@ -1660,8 +1635,8 @@ export interface InitOutput {
   readonly anonkeys_set_enc_key: (a: number, b: number, c: number) => void;
   readonly anonkeys_dec_key: (a: number, b: number) => void;
   readonly anonkeys_set_dec_key: (a: number, b: number, c: number) => void;
-  readonly __wbg_credentialsignature_free: (a: number) => void;
   readonly credentialrevealsig_get_commitment: (a: number) => number;
+  readonly __wbg_credentialsignature_free: (a: number) => void;
   readonly credentialrevealsig_get_pok: (a: number) => number;
   readonly build_id: (a: number) => void;
   readonly random_asset_type: (a: number) => void;
@@ -1676,17 +1651,17 @@ export interface InitOutput {
   readonly transactionbuilder_add_fee_relative_auto: (a: number, b: number) => number;
   readonly transactionbuilder_get_relative_outputs: (a: number, b: number) => void;
   readonly transactionbuilder_add_fee: (a: number, b: number) => number;
+  readonly transactionbuilder_add_fee_bar_to_abar: (a: number, b: number) => number;
   readonly transactionbuilder_check_fee: (a: number) => number;
   readonly transactionbuilder_new: (a: number, b: number) => number;
   readonly transactionbuilder_from_string: (a: number, b: number) => number;
   readonly transactionbuilder_add_operation_create_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => number;
   readonly transactionbuilder_add_operation_create_asset_with_policy: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => number;
-  readonly transactionbuilder_add_basic_issue_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;
+  readonly transactionbuilder_add_basic_issue_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => number;
   readonly transactionbuilder_add_operation_update_memo: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly transactionbuilder_add_operation_bar_to_abar: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => number;
   readonly transactionbuilder_add_operation_abar_to_bar: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => number;
-  readonly transactionbuilder_add_operation_anon_fee: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
-  readonly transactionbuilder_get_randomizers: (a: number) => number;
+  readonly transactionbuilder_get_commitments: (a: number) => number;
   readonly transactionbuilder_add_operation_anon_transfer: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;
   readonly transactionbuilder_add_operation_delegate: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly transactionbuilder_add_operation_undelegate: (a: number, b: number) => number;
@@ -1707,7 +1682,7 @@ export interface InitOutput {
   readonly gen_anon_keys: () => number;
   readonly get_anon_balance: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
   readonly get_open_abar: (a: number, b: number, c: number, d: number, e: number) => number;
-  readonly gen_nullifier_hash: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => void;
+  readonly gen_nullifier_hash: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
   readonly __wbg_transferoperationbuilder_free: (a: number) => void;
   readonly transferoperationbuilder_new: () => number;
   readonly transferoperationbuilder_add_input_with_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => number;
@@ -1725,9 +1700,9 @@ export interface InitOutput {
   readonly anontransferoperationbuilder_add_output: (a: number, b: number, c: number, d: number, e: number) => number;
   readonly anontransferoperationbuilder_get_expected_fee: (a: number, b: number) => void;
   readonly anontransferoperationbuilder_set_fra_remainder_receiver: (a: number, b: number) => number;
-  readonly anontransferoperationbuilder_get_randomizers: (a: number) => number;
-  readonly anontransferoperationbuilder_get_randomizer_map: (a: number) => number;
-  readonly anontransferoperationbuilder_build_and_sign: (a: number) => number;
+  readonly anontransferoperationbuilder_get_commitments: (a: number) => number;
+  readonly anontransferoperationbuilder_get_commitment_map: (a: number) => number;
+  readonly anontransferoperationbuilder_build: (a: number) => number;
   readonly anontransferoperationbuilder_transaction: (a: number, b: number) => void;
   readonly open_client_asset_record: (a: number, b: number, c: number) => number;
   readonly get_pub_key_str: (a: number, b: number) => void;
@@ -1770,8 +1745,6 @@ export interface InitOutput {
   readonly get_delegation_min_amount: (a: number) => void;
   readonly get_delegation_max_amount: (a: number) => void;
   readonly axfr_pubkey_from_string: (a: number, b: number) => number;
-  readonly randomize_axfr_pubkey: (a: number, b: number, c: number) => number;
-  readonly randomize_axfr_keypair: (a: number, b: number, c: number) => number;
   readonly axfr_keypair_from_string: (a: number, b: number) => number;
   readonly x_pubkey_from_string: (a: number, b: number) => number;
   readonly x_secretkey_from_string: (a: number, b: number) => number;
@@ -1796,15 +1769,16 @@ export interface InitOutput {
   readonly __wbg_get_mtnode_is_right_child: (a: number) => number;
   readonly __wbg_set_mtnode_is_right_child: (a: number, b: number) => void;
   readonly __wbg_anonblindassetrecord_free: (a: number) => void;
-  readonly __wbg_get_anonblindassetrecord_amount_type_commitment: (a: number) => number;
-  readonly __wbg_set_anonblindassetrecord_amount_type_commitment: (a: number, b: number) => void;
-  readonly __wbg_get_anonblindassetrecord_public_key: (a: number) => number;
-  readonly __wbg_set_anonblindassetrecord_public_key: (a: number, b: number) => void;
+  readonly __wbg_get_anonblindassetrecord_commitment: (a: number) => number;
+  readonly __wbg_set_anonblindassetrecord_commitment: (a: number, b: number) => void;
   readonly __wbg_set_mtnode_siblings1: (a: number, b: number) => void;
   readonly __wbg_get_mtnode_siblings1: (a: number) => number;
   readonly __wbg_xpublickey_free: (a: number) => void;
   readonly __wbg_xsecretkey_free: (a: number) => void;
   readonly __wbg_blsscalar_free: (a: number) => void;
+  readonly __wbg_blsg1_free: (a: number) => void;
+  readonly __wbg_blsg2_free: (a: number) => void;
+  readonly __wbg_blsgt_free: (a: number) => void;
   readonly __wbindgen_malloc: (a: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number) => number;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
