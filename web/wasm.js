@@ -1288,6 +1288,27 @@ export function abar_from_json(json) {
     return AnonBlindAssetRecord.__wrap(ret);
 }
 
+/**
+* Decrypts an ABAR with owner memo and decryption key
+* @param {AnonBlindAssetRecord} abar
+* @param {OwnerMemo} memo
+* @param {AXfrKeyPair} keypair
+* @param {XSecretKey} dec_key
+* @returns {AmountAssetType}
+*/
+export function open_abar(abar, memo, keypair, dec_key) {
+    _assertClass(abar, AnonBlindAssetRecord);
+    var ptr0 = abar.ptr;
+    abar.ptr = 0;
+    _assertClass(memo, OwnerMemo);
+    var ptr1 = memo.ptr;
+    memo.ptr = 0;
+    _assertClass(keypair, AXfrKeyPair);
+    _assertClass(dec_key, XSecretKey);
+    var ret = wasm.open_abar(ptr0, ptr1, keypair.ptr, dec_key.ptr);
+    return AmountAssetType.__wrap(ret);
+}
+
 function handleError(f) {
     return function () {
         try {
@@ -1344,6 +1365,70 @@ export class AXfrPubKey {
     free() {
         const ptr = this.__destroy_into_raw();
         wasm.__wbg_axfrpubkey_free(ptr);
+    }
+}
+/**
+*/
+export class AmountAssetType {
+
+    static __wrap(ptr) {
+        const obj = Object.create(AmountAssetType.prototype);
+        obj.ptr = ptr;
+
+        return obj;
+    }
+
+    __destroy_into_raw() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_amountassettype_free(ptr);
+    }
+    /**
+    * @returns {BigInt}
+    */
+    get amount() {
+        try {
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            wasm.__wbg_get_amountassettype_amount(retptr, this.ptr);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            u32CvtShim[0] = r0;
+            u32CvtShim[1] = r1;
+            const n0 = uint64CvtShim[0];
+            return n0;
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
+    }
+    /**
+    * @param {BigInt} arg0
+    */
+    set amount(arg0) {
+        uint64CvtShim[0] = arg0;
+        const low0 = u32CvtShim[0];
+        const high0 = u32CvtShim[1];
+        wasm.__wbg_set_amountassettype_amount(this.ptr, low0, high0);
+    }
+    /**
+    * @returns {string}
+    */
+    get asset_type() {
+        try {
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            wasm.amountassettype_asset_type(retptr, this.ptr);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            return getStringFromWasm0(r0, r1);
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+            wasm.__wbindgen_free(r0, r1);
+        }
     }
 }
 /**
@@ -1574,17 +1659,13 @@ export class AnonTransferOperationBuilder {
     add_input(abar, memo, keypair, dec_key, mt_leaf_info) {
         const ptr = this.__destroy_into_raw();
         _assertClass(abar, AnonBlindAssetRecord);
-        var ptr0 = abar.ptr;
-        abar.ptr = 0;
         _assertClass(memo, OwnerMemo);
-        var ptr1 = memo.ptr;
-        memo.ptr = 0;
         _assertClass(keypair, AXfrKeyPair);
         _assertClass(dec_key, XSecretKey);
         _assertClass(mt_leaf_info, MTLeafInfo);
-        var ptr2 = mt_leaf_info.ptr;
+        var ptr0 = mt_leaf_info.ptr;
         mt_leaf_info.ptr = 0;
-        var ret = wasm.anontransferoperationbuilder_add_input(ptr, ptr0, ptr1, keypair.ptr, dec_key.ptr, ptr2);
+        var ret = wasm.anontransferoperationbuilder_add_input(ptr, abar.ptr, memo.ptr, keypair.ptr, dec_key.ptr, ptr0);
         return AnonTransferOperationBuilder.__wrap(ret);
     }
     /**
@@ -1594,22 +1675,25 @@ export class AnonTransferOperationBuilder {
     * @param to_enc_key {XPublicKey} - The encryption public key of receiver.
     * @throws error if ABAR fails to be built
     * @param {BigInt} amount
+    * @param {string} asset_type
     * @param {AXfrPubKey} to
     * @param {XPublicKey} to_enc_key
     * @returns {AnonTransferOperationBuilder}
     */
-    add_output(amount, to, to_enc_key) {
+    add_output(amount, asset_type, to, to_enc_key) {
         const ptr = this.__destroy_into_raw();
         uint64CvtShim[0] = amount;
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
+        var ptr1 = passStringToWasm0(asset_type, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len1 = WASM_VECTOR_LEN;
         _assertClass(to, AXfrPubKey);
-        var ptr1 = to.ptr;
+        var ptr2 = to.ptr;
         to.ptr = 0;
         _assertClass(to_enc_key, XPublicKey);
-        var ptr2 = to_enc_key.ptr;
+        var ptr3 = to_enc_key.ptr;
         to_enc_key.ptr = 0;
-        var ret = wasm.anontransferoperationbuilder_add_output(ptr, low0, high0, ptr1, ptr2);
+        var ret = wasm.anontransferoperationbuilder_add_output(ptr, low0, high0, ptr1, len1, ptr2, ptr3);
         return AnonTransferOperationBuilder.__wrap(ret);
     }
     /**
@@ -3956,8 +4040,8 @@ async function init(input) {
     }
     const imports = {};
     imports.wbg = {};
-    imports.wbg.__wbindgen_json_parse = function(arg0, arg1) {
-        var ret = JSON.parse(getStringFromWasm0(arg0, arg1));
+    imports.wbg.__wbindgen_string_new = function(arg0, arg1) {
+        var ret = getStringFromWasm0(arg0, arg1);
         return addHeapObject(ret);
     };
     imports.wbg.__wbindgen_json_serialize = function(arg0, arg1) {
@@ -3968,12 +4052,12 @@ async function init(input) {
         getInt32Memory0()[arg0 / 4 + 1] = len0;
         getInt32Memory0()[arg0 / 4 + 0] = ptr0;
     };
-    imports.wbg.__wbindgen_string_new = function(arg0, arg1) {
-        var ret = getStringFromWasm0(arg0, arg1);
-        return addHeapObject(ret);
-    };
     imports.wbg.__wbindgen_object_drop_ref = function(arg0) {
         takeObject(arg0);
+    };
+    imports.wbg.__wbindgen_json_parse = function(arg0, arg1) {
+        var ret = JSON.parse(getStringFromWasm0(arg0, arg1));
+        return addHeapObject(ret);
     };
     imports.wbg.__wbindgen_object_clone_ref = function(arg0) {
         var ret = getObject(arg0);

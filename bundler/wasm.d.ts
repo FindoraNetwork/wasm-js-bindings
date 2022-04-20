@@ -458,6 +458,15 @@ export function x_secretkey_from_string(key_str: string): XSecretKey;
 */
 export function abar_from_json(json: any): AnonBlindAssetRecord;
 /**
+* Decrypts an ABAR with owner memo and decryption key
+* @param {AnonBlindAssetRecord} abar
+* @param {OwnerMemo} memo
+* @param {AXfrKeyPair} keypair
+* @param {XSecretKey} dec_key
+* @returns {AmountAssetType}
+*/
+export function open_abar(abar: AnonBlindAssetRecord, memo: OwnerMemo, keypair: AXfrKeyPair, dec_key: XSecretKey): AmountAssetType;
+/**
 * Keypair associated with an Anonymous records. It is used to spending it.
 */
 export class AXfrKeyPair {
@@ -468,6 +477,19 @@ export class AXfrKeyPair {
 */
 export class AXfrPubKey {
   free(): void;
+}
+/**
+*/
+export class AmountAssetType {
+  free(): void;
+/**
+* @returns {BigInt}
+*/
+  amount: BigInt;
+/**
+* @returns {string}
+*/
+  readonly asset_type: string;
 }
 /**
 * Asset record to be published
@@ -544,11 +566,12 @@ export class AnonTransferOperationBuilder {
 * @param to_enc_key {XPublicKey} - The encryption public key of receiver.
 * @throws error if ABAR fails to be built
 * @param {BigInt} amount
+* @param {string} asset_type
 * @param {AXfrPubKey} to
 * @param {XPublicKey} to_enc_key
 * @returns {AnonTransferOperationBuilder}
 */
-  add_output(amount: BigInt, to: AXfrPubKey, to_enc_key: XPublicKey): AnonTransferOperationBuilder;
+  add_output(amount: BigInt, asset_type: string, to: AXfrPubKey, to_enc_key: XPublicKey): AnonTransferOperationBuilder;
 /**
 * get_expected_fee is used to gather extra FRA that needs to be spent to make the transaction
 * have enough fees.
