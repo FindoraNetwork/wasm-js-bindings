@@ -1144,6 +1144,25 @@ module.exports.fra_get_minimal_fee = function() {
 };
 
 /**
+* Fee smaller than this value will be denied.
+* @returns {BigInt}
+*/
+module.exports.fra_get_minimal_fee_for_bar_to_abar = function() {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        wasm.fra_get_minimal_fee_for_bar_to_abar(retptr);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        u32CvtShim[0] = r0;
+        u32CvtShim[1] = r1;
+        const n0 = uint64CvtShim[0];
+        return n0;
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+    }
+};
+
+/**
 * The destination for fee to be transfered to.
 * @returns {XfrPublicKey}
 */

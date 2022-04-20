@@ -407,6 +407,11 @@ export function fra_get_asset_code(): string;
 */
 export function fra_get_minimal_fee(): BigInt;
 /**
+* Fee smaller than this value will be denied.
+* @returns {BigInt}
+*/
+export function fra_get_minimal_fee_for_bar_to_abar(): BigInt;
+/**
 * The destination for fee to be transfered to.
 * @returns {XfrPublicKey}
 */

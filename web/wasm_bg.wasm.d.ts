@@ -174,6 +174,7 @@ export function restore_keypair_from_mnemonic_bip44(a: number, b: number, c: num
 export function restore_keypair_from_mnemonic_bip49(a: number, b: number, c: number, d: number, e: number): number;
 export function fra_get_asset_code(a: number): void;
 export function fra_get_minimal_fee(a: number): void;
+export function fra_get_minimal_fee_for_bar_to_abar(a: number): void;
 export function fra_get_dest_pubkey(): number;
 export function get_coinbase_address(a: number): void;
 export function get_delegation_min_amount(a: number): void;

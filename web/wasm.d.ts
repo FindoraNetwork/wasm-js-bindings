@@ -407,6 +407,11 @@ export function fra_get_asset_code(): string;
 */
 export function fra_get_minimal_fee(): BigInt;
 /**
+* Fee smaller than this value will be denied.
+* @returns {BigInt}
+*/
+export function fra_get_minimal_fee_for_bar_to_abar(): BigInt;
+/**
 * The destination for fee to be transfered to.
 * @returns {XfrPublicKey}
 */
@@ -1767,6 +1772,7 @@ export interface InitOutput {
   readonly restore_keypair_from_mnemonic_bip49: (a: number, b: number, c: number, d: number, e: number) => number;
   readonly fra_get_asset_code: (a: number) => void;
   readonly fra_get_minimal_fee: (a: number) => void;
+  readonly fra_get_minimal_fee_for_bar_to_abar: (a: number) => void;
   readonly fra_get_dest_pubkey: () => number;
   readonly get_coinbase_address: (a: number) => void;
   readonly get_delegation_min_amount: (a: number) => void;
