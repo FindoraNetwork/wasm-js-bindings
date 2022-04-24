@@ -3835,6 +3835,16 @@ export class TransferOperationBuilder {
         }
     }
     /**
+    * @param {string} s
+    * @returns {TransferOperationBuilder}
+    */
+    static from_string(s) {
+        var ptr0 = passStringToWasm0(s, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        var ret = wasm.transferoperationbuilder_from_string(ptr0, len0);
+        return TransferOperationBuilder.__wrap(ret);
+    }
+    /**
     * Wraps around TransferOperationBuilder to extract an operation expression as JSON.
     * @returns {string}
     */

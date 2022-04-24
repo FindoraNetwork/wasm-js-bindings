@@ -1533,6 +1533,11 @@ export class TransferOperationBuilder {
 */
   builder(): string;
 /**
+* @param {string} s
+* @returns {TransferOperationBuilder}
+*/
+  static from_string(s: string): TransferOperationBuilder;
+/**
 * Wraps around TransferOperationBuilder to extract an operation expression as JSON.
 * @returns {string}
 */
@@ -1725,6 +1730,7 @@ export interface InitOutput {
   readonly transferoperationbuilder_create: (a: number) => number;
   readonly transferoperationbuilder_sign: (a: number, b: number) => number;
   readonly transferoperationbuilder_builder: (a: number, b: number) => void;
+  readonly transferoperationbuilder_from_string: (a: number, b: number) => number;
   readonly transferoperationbuilder_transaction: (a: number, b: number) => void;
   readonly __wbg_anontransferoperationbuilder_free: (a: number) => void;
   readonly anontransferoperationbuilder_new: (a: number, b: number) => number;

@@ -1533,6 +1533,11 @@ export class TransferOperationBuilder {
 */
   builder(): string;
 /**
+* @param {string} s
+* @returns {TransferOperationBuilder}
+*/
+  static from_string(s: string): TransferOperationBuilder;
+/**
 * Wraps around TransferOperationBuilder to extract an operation expression as JSON.
 * @returns {string}
 */

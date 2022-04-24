@@ -127,6 +127,7 @@ export function transferoperationbuilder_balance(a: number): number;
 export function transferoperationbuilder_create(a: number): number;
 export function transferoperationbuilder_sign(a: number, b: number): number;
 export function transferoperationbuilder_builder(a: number, b: number): void;
+export function transferoperationbuilder_from_string(a: number, b: number): number;
 export function transferoperationbuilder_transaction(a: number, b: number): void;
 export function __wbg_anontransferoperationbuilder_free(a: number): void;
 export function anontransferoperationbuilder_new(a: number, b: number): number;
