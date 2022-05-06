@@ -496,19 +496,17 @@ module.exports.get_open_abar = function(abar, memo, keypair, dec_key, mt_leaf_in
 * @param {AnonBlindAssetRecord} abar - ABAR for which balance needs to be queried
 * @param {OwnerMemo} memo - memo corresponding to the abar
 * @param keypair {AXfrKeyPair} - AXfrKeyPair of the ABAR owner
-* @param randomized_keypair {AXfrKeyPair} - Randomized AXfrKeyPair of the ABAR owner
 * @param dec_key {XSecretKey} - Decryption key of the abar owner to open the Owner Memo
 * @param MTLeafInfo {mt_leaf_info} - the Merkle proof of the ABAR from commitment tree
 * @throws Will throw an error if abar fails to open
 * @param {AnonBlindAssetRecord} abar
 * @param {OwnerMemo} memo
 * @param {AXfrKeyPair} keypair
-* @param {AXfrKeyPair} randomized_keypair
 * @param {XSecretKey} dec_key
 * @param {MTLeafInfo} mt_leaf_info
 * @returns {string}
 */
-module.exports.gen_nullifier_hash = function(abar, memo, keypair, randomized_keypair, dec_key, mt_leaf_info) {
+module.exports.gen_nullifier_hash = function(abar, memo, keypair, dec_key, mt_leaf_info) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         _assertClass(abar, AnonBlindAssetRecord);
@@ -520,16 +518,13 @@ module.exports.gen_nullifier_hash = function(abar, memo, keypair, randomized_key
         _assertClass(keypair, AXfrKeyPair);
         var ptr2 = keypair.ptr;
         keypair.ptr = 0;
-        _assertClass(randomized_keypair, AXfrKeyPair);
-        var ptr3 = randomized_keypair.ptr;
-        randomized_keypair.ptr = 0;
         _assertClass(dec_key, XSecretKey);
-        var ptr4 = dec_key.ptr;
+        var ptr3 = dec_key.ptr;
         dec_key.ptr = 0;
         _assertClass(mt_leaf_info, MTLeafInfo);
-        var ptr5 = mt_leaf_info.ptr;
+        var ptr4 = mt_leaf_info.ptr;
         mt_leaf_info.ptr = 0;
-        wasm.gen_nullifier_hash(retptr, ptr0, ptr1, ptr2, ptr3, ptr4, ptr5);
+        wasm.gen_nullifier_hash(retptr, ptr0, ptr1, ptr2, ptr3, ptr4);
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
@@ -1149,6 +1144,25 @@ module.exports.fra_get_minimal_fee = function() {
 };
 
 /**
+* Fee smaller than this value will be denied.
+* @returns {BigInt}
+*/
+module.exports.fra_get_minimal_fee_for_bar_to_abar = function() {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        wasm.fra_get_minimal_fee_for_bar_to_abar(retptr);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        u32CvtShim[0] = r0;
+        u32CvtShim[1] = r1;
+        const n0 = uint64CvtShim[0];
+        return n0;
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+    }
+};
+
+/**
 * The destination for fee to be transfered to.
 * @returns {XfrPublicKey}
 */
@@ -1254,36 +1268,6 @@ module.exports.axfr_pubkey_from_string = function(key_str) {
 };
 
 /**
-* @param {AXfrPubKey} pub_key
-* @param {string} randomizer_str
-* @returns {any}
-*/
-module.exports.randomize_axfr_pubkey = function(pub_key, randomizer_str) {
-    _assertClass(pub_key, AXfrPubKey);
-    var ptr0 = pub_key.ptr;
-    pub_key.ptr = 0;
-    var ptr1 = passStringToWasm0(randomizer_str, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    var len1 = WASM_VECTOR_LEN;
-    var ret = wasm.randomize_axfr_pubkey(ptr0, ptr1, len1);
-    return takeObject(ret);
-};
-
-/**
-* @param {AXfrKeyPair} keypair
-* @param {string} randomizer_str
-* @returns {any}
-*/
-module.exports.randomize_axfr_keypair = function(keypair, randomizer_str) {
-    _assertClass(keypair, AXfrKeyPair);
-    var ptr0 = keypair.ptr;
-    keypair.ptr = 0;
-    var ptr1 = passStringToWasm0(randomizer_str, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    var len1 = WASM_VECTOR_LEN;
-    var ret = wasm.randomize_axfr_keypair(ptr0, ptr1, len1);
-    return takeObject(ret);
-};
-
-/**
 * @param {string} key_str
 * @returns {AXfrKeyPair}
 */
@@ -1323,6 +1307,27 @@ module.exports.x_secretkey_from_string = function(key_str) {
 module.exports.abar_from_json = function(json) {
     var ret = wasm.abar_from_json(addHeapObject(json));
     return AnonBlindAssetRecord.__wrap(ret);
+};
+
+/**
+* Decrypts an ABAR with owner memo and decryption key
+* @param {AnonBlindAssetRecord} abar
+* @param {OwnerMemo} memo
+* @param {AXfrKeyPair} keypair
+* @param {XSecretKey} dec_key
+* @returns {AmountAssetType}
+*/
+module.exports.open_abar = function(abar, memo, keypair, dec_key) {
+    _assertClass(abar, AnonBlindAssetRecord);
+    var ptr0 = abar.ptr;
+    abar.ptr = 0;
+    _assertClass(memo, OwnerMemo);
+    var ptr1 = memo.ptr;
+    memo.ptr = 0;
+    _assertClass(keypair, AXfrKeyPair);
+    _assertClass(dec_key, XSecretKey);
+    var ret = wasm.open_abar(ptr0, ptr1, keypair.ptr, dec_key.ptr);
+    return AmountAssetType.__wrap(ret);
 };
 
 function handleError(f) {
@@ -1386,6 +1391,71 @@ class AXfrPubKey {
 }
 module.exports.AXfrPubKey = AXfrPubKey;
 /**
+*/
+class AmountAssetType {
+
+    static __wrap(ptr) {
+        const obj = Object.create(AmountAssetType.prototype);
+        obj.ptr = ptr;
+
+        return obj;
+    }
+
+    __destroy_into_raw() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_amountassettype_free(ptr);
+    }
+    /**
+    * @returns {BigInt}
+    */
+    get amount() {
+        try {
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            wasm.__wbg_get_amountassettype_amount(retptr, this.ptr);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            u32CvtShim[0] = r0;
+            u32CvtShim[1] = r1;
+            const n0 = uint64CvtShim[0];
+            return n0;
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
+    }
+    /**
+    * @param {BigInt} arg0
+    */
+    set amount(arg0) {
+        uint64CvtShim[0] = arg0;
+        const low0 = u32CvtShim[0];
+        const high0 = u32CvtShim[1];
+        wasm.__wbg_set_amountassettype_amount(this.ptr, low0, high0);
+    }
+    /**
+    * @returns {string}
+    */
+    get asset_type() {
+        try {
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            wasm.amountassettype_asset_type(retptr, this.ptr);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            return getStringFromWasm0(r0, r1);
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+            wasm.__wbindgen_free(r0, r1);
+        }
+    }
+}
+module.exports.AmountAssetType = AmountAssetType;
+/**
 * Asset record to be published
 */
 class AnonBlindAssetRecord {
@@ -1411,34 +1481,18 @@ class AnonBlindAssetRecord {
     /**
     * @returns {BLSScalar}
     */
-    get amount_type_commitment() {
-        var ret = wasm.__wbg_get_anonblindassetrecord_amount_type_commitment(this.ptr);
+    get commitment() {
+        var ret = wasm.__wbg_get_anonblindassetrecord_commitment(this.ptr);
         return BLSScalar.__wrap(ret);
     }
     /**
     * @param {BLSScalar} arg0
     */
-    set amount_type_commitment(arg0) {
+    set commitment(arg0) {
         _assertClass(arg0, BLSScalar);
         var ptr0 = arg0.ptr;
         arg0.ptr = 0;
-        wasm.__wbg_set_anonblindassetrecord_amount_type_commitment(this.ptr, ptr0);
-    }
-    /**
-    * @returns {AXfrPubKey}
-    */
-    get public_key() {
-        var ret = wasm.__wbg_get_anonblindassetrecord_public_key(this.ptr);
-        return AXfrPubKey.__wrap(ret);
-    }
-    /**
-    * @param {AXfrPubKey} arg0
-    */
-    set public_key(arg0) {
-        _assertClass(arg0, AXfrPubKey);
-        var ptr0 = arg0.ptr;
-        arg0.ptr = 0;
-        wasm.__wbg_set_anonblindassetrecord_public_key(this.ptr, ptr0);
+        wasm.__wbg_set_anonblindassetrecord_commitment(this.ptr, ptr0);
     }
 }
 module.exports.AnonBlindAssetRecord = AnonBlindAssetRecord;
@@ -1631,17 +1685,13 @@ class AnonTransferOperationBuilder {
     add_input(abar, memo, keypair, dec_key, mt_leaf_info) {
         const ptr = this.__destroy_into_raw();
         _assertClass(abar, AnonBlindAssetRecord);
-        var ptr0 = abar.ptr;
-        abar.ptr = 0;
         _assertClass(memo, OwnerMemo);
-        var ptr1 = memo.ptr;
-        memo.ptr = 0;
         _assertClass(keypair, AXfrKeyPair);
         _assertClass(dec_key, XSecretKey);
         _assertClass(mt_leaf_info, MTLeafInfo);
-        var ptr2 = mt_leaf_info.ptr;
+        var ptr0 = mt_leaf_info.ptr;
         mt_leaf_info.ptr = 0;
-        var ret = wasm.anontransferoperationbuilder_add_input(ptr, ptr0, ptr1, keypair.ptr, dec_key.ptr, ptr2);
+        var ret = wasm.anontransferoperationbuilder_add_input(ptr, abar.ptr, memo.ptr, keypair.ptr, dec_key.ptr, ptr0);
         return AnonTransferOperationBuilder.__wrap(ret);
     }
     /**
@@ -1651,22 +1701,25 @@ class AnonTransferOperationBuilder {
     * @param to_enc_key {XPublicKey} - The encryption public key of receiver.
     * @throws error if ABAR fails to be built
     * @param {BigInt} amount
+    * @param {string} asset_type
     * @param {AXfrPubKey} to
     * @param {XPublicKey} to_enc_key
     * @returns {AnonTransferOperationBuilder}
     */
-    add_output(amount, to, to_enc_key) {
+    add_output(amount, asset_type, to, to_enc_key) {
         const ptr = this.__destroy_into_raw();
         uint64CvtShim[0] = amount;
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
+        var ptr1 = passStringToWasm0(asset_type, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len1 = WASM_VECTOR_LEN;
         _assertClass(to, AXfrPubKey);
-        var ptr1 = to.ptr;
+        var ptr2 = to.ptr;
         to.ptr = 0;
         _assertClass(to_enc_key, XPublicKey);
-        var ptr2 = to_enc_key.ptr;
+        var ptr3 = to_enc_key.ptr;
         to_enc_key.ptr = 0;
-        var ret = wasm.anontransferoperationbuilder_add_output(ptr, low0, high0, ptr1, ptr2);
+        var ret = wasm.anontransferoperationbuilder_add_output(ptr, low0, high0, ptr1, len1, ptr2, ptr3);
         return AnonTransferOperationBuilder.__wrap(ret);
     }
     /**
@@ -1703,28 +1756,28 @@ class AnonTransferOperationBuilder {
         return AnonTransferOperationBuilder.__wrap(ret);
     }
     /**
-    * get_randomizers returns a list of all the randomizers for receiver public keys
+    * get_commitments returns a list of all the commitments for receiver public keys
     * @returns {any}
     */
-    get_randomizers() {
-        var ret = wasm.anontransferoperationbuilder_get_randomizers(this.ptr);
+    get_commitments() {
+        var ret = wasm.anontransferoperationbuilder_get_commitments(this.ptr);
         return takeObject(ret);
     }
     /**
-    * get_randomizer_map returns a hashmap of all the randomizers mapped to public key, asset, amount
+    * get_commitment_map returns a hashmap of all the commitments mapped to public key, asset, amount
     * @returns {any}
     */
-    get_randomizer_map() {
-        var ret = wasm.anontransferoperationbuilder_get_randomizer_map(this.ptr);
+    get_commitment_map() {
+        var ret = wasm.anontransferoperationbuilder_get_commitment_map(this.ptr);
         return takeObject(ret);
     }
     /**
-    * build_and_sign is used to build proof and sign the Transfer Operation
+    * build is used to build proof the Transfer Operation
     * @returns {AnonTransferOperationBuilder}
     */
-    build_and_sign() {
+    build() {
         const ptr = this.__destroy_into_raw();
-        var ret = wasm.anontransferoperationbuilder_build_and_sign(ptr);
+        var ret = wasm.anontransferoperationbuilder_build(ptr);
         return AnonTransferOperationBuilder.__wrap(ret);
     }
     /**
@@ -2038,6 +2091,62 @@ class AuthenticatedAssetRecord {
 }
 module.exports.AuthenticatedAssetRecord = AuthenticatedAssetRecord;
 /**
+* The wrapped struct for `ark_bls12_381::G1Projective`
+*/
+class BLSG1 {
+
+    __destroy_into_raw() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_blsg1_free(ptr);
+    }
+}
+module.exports.BLSG1 = BLSG1;
+/**
+* The wrapped struct for `ark_bls12_381::G2Projective`
+*/
+class BLSG2 {
+
+    __destroy_into_raw() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_blsg2_free(ptr);
+    }
+}
+module.exports.BLSG2 = BLSG2;
+/**
+* The wrapped struct for `Fp12<ark_bls12_381::Fq12Parameters>`,
+* which is the pairing result
+*/
+class BLSGt {
+
+    __destroy_into_raw() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_blsgt_free(ptr);
+    }
+}
+module.exports.BLSGt = BLSGt;
+/**
+* The wrapped struct for `ark_bls12_381::Fr`
 */
 class BLSScalar {
 
@@ -2778,7 +2887,7 @@ class MTNode {
     * @returns {BLSScalar}
     */
     get siblings1() {
-        var ret = wasm.__wbg_get_anonblindassetrecord_amount_type_commitment(this.ptr);
+        var ret = wasm.__wbg_get_anonblindassetrecord_commitment(this.ptr);
         return BLSScalar.__wrap(ret);
     }
     /**
@@ -2788,7 +2897,7 @@ class MTNode {
         _assertClass(arg0, BLSScalar);
         var ptr0 = arg0.ptr;
         arg0.ptr = 0;
-        wasm.__wbg_set_anonblindassetrecord_amount_type_commitment(this.ptr, ptr0);
+        wasm.__wbg_set_anonblindassetrecord_commitment(this.ptr, ptr0);
     }
     /**
     * @returns {BLSScalar}
@@ -2889,42 +2998,6 @@ class OwnerMemo {
     }
 }
 module.exports.OwnerMemo = OwnerMemo;
-/**
-* Public parameters necessary for generating asset records. Generating this is expensive and
-* should be done as infrequently as possible.
-* @see {@link module:Findora-Wasm~TransactionBuilder#add_basic_issue_asset|add_basic_issue_asset}
-* for information using public parameters to create issuance asset records.
-*/
-class PublicParams {
-
-    static __wrap(ptr) {
-        const obj = Object.create(PublicParams.prototype);
-        obj.ptr = ptr;
-
-        return obj;
-    }
-
-    __destroy_into_raw() {
-        const ptr = this.ptr;
-        this.ptr = 0;
-
-        return ptr;
-    }
-
-    free() {
-        const ptr = this.__destroy_into_raw();
-        wasm.__wbg_publicparams_free(ptr);
-    }
-    /**
-    * Generates a new set of parameters.
-    * @returns {PublicParams}
-    */
-    static new() {
-        var ret = wasm.publicparams_new();
-        return PublicParams.__wrap(ret);
-    }
-}
-module.exports.PublicParams = PublicParams;
 /**
 * Stores threshold and weights for a multisignature requirement.
 */
@@ -3115,6 +3188,20 @@ class TransactionBuilder {
         return TransactionBuilder.__wrap(ret);
     }
     /**
+    * As the last operation of BarToAbar transaction,
+    * add a static fee to the transaction.
+    * @param {FeeInputs} inputs
+    * @returns {TransactionBuilder}
+    */
+    add_fee_bar_to_abar(inputs) {
+        const ptr = this.__destroy_into_raw();
+        _assertClass(inputs, FeeInputs);
+        var ptr0 = inputs.ptr;
+        inputs.ptr = 0;
+        var ret = wasm.transactionbuilder_add_fee_bar_to_abar(ptr, ptr0);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
     * A simple fee checker for mainnet v1.0.
     *
     * SEE [check_fee](ledger::data_model::Transaction::check_fee)
@@ -3135,6 +3222,17 @@ class TransactionBuilder {
         const low0 = u32CvtShim[0];
         const high0 = u32CvtShim[1];
         var ret = wasm.transactionbuilder_new(low0, high0);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
+    * Deserialize transaction builder from string.
+    * @param {string} s
+    * @returns {TransactionBuilder}
+    */
+    static from_string(s) {
+        var ptr0 = passStringToWasm0(s, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        var ret = wasm.transactionbuilder_from_string(ptr0, len0);
         return TransactionBuilder.__wrap(ret);
     }
     /**
@@ -3206,16 +3304,14 @@ class TransactionBuilder {
     * @param {BigInt} seq_num - Issuance sequence number. Every subsequent issuance of a given asset type must have a higher sequence number than before.
     * @param {BigInt} amount - Amount to be issued.
     * @param {boolean} conf_amount - `true` means the asset amount is confidential, and `false` means it's nonconfidential.
-    * @param {PublicParams} zei_params - Public parameters necessary to generate asset records.
     * @param {XfrKeyPair} key_pair
     * @param {string} code
     * @param {BigInt} seq_num
     * @param {BigInt} amount
     * @param {boolean} conf_amount
-    * @param {PublicParams} zei_params
     * @returns {TransactionBuilder}
     */
-    add_basic_issue_asset(key_pair, code, seq_num, amount, conf_amount, zei_params) {
+    add_basic_issue_asset(key_pair, code, seq_num, amount, conf_amount) {
         const ptr = this.__destroy_into_raw();
         _assertClass(key_pair, XfrKeyPair);
         var ptr0 = passStringToWasm0(code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -3226,8 +3322,7 @@ class TransactionBuilder {
         uint64CvtShim[0] = amount;
         const low2 = u32CvtShim[0];
         const high2 = u32CvtShim[1];
-        _assertClass(zei_params, PublicParams);
-        var ret = wasm.transactionbuilder_add_basic_issue_asset(ptr, key_pair.ptr, ptr0, len0, low1, high1, low2, high2, conf_amount, zei_params.ptr);
+        var ret = wasm.transactionbuilder_add_basic_issue_asset(ptr, key_pair.ptr, ptr0, len0, low1, high1, low2, high2, conf_amount);
         return TransactionBuilder.__wrap(ret);
     }
     /**
@@ -3328,42 +3423,11 @@ class TransactionBuilder {
         return TransactionBuilder.__wrap(ret);
     }
     /**
-    * Adds an anon fee operation to transaction builder for abar to a bar.
-    *
-    * @param {AnonBlindAssetRecord} input - the ABAR to be used for fee
-    * @param {OwnerMemo} owner_memo - the corresponding owner_memo of the fee ABAR
-    * @param {MTLeafInfo} mt_leaf_info - the Merkle Proof of the ABAR
-    * @param {AXfrKeyPair} from_keypair - the owners Anon Key pair
-    * @param {XSecretKey} from_dec_key - the owners decryption key
-    * @param {AnonBlindAssetRecord} input
-    * @param {OwnerMemo} owner_memo
-    * @param {MTLeafInfo} mt_leaf_info
-    * @param {AXfrKeyPair} from_keypair
-    * @param {XSecretKey} from_dec_key
-    * @returns {TransactionBuilder}
-    */
-    add_operation_anon_fee(input, owner_memo, mt_leaf_info, from_keypair, from_dec_key) {
-        const ptr = this.__destroy_into_raw();
-        _assertClass(input, AnonBlindAssetRecord);
-        var ptr0 = input.ptr;
-        input.ptr = 0;
-        _assertClass(owner_memo, OwnerMemo);
-        var ptr1 = owner_memo.ptr;
-        owner_memo.ptr = 0;
-        _assertClass(mt_leaf_info, MTLeafInfo);
-        var ptr2 = mt_leaf_info.ptr;
-        mt_leaf_info.ptr = 0;
-        _assertClass(from_keypair, AXfrKeyPair);
-        _assertClass(from_dec_key, XSecretKey);
-        var ret = wasm.transactionbuilder_add_operation_anon_fee(ptr, ptr0, ptr1, ptr2, from_keypair.ptr, from_dec_key.ptr);
-        return TransactionBuilder.__wrap(ret);
-    }
-    /**
-    * Returns a list of randomizer base58 strings as json
+    * Returns a list of commitment base64 strings as json
     * @returns {any}
     */
-    get_randomizers() {
-        var ret = wasm.transactionbuilder_get_randomizers(this.ptr);
+    get_commitments() {
+        var ret = wasm.transactionbuilder_get_commitments(this.ptr);
         return takeObject(ret);
     }
     /**
@@ -3810,6 +3874,16 @@ class TransferOperationBuilder {
         }
     }
     /**
+    * @param {string} s
+    * @returns {TransferOperationBuilder}
+    */
+    static from_string(s) {
+        var ptr0 = passStringToWasm0(s, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        var ret = wasm.transferoperationbuilder_from_string(ptr0, len0);
+        return TransferOperationBuilder.__wrap(ret);
+    }
+    /**
     * Wraps around TransferOperationBuilder to extract an operation expression as JSON.
     * @returns {string}
     */
@@ -4036,12 +4110,12 @@ module.exports.__wbg_now_4abbca4ef2aba8d6 = function(arg0) {
     return ret;
 };
 
-module.exports.__wbg_getRandomValues_fb6b088efb6bead2 = handleError(function(arg0, arg1) {
-    getObject(arg0).getRandomValues(getObject(arg1));
-});
-
 module.exports.__wbg_randomFillSync_654a7797990fb8db = handleError(function(arg0, arg1, arg2) {
     getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
+});
+
+module.exports.__wbg_getRandomValues_fb6b088efb6bead2 = handleError(function(arg0, arg1) {
+    getObject(arg0).getRandomValues(getObject(arg1));
 });
 
 module.exports.__wbg_process_70251ed1291754d5 = function(arg0) {
@@ -4085,49 +4159,6 @@ module.exports.__wbg_msCrypto_d07655bf62361f21 = function(arg0) {
     return addHeapObject(ret);
 };
 
-module.exports.__wbg_self_86b4b13392c7af56 = handleError(function() {
-    var ret = self.self;
-    return addHeapObject(ret);
-});
-
-module.exports.__wbg_crypto_b8c92eaac23d0d80 = function(arg0) {
-    var ret = getObject(arg0).crypto;
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_msCrypto_9ad6677321a08dd8 = function(arg0) {
-    var ret = getObject(arg0).msCrypto;
-    return addHeapObject(ret);
-};
-
-module.exports.__wbindgen_is_undefined = function(arg0) {
-    var ret = getObject(arg0) === undefined;
-    return ret;
-};
-
-module.exports.__wbg_static_accessor_MODULE_452b4680e8614c81 = function() {
-    var ret = module;
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_require_f5521a5b85ad2542 = function(arg0, arg1, arg2) {
-    var ret = getObject(arg0).require(getStringFromWasm0(arg1, arg2));
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_getRandomValues_dd27e6b0652b3236 = function(arg0) {
-    var ret = getObject(arg0).getRandomValues;
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_getRandomValues_e57c9b75ddead065 = function(arg0, arg1) {
-    getObject(arg0).getRandomValues(getObject(arg1));
-};
-
-module.exports.__wbg_randomFillSync_d2ba53160aec6aba = function(arg0, arg1, arg2) {
-    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
-};
-
 module.exports.__wbg_get_0c6963cbab34fbb6 = handleError(function(arg0, arg1) {
     var ret = Reflect.get(getObject(arg0), getObject(arg1));
     return addHeapObject(ret);
@@ -4162,6 +4193,11 @@ module.exports.__wbg_global_c3c8325ae8c7f1a9 = handleError(function() {
     var ret = global.global;
     return addHeapObject(ret);
 });
+
+module.exports.__wbindgen_is_undefined = function(arg0) {
+    var ret = getObject(arg0) === undefined;
+    return ret;
+};
 
 module.exports.__wbg_buffer_ebc6c8e75510eae3 = function(arg0) {
     var ret = getObject(arg0).buffer;
