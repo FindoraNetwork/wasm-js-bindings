@@ -4110,12 +4110,12 @@ module.exports.__wbg_now_4abbca4ef2aba8d6 = function(arg0) {
     return ret;
 };
 
-module.exports.__wbg_getRandomValues_fb6b088efb6bead2 = handleError(function(arg0, arg1) {
-    getObject(arg0).getRandomValues(getObject(arg1));
-});
-
 module.exports.__wbg_randomFillSync_654a7797990fb8db = handleError(function(arg0, arg1, arg2) {
     getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
+});
+
+module.exports.__wbg_getRandomValues_fb6b088efb6bead2 = handleError(function(arg0, arg1) {
+    getObject(arg0).getRandomValues(getObject(arg1));
 });
 
 module.exports.__wbg_process_70251ed1291754d5 = function(arg0) {
