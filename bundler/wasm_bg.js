@@ -4127,11 +4127,6 @@ export const __wbg_call_cb478d88f3068c91 = handleError(function(arg0, arg1) {
     return addHeapObject(ret);
 });
 
-export const __wbg_newnoargs_3efc7bfa69a681f9 = function(arg0, arg1) {
-    var ret = new Function(getStringFromWasm0(arg0, arg1));
-    return addHeapObject(ret);
-};
-
 export const __wbg_self_05c54dcacb623b9a = handleError(function() {
     var ret = self.self;
     return addHeapObject(ret);
@@ -4155,6 +4150,11 @@ export const __wbg_global_c3c8325ae8c7f1a9 = handleError(function() {
 export const __wbindgen_is_undefined = function(arg0) {
     var ret = getObject(arg0) === undefined;
     return ret;
+};
+
+export const __wbg_newnoargs_3efc7bfa69a681f9 = function(arg0, arg1) {
+    var ret = new Function(getStringFromWasm0(arg0, arg1));
+    return addHeapObject(ret);
 };
 
 export const __wbg_buffer_ebc6c8e75510eae3 = function(arg0) {
