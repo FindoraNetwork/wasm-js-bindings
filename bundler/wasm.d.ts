@@ -412,6 +412,13 @@ export function fra_get_minimal_fee(): BigInt;
 */
 export function fra_get_minimal_fee_for_bar_to_abar(): BigInt;
 /**
+* Anon fee for a given number of inputs & outputs
+* @param {number} n_inputs
+* @param {number} n_outputs
+* @returns {number}
+*/
+export function get_anon_fee(n_inputs: number, n_outputs: number): number;
+/**
 * The destination for fee to be transfered to.
 * @returns {XfrPublicKey}
 */

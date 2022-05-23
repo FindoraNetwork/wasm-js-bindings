@@ -188,6 +188,7 @@ export function abar_from_json(a: number): number;
 export function open_abar(a: number, b: number, c: number, d: number): number;
 export function get_delegation_target_address(a: number): void;
 export function get_coinbase_principal_address(a: number): void;
+export function get_anon_fee(a: number, b: number): number;
 export function __wbg_credissuersecretkey_free(a: number): void;
 export function __wbg_credissuerpublickey_free(a: number): void;
 export function __wbg_creduserpublickey_free(a: number): void;

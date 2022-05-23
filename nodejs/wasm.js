@@ -1163,6 +1163,17 @@ module.exports.fra_get_minimal_fee_for_bar_to_abar = function() {
 };
 
 /**
+* Anon fee for a given number of inputs & outputs
+* @param {number} n_inputs
+* @param {number} n_outputs
+* @returns {number}
+*/
+module.exports.get_anon_fee = function(n_inputs, n_outputs) {
+    var ret = wasm.get_anon_fee(n_inputs, n_outputs);
+    return ret >>> 0;
+};
+
+/**
 * The destination for fee to be transfered to.
 * @returns {XfrPublicKey}
 */

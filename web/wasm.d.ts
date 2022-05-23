@@ -412,6 +412,13 @@ export function fra_get_minimal_fee(): BigInt;
 */
 export function fra_get_minimal_fee_for_bar_to_abar(): BigInt;
 /**
+* Anon fee for a given number of inputs & outputs
+* @param {number} n_inputs
+* @param {number} n_outputs
+* @returns {number}
+*/
+export function get_anon_fee(n_inputs: number, n_outputs: number): number;
+/**
 * The destination for fee to be transfered to.
 * @returns {XfrPublicKey}
 */
@@ -1791,6 +1798,7 @@ export interface InitOutput {
   readonly open_abar: (a: number, b: number, c: number, d: number) => number;
   readonly get_delegation_target_address: (a: number) => void;
   readonly get_coinbase_principal_address: (a: number) => void;
+  readonly get_anon_fee: (a: number, b: number) => number;
   readonly __wbg_credissuersecretkey_free: (a: number) => void;
   readonly __wbg_credissuerpublickey_free: (a: number) => void;
   readonly __wbg_creduserpublickey_free: (a: number) => void;
