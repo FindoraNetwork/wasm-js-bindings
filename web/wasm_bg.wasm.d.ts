@@ -162,6 +162,7 @@ export function public_key_to_bech32(a: number, b: number): void;
 export function public_key_from_bech32(a: number, b: number): number;
 export function bech32_to_base64(a: number, b: number, c: number): void;
 export function base64_to_bech32(a: number, b: number, c: number): void;
+export function base64_to_base58(a: number, b: number, c: number): void;
 export function encryption_pbkdf2_aes256gcm(a: number, b: number, c: number, d: number, e: number): void;
 export function decryption_pbkdf2_aes256gcm(a: number, b: number, c: number, d: number, e: number): void;
 export function create_keypair_from_secret(a: number, b: number): number;

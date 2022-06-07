@@ -336,6 +336,11 @@ export function bech32_to_base64(pk: string): string;
 */
 export function base64_to_bech32(pk: string): string;
 /**
+* @param {string} data
+* @returns {string}
+*/
+export function base64_to_base58(data: string): string;
+/**
 * @param {string} key_pair
 * @param {string} password
 * @returns {Uint8Array}
@@ -1772,6 +1777,7 @@ export interface InitOutput {
   readonly public_key_from_bech32: (a: number, b: number) => number;
   readonly bech32_to_base64: (a: number, b: number, c: number) => void;
   readonly base64_to_bech32: (a: number, b: number, c: number) => void;
+  readonly base64_to_base58: (a: number, b: number, c: number) => void;
   readonly encryption_pbkdf2_aes256gcm: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly decryption_pbkdf2_aes256gcm: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly create_keypair_from_secret: (a: number, b: number) => number;

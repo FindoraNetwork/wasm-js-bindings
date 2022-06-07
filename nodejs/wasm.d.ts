@@ -336,6 +336,11 @@ export function bech32_to_base64(pk: string): string;
 */
 export function base64_to_bech32(pk: string): string;
 /**
+* @param {string} data
+* @returns {string}
+*/
+export function base64_to_base58(data: string): string;
+/**
 * @param {string} key_pair
 * @param {string} password
 * @returns {Uint8Array}
