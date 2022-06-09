@@ -587,7 +587,7 @@ class XfrKeyPair {
     /**
     */
     get pub_key() {
-        var ret = wasm.__wbg_get_xfrkeypair_pub_key(this.ptr);
+        const ret = wasm.__wbg_get_xfrkeypair_pub_key(this.ptr);
         return XfrPublicKey.__wrap(ret);
     }
     /**

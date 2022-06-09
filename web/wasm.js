@@ -1,7 +1,7 @@
 
 let wasm;
 
-let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
+const cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
 
 cachedTextDecoder.decode();
 
@@ -557,7 +557,7 @@ export class XfrKeyPair {
     /**
     */
     get pub_key() {
-        var ret = wasm.__wbg_get_xfrkeypair_pub_key(this.ptr);
+        const ret = wasm.__wbg_get_xfrkeypair_pub_key(this.ptr);
         return XfrPublicKey.__wrap(ret);
     }
     /**
