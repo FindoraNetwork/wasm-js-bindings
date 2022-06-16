@@ -93,7 +93,7 @@ export function transactionbuilder_add_operation_create_asset(a: number, b: numb
 export function transactionbuilder_add_operation_create_asset_with_policy(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number): number;
 export function transactionbuilder_add_basic_issue_asset(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number): number;
 export function transactionbuilder_add_operation_update_memo(a: number, b: number, c: number, d: number, e: number, f: number): number;
-export function transactionbuilder_add_operation_bar_to_abar(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number): number;
+export function transactionbuilder_add_operation_bar_to_abar(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number): number;
 export function transactionbuilder_add_operation_abar_to_bar(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number): number;
 export function transactionbuilder_get_commitments(a: number): number;
 export function transactionbuilder_add_operation_anon_transfer(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number): number;

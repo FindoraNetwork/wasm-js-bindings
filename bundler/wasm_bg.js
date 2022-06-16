@@ -3351,6 +3351,7 @@ export class TransactionBuilder {
     * @param {AXfrKeyPair} abar_key_pair - abar receiver's public key
     * @param {TxoSID} input_sid - txo sid of input bar
     * @param {ClientAssetRecord} input_record -
+    * @param {string} seed
     * @param {XfrKeyPair} auth_key_pair
     * @param {AXfrPubKey} abar_pubkey
     * @param {BigInt} txo_sid
@@ -3359,22 +3360,24 @@ export class TransactionBuilder {
     * @param {XPublicKey} enc_key
     * @returns {TransactionBuilder}
     */
-    add_operation_bar_to_abar(auth_key_pair, abar_pubkey, txo_sid, input_record, owner_memo, enc_key) {
+    add_operation_bar_to_abar(seed, auth_key_pair, abar_pubkey, txo_sid, input_record, owner_memo, enc_key) {
         const ptr = this.__destroy_into_raw();
+        var ptr0 = passStringToWasm0(seed, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
         _assertClass(auth_key_pair, XfrKeyPair);
         _assertClass(abar_pubkey, AXfrPubKey);
         uint64CvtShim[0] = txo_sid;
-        const low0 = u32CvtShim[0];
-        const high0 = u32CvtShim[1];
+        const low1 = u32CvtShim[0];
+        const high1 = u32CvtShim[1];
         _assertClass(input_record, ClientAssetRecord);
-        let ptr1 = 0;
+        let ptr2 = 0;
         if (!isLikeNone(owner_memo)) {
             _assertClass(owner_memo, OwnerMemo);
-            ptr1 = owner_memo.ptr;
+            ptr2 = owner_memo.ptr;
             owner_memo.ptr = 0;
         }
         _assertClass(enc_key, XPublicKey);
-        var ret = wasm.transactionbuilder_add_operation_bar_to_abar(ptr, auth_key_pair.ptr, abar_pubkey.ptr, low0, high0, input_record.ptr, ptr1, enc_key.ptr);
+        var ret = wasm.transactionbuilder_add_operation_bar_to_abar(ptr, ptr0, len0, auth_key_pair.ptr, abar_pubkey.ptr, low1, high1, input_record.ptr, ptr2, enc_key.ptr);
         return TransactionBuilder.__wrap(ret);
     }
     /**

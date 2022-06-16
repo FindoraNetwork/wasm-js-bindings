@@ -1286,6 +1286,7 @@ export class TransactionBuilder {
 * @param {AXfrKeyPair} abar_key_pair - abar receiver's public key
 * @param {TxoSID} input_sid - txo sid of input bar
 * @param {ClientAssetRecord} input_record -
+* @param {string} seed
 * @param {XfrKeyPair} auth_key_pair
 * @param {AXfrPubKey} abar_pubkey
 * @param {BigInt} txo_sid
@@ -1294,7 +1295,7 @@ export class TransactionBuilder {
 * @param {XPublicKey} enc_key
 * @returns {TransactionBuilder}
 */
-  add_operation_bar_to_abar(auth_key_pair: XfrKeyPair, abar_pubkey: AXfrPubKey, txo_sid: BigInt, input_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, enc_key: XPublicKey): TransactionBuilder;
+  add_operation_bar_to_abar(seed: string, auth_key_pair: XfrKeyPair, abar_pubkey: AXfrPubKey, txo_sid: BigInt, input_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, enc_key: XPublicKey): TransactionBuilder;
 /**
 * Adds an operation to transaction builder which converts an abar to a bar.
 *
