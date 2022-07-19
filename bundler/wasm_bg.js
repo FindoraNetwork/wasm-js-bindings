@@ -234,6 +234,26 @@ export function random_asset_type() {
 }
 
 /**
+* Creates a new asset code with prefixing-hashing the original code to query the ledger.
+* @param {string} asset_code_string
+* @returns {string}
+*/
+export function hash_asset_code(asset_code_string) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        var ptr0 = passStringToWasm0(asset_code_string, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.hash_asset_code(retptr, ptr0, len0);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
+/**
 * Generates asset type as a Base64 string from a JSON-serialized JavaScript value.
 * @param {any} val
 * @returns {string}
@@ -3604,6 +3624,15 @@ export class TransactionBuilder {
         return TransactionBuilder.__wrap(ret);
     }
     /**
+    * Builds the anon operations from pre-notes
+    * @returns {TransactionBuilder}
+    */
+    build() {
+        const ptr = this.__destroy_into_raw();
+        var ret = wasm.transactionbuilder_build(ptr);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
     * @param {XfrKeyPair} kp
     * @returns {TransactionBuilder}
     */
@@ -4128,14 +4157,6 @@ export const __wbg_now_4abbca4ef2aba8d6 = function(arg0) {
     return ret;
 };
 
-export const __wbg_randomFillSync_91e2b39becca6147 = handleError(function(arg0, arg1, arg2) {
-    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
-});
-
-export const __wbg_getRandomValues_b14734aa289bc356 = handleError(function(arg0, arg1) {
-    getObject(arg0).getRandomValues(getObject(arg1));
-});
-
 export const __wbg_process_e56fd54cf6319b6c = function(arg0) {
     var ret = getObject(arg0).process;
     return addHeapObject(ret);
@@ -4176,6 +4197,14 @@ export const __wbg_msCrypto_5a86d77a66230f81 = function(arg0) {
     var ret = getObject(arg0).msCrypto;
     return addHeapObject(ret);
 };
+
+export const __wbg_getRandomValues_b14734aa289bc356 = handleError(function(arg0, arg1) {
+    getObject(arg0).getRandomValues(getObject(arg1));
+});
+
+export const __wbg_randomFillSync_91e2b39becca6147 = handleError(function(arg0, arg1, arg2) {
+    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
+});
 
 export const __wbg_get_0c6963cbab34fbb6 = handleError(function(arg0, arg1) {
     var ret = Reflect.get(getObject(arg0), getObject(arg1));

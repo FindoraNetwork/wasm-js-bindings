@@ -15,6 +15,12 @@ export function build_id(): string;
 */
 export function random_asset_type(): string;
 /**
+* Creates a new asset code with prefixing-hashing the original code to query the ledger.
+* @param {string} asset_code_string
+* @returns {string}
+*/
+export function hash_asset_code(asset_code_string: string): string;
+/**
 * Generates asset type as a Base64 string from a JSON-serialized JavaScript value.
 * @param {any} val
 * @returns {string}
@@ -1406,6 +1412,11 @@ export class TransactionBuilder {
 */
   add_transfer_operation(op: string): TransactionBuilder;
 /**
+* Builds the anon operations from pre-notes
+* @returns {TransactionBuilder}
+*/
+  build(): TransactionBuilder;
+/**
 * @param {XfrKeyPair} kp
 * @returns {TransactionBuilder}
 */
@@ -1706,6 +1717,7 @@ export interface InitOutput {
   readonly credentialrevealsig_get_pok: (a: number) => number;
   readonly build_id: (a: number) => void;
   readonly random_asset_type: (a: number) => void;
+  readonly hash_asset_code: (a: number, b: number, c: number) => void;
   readonly asset_type_from_jsvalue: (a: number, b: number) => void;
   readonly verify_authenticated_txn: (a: number, b: number, c: number, d: number) => number;
   readonly get_null_pk: () => number;
@@ -1736,6 +1748,7 @@ export interface InitOutput {
   readonly transactionbuilder_add_operation_claim_custom: (a: number, b: number, c: number, d: number) => number;
   readonly transactionbuilder_add_operation_convert_account: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;
   readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number) => number;
+  readonly transactionbuilder_build: (a: number) => number;
   readonly transactionbuilder_sign: (a: number, b: number) => number;
   readonly transactionbuilder_transaction: (a: number, b: number) => void;
   readonly transactionbuilder_transaction_handle: (a: number, b: number) => void;
@@ -1839,8 +1852,8 @@ export interface InitOutput {
   readonly __wbg_anonassetrecord_free: (a: number) => void;
   readonly __wbg_get_anonassetrecord_commitment: (a: number) => number;
   readonly __wbg_set_anonassetrecord_commitment: (a: number, b: number) => void;
-  readonly __wbg_get_mtnode_siblings1: (a: number) => number;
   readonly __wbg_set_mtnode_siblings1: (a: number, b: number) => void;
+  readonly __wbg_get_mtnode_siblings1: (a: number) => number;
   readonly __wbg_xfrpublickey_free: (a: number) => void;
   readonly __wbg_xfrkeypair_free: (a: number) => void;
   readonly __wbg_get_xfrkeypair_pub_key: (a: number) => number;
