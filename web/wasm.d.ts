@@ -488,6 +488,48 @@ export function abar_from_json(json: any): AnonAssetRecord;
 */
 export function open_abar(abar: AnonAssetRecord, memo: AxfrOwnerMemo, keypair: AXfrKeyPair): AmountAssetType;
 /**
+* Decrypts the owner anon memo.
+* * `memo` - Owner anon memo to decrypt
+* * `key_pair` - Owner anon keypair
+* * `abar` - Associated anonymous blind asset record to check memo info against.
+* Return Error if memo info does not match the commitment or public key.
+* Return Ok(amount, asset_type, blinding) otherwise.
+* @param {AxfrOwnerMemo} memo
+* @param {AXfrKeyPair} key_pair
+* @param {AnonAssetRecord} abar
+* @returns {AxfrOwnerMemoInfo}
+*/
+export function decrypt_axfr_memo(memo: AxfrOwnerMemo, key_pair: AXfrKeyPair, abar: AnonAssetRecord): AxfrOwnerMemoInfo;
+/**
+* Try to decrypt the owner memo to check if it is own.
+* * `memo` - Owner anon memo need to decrypt.
+* * `key_pair` - the memo bytes.
+* Return Ok(amount, asset_type, blinding) if memo is own.
+* @param {AxfrOwnerMemo} memo
+* @param {AXfrKeyPair} key_pair
+* @returns {Uint8Array}
+*/
+export function try_decrypt_axfr_memo(memo: AxfrOwnerMemo, key_pair: AXfrKeyPair): Uint8Array;
+/**
+* Parse the owner memo from bytes.
+* * `bytes` - the memo plain bytes.
+* * `key_pair` - the memo bytes.
+* * `abar` - Associated anonymous blind asset record to check memo info against.
+* Return Error if memo info does not match the commitment.
+* Return Ok(amount, asset_type, blinding) otherwise.
+* @param {Uint8Array} bytes
+* @param {AXfrKeyPair} key_pair
+* @param {AnonAssetRecord} abar
+* @returns {AxfrOwnerMemoInfo}
+*/
+export function parse_axfr_memo(bytes: Uint8Array, key_pair: AXfrKeyPair, abar: AnonAssetRecord): AxfrOwnerMemoInfo;
+/**
+* Convert Commitment to AnonAssetRecord.
+* @param {BLSScalar} commitment
+* @returns {AnonAssetRecord}
+*/
+export function commitment_to_aar(commitment: BLSScalar): AnonAssetRecord;
+/**
 * Keypair associated with an Anonymous records. It is used to spending it.
 * The key pair for anonymous payment.
 */
@@ -801,6 +843,24 @@ export class AxfrOwnerMemo {
 * @returns {AxfrOwnerMemo}
 */
   clone(): AxfrOwnerMemo;
+}
+/**
+* Asset owner memo decrypted info. contains amount, asset_type and blind.
+*/
+export class AxfrOwnerMemoInfo {
+  free(): void;
+/**
+* @returns {BigInt}
+*/
+  readonly amount: BigInt;
+/**
+* @returns {string}
+*/
+  readonly asset_type: string;
+/**
+* @returns {BLSScalar}
+*/
+  readonly blind: BLSScalar;
 }
 /**
 * The wrapped struct for `ark_bls12_381::G1Projective`
@@ -1660,6 +1720,9 @@ export interface InitOutput {
   readonly __wbg_axfrownermemo_free: (a: number) => void;
   readonly axfrownermemo_from_json: (a: number) => number;
   readonly axfrownermemo_clone: (a: number) => number;
+  readonly __wbg_axfrownermemoinfo_free: (a: number) => void;
+  readonly axfrownermemoinfo_asset_type: (a: number, b: number) => void;
+  readonly axfrownermemoinfo_blind: (a: number) => number;
   readonly __wbg_credentialuserkeypair_free: (a: number) => void;
   readonly __wbg_credentialissuerkeypair_free: (a: number) => void;
   readonly __wbg_credentialrevealsig_free: (a: number) => void;
@@ -1715,6 +1778,7 @@ export interface InitOutput {
   readonly credentialrevealsig_get_commitment: (a: number) => number;
   readonly __wbg_credentialsignature_free: (a: number) => void;
   readonly credentialrevealsig_get_pok: (a: number) => number;
+  readonly axfrownermemoinfo_amount: (a: number, b: number) => void;
   readonly build_id: (a: number) => void;
   readonly random_asset_type: (a: number) => void;
   readonly hash_asset_code: (a: number, b: number, c: number) => void;
@@ -1832,6 +1896,10 @@ export interface InitOutput {
   readonly x_secretkey_from_string: (a: number, b: number) => number;
   readonly abar_from_json: (a: number) => number;
   readonly open_abar: (a: number, b: number, c: number) => number;
+  readonly decrypt_axfr_memo: (a: number, b: number, c: number) => number;
+  readonly try_decrypt_axfr_memo: (a: number, b: number, c: number) => void;
+  readonly parse_axfr_memo: (a: number, b: number, c: number, d: number) => number;
+  readonly commitment_to_aar: (a: number) => number;
   readonly get_delegation_target_address: (a: number) => void;
   readonly get_coinbase_principal_address: (a: number) => void;
   readonly get_anon_fee: (a: number, b: number) => number;

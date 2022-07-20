@@ -1375,6 +1375,85 @@ export function open_abar(abar, memo, keypair) {
     return AmountAssetType.__wrap(ret);
 }
 
+/**
+* Decrypts the owner anon memo.
+* * `memo` - Owner anon memo to decrypt
+* * `key_pair` - Owner anon keypair
+* * `abar` - Associated anonymous blind asset record to check memo info against.
+* Return Error if memo info does not match the commitment or public key.
+* Return Ok(amount, asset_type, blinding) otherwise.
+* @param {AxfrOwnerMemo} memo
+* @param {AXfrKeyPair} key_pair
+* @param {AnonAssetRecord} abar
+* @returns {AxfrOwnerMemoInfo}
+*/
+export function decrypt_axfr_memo(memo, key_pair, abar) {
+    _assertClass(memo, AxfrOwnerMemo);
+    _assertClass(key_pair, AXfrKeyPair);
+    _assertClass(abar, AnonAssetRecord);
+    var ret = wasm.decrypt_axfr_memo(memo.ptr, key_pair.ptr, abar.ptr);
+    return AxfrOwnerMemoInfo.__wrap(ret);
+}
+
+/**
+* Try to decrypt the owner memo to check if it is own.
+* * `memo` - Owner anon memo need to decrypt.
+* * `key_pair` - the memo bytes.
+* Return Ok(amount, asset_type, blinding) if memo is own.
+* @param {AxfrOwnerMemo} memo
+* @param {AXfrKeyPair} key_pair
+* @returns {Uint8Array}
+*/
+export function try_decrypt_axfr_memo(memo, key_pair) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        _assertClass(memo, AxfrOwnerMemo);
+        _assertClass(key_pair, AXfrKeyPair);
+        wasm.try_decrypt_axfr_memo(retptr, memo.ptr, key_pair.ptr);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        var v0 = getArrayU8FromWasm0(r0, r1).slice();
+        wasm.__wbindgen_free(r0, r1 * 1);
+        return v0;
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+    }
+}
+
+/**
+* Parse the owner memo from bytes.
+* * `bytes` - the memo plain bytes.
+* * `key_pair` - the memo bytes.
+* * `abar` - Associated anonymous blind asset record to check memo info against.
+* Return Error if memo info does not match the commitment.
+* Return Ok(amount, asset_type, blinding) otherwise.
+* @param {Uint8Array} bytes
+* @param {AXfrKeyPair} key_pair
+* @param {AnonAssetRecord} abar
+* @returns {AxfrOwnerMemoInfo}
+*/
+export function parse_axfr_memo(bytes, key_pair, abar) {
+    var ptr0 = passArray8ToWasm0(bytes, wasm.__wbindgen_malloc);
+    var len0 = WASM_VECTOR_LEN;
+    _assertClass(key_pair, AXfrKeyPair);
+    _assertClass(abar, AnonAssetRecord);
+    var ret = wasm.parse_axfr_memo(ptr0, len0, key_pair.ptr, abar.ptr);
+    return AxfrOwnerMemoInfo.__wrap(ret);
+}
+
+/**
+* Convert Commitment to AnonAssetRecord.
+* @param {BLSScalar} commitment
+* @returns {AnonAssetRecord}
+*/
+export function commitment_to_aar(commitment) {
+    _assertClass(commitment, BLSScalar);
+    var ptr0 = commitment.ptr;
+    commitment.ptr = 0;
+    var ret = wasm.commitment_to_aar(ptr0);
+    return AnonAssetRecord.__wrap(ret);
+}
+
 function handleError(f) {
     return function () {
         try {
@@ -2159,6 +2238,69 @@ export class AxfrOwnerMemo {
     clone() {
         var ret = wasm.axfrownermemo_clone(this.ptr);
         return AxfrOwnerMemo.__wrap(ret);
+    }
+}
+/**
+* Asset owner memo decrypted info. contains amount, asset_type and blind.
+*/
+export class AxfrOwnerMemoInfo {
+
+    static __wrap(ptr) {
+        const obj = Object.create(AxfrOwnerMemoInfo.prototype);
+        obj.ptr = ptr;
+
+        return obj;
+    }
+
+    __destroy_into_raw() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_axfrownermemoinfo_free(ptr);
+    }
+    /**
+    * @returns {BigInt}
+    */
+    get amount() {
+        try {
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            wasm.__wbg_get_amountassettype_amount(retptr, this.ptr);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            u32CvtShim[0] = r0;
+            u32CvtShim[1] = r1;
+            const n0 = uint64CvtShim[0];
+            return n0;
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
+    }
+    /**
+    * @returns {string}
+    */
+    get asset_type() {
+        try {
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            wasm.axfrownermemoinfo_asset_type(retptr, this.ptr);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            return getStringFromWasm0(r0, r1);
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+            wasm.__wbindgen_free(r0, r1);
+        }
+    }
+    /**
+    * @returns {BLSScalar}
+    */
+    get blind() {
+        var ret = wasm.axfrownermemoinfo_blind(this.ptr);
+        return BLSScalar.__wrap(ret);
     }
 }
 /**
