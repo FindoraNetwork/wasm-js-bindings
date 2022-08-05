@@ -3644,9 +3644,7 @@ class TransactionBuilder {
         mt_leaf_info.ptr = 0;
         _assertClass(from_keypair, AXfrKeyPair);
         _assertClass(recipient, XfrPublicKey);
-        var ptr3 = recipient.ptr;
-        recipient.ptr = 0;
-        var ret = wasm.transactionbuilder_add_operation_abar_to_bar(ptr, ptr0, ptr1, ptr2, from_keypair.ptr, ptr3, conf_amount, conf_type);
+        var ret = wasm.transactionbuilder_add_operation_abar_to_bar(ptr, ptr0, ptr1, ptr2, from_keypair.ptr, recipient.ptr, conf_amount, conf_type);
         return TransactionBuilder.__wrap(ret);
     }
     /**
@@ -3686,12 +3684,10 @@ class TransactionBuilder {
         mt_leaf_info.ptr = 0;
         _assertClass(from_keypair, AXfrKeyPair);
         _assertClass(to_pub_key, AXfrPubKey);
-        var ptr3 = to_pub_key.ptr;
-        to_pub_key.ptr = 0;
         uint64CvtShim[0] = to_amount;
-        const low4 = u32CvtShim[0];
-        const high4 = u32CvtShim[1];
-        var ret = wasm.transactionbuilder_add_operation_anon_transfer(ptr, ptr0, ptr1, ptr2, from_keypair.ptr, ptr3, low4, high4);
+        const low3 = u32CvtShim[0];
+        const high3 = u32CvtShim[1];
+        var ret = wasm.transactionbuilder_add_operation_anon_transfer(ptr, ptr0, ptr1, ptr2, from_keypair.ptr, to_pub_key.ptr, low3, high3);
         return TransactionBuilder.__wrap(ret);
     }
     /**
