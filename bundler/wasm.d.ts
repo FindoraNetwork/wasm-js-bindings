@@ -642,6 +642,11 @@ export class AnonTransferOperationBuilder {
 */
   get_expected_fee(): BigInt;
 /**
+* get_total_fee_estimate
+* @returns {BigInt}
+*/
+  get_total_fee_estimate(): BigInt;
+/**
 * get_commitments returns a list of all the commitments for receiver public keys
 * @returns {any}
 */

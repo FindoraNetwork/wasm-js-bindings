@@ -141,6 +141,7 @@ export function anontransferoperationbuilder_new(a: number, b: number): number;
 export function anontransferoperationbuilder_add_input(a: number, b: number, c: number, d: number, e: number): number;
 export function anontransferoperationbuilder_add_output(a: number, b: number, c: number, d: number, e: number, f: number): number;
 export function anontransferoperationbuilder_get_expected_fee(a: number, b: number): void;
+export function anontransferoperationbuilder_get_total_fee_estimate(a: number, b: number): void;
 export function anontransferoperationbuilder_get_commitments(a: number): number;
 export function anontransferoperationbuilder_get_commitment_map(a: number): number;
 export function anontransferoperationbuilder_build(a: number): number;

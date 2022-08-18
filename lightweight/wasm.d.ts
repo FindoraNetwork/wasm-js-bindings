@@ -642,6 +642,11 @@ export class AnonTransferOperationBuilder {
 */
   get_expected_fee(): BigInt;
 /**
+* get_total_fee_estimate
+* @returns {BigInt}
+*/
+  get_total_fee_estimate(): BigInt;
+/**
 * get_commitments returns a list of all the commitments for receiver public keys
 * @returns {any}
 */
@@ -1843,6 +1848,7 @@ export interface InitOutput {
   readonly anontransferoperationbuilder_add_input: (a: number, b: number, c: number, d: number, e: number) => number;
   readonly anontransferoperationbuilder_add_output: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly anontransferoperationbuilder_get_expected_fee: (a: number, b: number) => void;
+  readonly anontransferoperationbuilder_get_total_fee_estimate: (a: number, b: number) => void;
   readonly anontransferoperationbuilder_get_commitments: (a: number) => number;
   readonly anontransferoperationbuilder_get_commitment_map: (a: number) => number;
   readonly anontransferoperationbuilder_build: (a: number) => number;
