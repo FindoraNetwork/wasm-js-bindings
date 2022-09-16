@@ -567,6 +567,29 @@ export function public_key_to_base64(key) {
 }
 
 /**
+* Converts a base64 encoded public key string to a public key.
+* @param {string} pk
+* @returns {XfrPublicKey}
+*/
+export function public_key_from_base64(pk) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        const ptr0 = passStringToWasm0(pk, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        wasm.public_key_from_base64(retptr, ptr0, len0);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        var r2 = getInt32Memory0()[retptr / 4 + 2];
+        if (r2) {
+            throw takeObject(r1);
+        }
+        return XfrPublicKey.__wrap(r0);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+    }
+}
+
+/**
 * Expresses a transfer key pair as a hex-encoded string.
 * To decode the string, use `keypair_from_str` function.
 * @param {XfrKeyPair} key_pair
@@ -1412,6 +1435,13 @@ export class AssetRules {
 */
 export class AssetTracerKeyPair {
 
+    static __wrap(ptr) {
+        const obj = Object.create(AssetTracerKeyPair.prototype);
+        obj.ptr = ptr;
+
+        return obj;
+    }
+
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -1422,6 +1452,14 @@ export class AssetTracerKeyPair {
     free() {
         const ptr = this.__destroy_into_raw();
         wasm.__wbg_assettracerkeypair_free(ptr);
+    }
+    /**
+    * Creates a new tracer key pair.
+    * @returns {AssetTracerKeyPair}
+    */
+    static new() {
+        const ret = wasm.assettracerkeypair_new();
+        return AssetTracerKeyPair.__wrap(ret);
     }
 }
 /**
@@ -2310,6 +2348,13 @@ export class OwnerMemo {
 */
 export class PublicParams {
 
+    static __wrap(ptr) {
+        const obj = Object.create(PublicParams.prototype);
+        obj.ptr = ptr;
+
+        return obj;
+    }
+
     __destroy_into_raw() {
         const ptr = this.ptr;
         this.ptr = 0;
@@ -2320,6 +2365,14 @@ export class PublicParams {
     free() {
         const ptr = this.__destroy_into_raw();
         wasm.__wbg_publicparams_free(ptr);
+    }
+    /**
+    * Generates a new set of parameters.
+    * @returns {PublicParams}
+    */
+    static new() {
+        const ret = wasm.publicparams_new();
+        return PublicParams.__wrap(ret);
     }
 }
 /**

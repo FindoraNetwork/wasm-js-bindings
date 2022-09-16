@@ -117,6 +117,12 @@ export function new_keypair_from_seed(seed_str: string, name?: string): XfrKeyPa
 */
 export function public_key_to_base64(key: XfrPublicKey): string;
 /**
+* Converts a base64 encoded public key string to a public key.
+* @param {string} pk
+* @returns {XfrPublicKey}
+*/
+export function public_key_from_base64(pk: string): XfrPublicKey;
+/**
 * Expresses a transfer key pair as a hex-encoded string.
 * To decode the string, use `keypair_from_str` function.
 * @param {XfrKeyPair} key_pair
@@ -456,6 +462,11 @@ export class AssetRules {
 */
 export class AssetTracerKeyPair {
   free(): void;
+/**
+* Creates a new tracer key pair.
+* @returns {AssetTracerKeyPair}
+*/
+  static new(): AssetTracerKeyPair;
 }
 /**
 * Object representing an asset definition. Used to fetch tracing policies and any other
@@ -800,6 +811,11 @@ export class OwnerMemo {
 */
 export class PublicParams {
   free(): void;
+/**
+* Generates a new set of parameters.
+* @returns {PublicParams}
+*/
+  static new(): PublicParams;
 }
 /**
 * Stores threshold and weights for a multisignature requirement.
@@ -1217,6 +1233,7 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
   readonly __wbg_publicparams_free: (a: number) => void;
+  readonly publicparams_new: () => number;
   readonly __wbg_txoref_free: (a: number) => void;
   readonly txoref_relative: (a: number) => number;
   readonly txoref_absolute: (a: number) => number;
@@ -1227,6 +1244,7 @@ export interface InitOutput {
   readonly clientassetrecord_from_json: (a: number, b: number) => void;
   readonly clientassetrecord_to_json: (a: number, b: number) => void;
   readonly __wbg_assettracerkeypair_free: (a: number) => void;
+  readonly assettracerkeypair_new: () => number;
   readonly __wbg_ownermemo_free: (a: number) => void;
   readonly ownermemo_from_json: (a: number, b: number) => void;
   readonly ownermemo_clone: (a: number) => number;
@@ -1322,6 +1340,7 @@ export interface InitOutput {
   readonly new_keypair: () => number;
   readonly new_keypair_from_seed: (a: number, b: number, c: number, d: number) => number;
   readonly public_key_to_base64: (a: number, b: number) => void;
+  readonly public_key_from_base64: (a: number, b: number, c: number) => void;
   readonly keypair_to_str: (a: number, b: number) => void;
   readonly keypair_from_str: (a: number, b: number) => number;
   readonly wasm_credential_issuer_key_gen: (a: number) => number;

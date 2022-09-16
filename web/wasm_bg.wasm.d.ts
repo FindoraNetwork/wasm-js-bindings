@@ -2,6 +2,7 @@
 /* eslint-disable */
 export const memory: WebAssembly.Memory;
 export function __wbg_publicparams_free(a: number): void;
+export function publicparams_new(): number;
 export function __wbg_txoref_free(a: number): void;
 export function txoref_relative(a: number): number;
 export function txoref_absolute(a: number): number;
@@ -12,6 +13,7 @@ export function __wbg_clientassetrecord_free(a: number): void;
 export function clientassetrecord_from_json(a: number, b: number): void;
 export function clientassetrecord_to_json(a: number, b: number): void;
 export function __wbg_assettracerkeypair_free(a: number): void;
+export function assettracerkeypair_new(): number;
 export function __wbg_ownermemo_free(a: number): void;
 export function ownermemo_from_json(a: number, b: number): void;
 export function ownermemo_clone(a: number): number;
@@ -107,6 +109,7 @@ export function get_priv_key_str(a: number, b: number): void;
 export function new_keypair(): number;
 export function new_keypair_from_seed(a: number, b: number, c: number, d: number): number;
 export function public_key_to_base64(a: number, b: number): void;
+export function public_key_from_base64(a: number, b: number, c: number): void;
 export function keypair_to_str(a: number, b: number): void;
 export function keypair_from_str(a: number, b: number): number;
 export function wasm_credential_issuer_key_gen(a: number): number;
