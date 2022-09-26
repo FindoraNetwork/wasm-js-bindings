@@ -3796,6 +3796,16 @@ export class TransactionBuilder {
         return TransactionBuilder.__wrap(ret);
     }
     /**
+    * @param {XfrKeyPair} kp
+    * @returns {TransactionBuilder}
+    */
+    sign_origin(kp) {
+        const ptr = this.__destroy_into_raw();
+        _assertClass(kp, XfrKeyPair);
+        var ret = wasm.transactionbuilder_sign_origin(ptr, kp.ptr);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
     * Extracts the serialized form of a transaction.
     * @returns {string}
     */

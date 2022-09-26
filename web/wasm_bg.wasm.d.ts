@@ -75,8 +75,8 @@ export function anonkeys_view_key(a: number, b: number): void;
 export function anonkeys_set_view_key(a: number, b: number, c: number): void;
 export function credentialrevealsig_get_commitment(a: number): number;
 export function __wbg_credentialsignature_free(a: number): void;
-export function credentialrevealsig_get_pok(a: number): number;
 export function axfrownermemoinfo_amount(a: number, b: number): void;
+export function credentialrevealsig_get_pok(a: number): number;
 export function build_id(a: number): void;
 export function random_asset_type(a: number): void;
 export function hash_asset_code(a: number, b: number, c: number): void;
@@ -112,6 +112,7 @@ export function transactionbuilder_add_operation_convert_account(a: number, b: n
 export function transactionbuilder_add_transfer_operation(a: number, b: number, c: number): number;
 export function transactionbuilder_build(a: number): number;
 export function transactionbuilder_sign(a: number, b: number): number;
+export function transactionbuilder_sign_origin(a: number, b: number): number;
 export function transactionbuilder_transaction(a: number, b: number): void;
 export function transactionbuilder_transaction_handle(a: number, b: number): void;
 export function transactionbuilder_get_owner_record(a: number, b: number): number;
