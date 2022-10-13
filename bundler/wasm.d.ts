@@ -1487,6 +1487,11 @@ export class TransactionBuilder {
 */
   sign(kp: XfrKeyPair): TransactionBuilder;
 /**
+* @param {XfrKeyPair} kp
+* @returns {TransactionBuilder}
+*/
+  sign_origin(kp: XfrKeyPair): TransactionBuilder;
+/**
 * Extracts the serialized form of a transaction.
 * @returns {string}
 */

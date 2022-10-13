@@ -1487,6 +1487,11 @@ export class TransactionBuilder {
 */
   sign(kp: XfrKeyPair): TransactionBuilder;
 /**
+* @param {XfrKeyPair} kp
+* @returns {TransactionBuilder}
+*/
+  sign_origin(kp: XfrKeyPair): TransactionBuilder;
+/**
 * Extracts the serialized form of a transaction.
 * @returns {string}
 */
@@ -1782,8 +1787,8 @@ export interface InitOutput {
   readonly anonkeys_set_view_key: (a: number, b: number, c: number) => void;
   readonly credentialrevealsig_get_commitment: (a: number) => number;
   readonly __wbg_credentialsignature_free: (a: number) => void;
-  readonly credentialrevealsig_get_pok: (a: number) => number;
   readonly axfrownermemoinfo_amount: (a: number, b: number) => void;
+  readonly credentialrevealsig_get_pok: (a: number) => number;
   readonly build_id: (a: number) => void;
   readonly random_asset_type: (a: number) => void;
   readonly hash_asset_code: (a: number, b: number, c: number) => void;
@@ -1819,6 +1824,7 @@ export interface InitOutput {
   readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number) => number;
   readonly transactionbuilder_build: (a: number) => number;
   readonly transactionbuilder_sign: (a: number, b: number) => number;
+  readonly transactionbuilder_sign_origin: (a: number, b: number) => number;
   readonly transactionbuilder_transaction: (a: number, b: number) => void;
   readonly transactionbuilder_transaction_handle: (a: number, b: number) => void;
   readonly transactionbuilder_get_owner_record: (a: number, b: number) => number;
