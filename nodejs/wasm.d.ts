@@ -46,12 +46,12 @@ export function get_null_pk(): XfrPublicKey;
 * @param {string} sk - Ethereum wallet private key.
 * @param {u64} nonce - Transaction nonce for sender.
 * @param {XfrPublicKey} recipient
-* @param {bigint} amount
+* @param {BigInt} amount
 * @param {string} sk
-* @param {bigint} nonce
+* @param {BigInt} nonce
 * @returns {string}
 */
-export function transfer_to_utxo_from_account(recipient: XfrPublicKey, amount: bigint, sk: string, nonce: bigint): string;
+export function transfer_to_utxo_from_account(recipient: XfrPublicKey, amount: BigInt, sk: string, nonce: BigInt): string;
 /**
 * Recover ecdsa private key from mnemonic.
 * @param {string} phrase
@@ -350,9 +350,9 @@ export function restore_keypair_from_mnemonic_bip49(phrase: string, lang: string
 export function fra_get_asset_code(): string;
 /**
 * Fee smaller than this value will be denied.
-* @returns {bigint}
+* @returns {BigInt}
 */
-export function fra_get_minimal_fee(): bigint;
+export function fra_get_minimal_fee(): BigInt;
 /**
 * The destination for fee to be transfered to.
 * @returns {XfrPublicKey}
@@ -372,13 +372,13 @@ export function get_coinbase_address(): string;
 */
 export function get_coinbase_principal_address(): string;
 /**
-* @returns {bigint}
+* @returns {BigInt}
 */
-export function get_delegation_min_amount(): bigint;
+export function get_delegation_min_amount(): BigInt;
 /**
-* @returns {bigint}
+* @returns {BigInt}
 */
-export function get_delegation_max_amount(): bigint;
+export function get_delegation_max_amount(): BigInt;
 /**
 * When an asset is defined, several options governing the assets must be
 * specified:
@@ -415,10 +415,10 @@ export class AssetRules {
 /**
 * Set a cap on the number of units of this asset that can be issued.
 * @param {BigInt} max_units - Maximum number of units that can be issued.
-* @param {bigint} max_units
+* @param {BigInt} max_units
 * @returns {AssetRules}
 */
-  set_max_units(max_units: bigint): AssetRules;
+  set_max_units(max_units: BigInt): AssetRules;
 /**
 * Transferability toggle. Assets that are not transferable can only be transferred by the asset
 * issuer.
@@ -760,22 +760,22 @@ export class FeeInputs {
 */
   static new(): FeeInputs;
 /**
-* @param {bigint} am
+* @param {BigInt} am
 * @param {TxoRef} tr
 * @param {ClientAssetRecord} ar
 * @param {OwnerMemo | undefined} om
 * @param {XfrKeyPair} kp
 */
-  append(am: bigint, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): void;
+  append(am: BigInt, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): void;
 /**
-* @param {bigint} am
+* @param {BigInt} am
 * @param {TxoRef} tr
 * @param {ClientAssetRecord} ar
 * @param {OwnerMemo | undefined} om
 * @param {XfrKeyPair} kp
 * @returns {FeeInputs}
 */
-  append2(am: bigint, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): FeeInputs;
+  append2(am: BigInt, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): FeeInputs;
 }
 /**
 * Asset owner memo. Contains information needed to decrypt an asset record.
@@ -830,11 +830,11 @@ export class SignatureRules {
 * @param {JsValue} weights - Array of public key weights of the form `[["kAb...", BigInt(5)]]', where the
 * first element of each tuple is a base64 encoded public key and the second is the key's
 * associated weight.
-* @param {bigint} threshold
+* @param {BigInt} threshold
 * @param {any} weights
 * @returns {SignatureRules}
 */
-  static new(threshold: bigint, weights: any): SignatureRules;
+  static new(threshold: BigInt, weights: any): SignatureRules;
 }
 /**
 * A collection of tracing policies. Use this object when constructing asset transfers to generate
@@ -900,10 +900,10 @@ export class TransactionBuilder {
 /**
 * Create a new transaction builder.
 * @param {BigInt} seq_id - Unique sequence ID to prevent replay attacks.
-* @param {bigint} seq_id
+* @param {BigInt} seq_id
 * @returns {TransactionBuilder}
 */
-  static new(seq_id: bigint): TransactionBuilder;
+  static new(seq_id: BigInt): TransactionBuilder;
 /**
 * Wraps around TransactionBuilder to add an asset definition operation to a transaction builder instance.
 * @example <caption> Error handling </caption>
@@ -950,13 +950,13 @@ export class TransactionBuilder {
 * @param {PublicParams} zei_params - Public parameters necessary to generate asset records.
 * @param {XfrKeyPair} key_pair
 * @param {string} code
-* @param {bigint} seq_num
-* @param {bigint} amount
+* @param {BigInt} seq_num
+* @param {BigInt} amount
 * @param {boolean} conf_amount
 * @param {PublicParams} zei_params
 * @returns {TransactionBuilder}
 */
-  add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: bigint, amount: bigint, conf_amount: boolean, zei_params: PublicParams): TransactionBuilder;
+  add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: BigInt, amount: BigInt, conf_amount: boolean, zei_params: PublicParams): TransactionBuilder;
 /**
 * Adds an operation to the transaction builder that adds a hash to the ledger's custom data
 * store.
@@ -974,11 +974,11 @@ export class TransactionBuilder {
   add_operation_update_memo(auth_key_pair: XfrKeyPair, code: string, new_memo: string): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
-* @param {bigint} amount
+* @param {BigInt} amount
 * @param {string} validator
 * @returns {TransactionBuilder}
 */
-  add_operation_delegate(keypair: XfrKeyPair, amount: bigint, validator: string): TransactionBuilder;
+  add_operation_delegate(keypair: XfrKeyPair, amount: BigInt, validator: string): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
 * @returns {TransactionBuilder}
@@ -986,11 +986,11 @@ export class TransactionBuilder {
   add_operation_undelegate(keypair: XfrKeyPair): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
-* @param {bigint} am
+* @param {BigInt} am
 * @param {string} target_validator
 * @returns {TransactionBuilder}
 */
-  add_operation_undelegate_partially(keypair: XfrKeyPair, am: bigint, target_validator: string): TransactionBuilder;
+  add_operation_undelegate_partially(keypair: XfrKeyPair, am: BigInt, target_validator: string): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
 * @returns {TransactionBuilder}
@@ -998,20 +998,20 @@ export class TransactionBuilder {
   add_operation_claim(keypair: XfrKeyPair): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
-* @param {bigint} am
+* @param {BigInt} am
 * @returns {TransactionBuilder}
 */
-  add_operation_claim_custom(keypair: XfrKeyPair, am: bigint): TransactionBuilder;
+  add_operation_claim_custom(keypair: XfrKeyPair, am: BigInt): TransactionBuilder;
 /**
 * Adds an operation to the transaction builder that support transfer utxo asset to ethereum address.
 * @param {XfrKeyPair} keypair - Asset creator key pair.
 * @param {String} ethereum_address - The address to receive Ethereum assets.
 * @param {XfrKeyPair} keypair
 * @param {string} ethereum_address
-* @param {bigint} amount
+* @param {BigInt} amount
 * @returns {TransactionBuilder}
 */
-  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string, amount: bigint): TransactionBuilder;
+  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string, amount: BigInt): TransactionBuilder;
 /**
 * Adds a serialized transfer asset operation to a transaction builder instance.
 * @param {string} op - a JSON-serialized transfer operation.
@@ -1086,10 +1086,10 @@ export class TransferOperationBuilder {
 * @param {OwnerMemo | undefined} owner_memo
 * @param {TracingPolicies} tracing_policies
 * @param {XfrKeyPair} key
-* @param {bigint} amount
+* @param {BigInt} amount
 * @returns {TransferOperationBuilder}
 */
-  add_input_with_tracing(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, tracing_policies: TracingPolicies, key: XfrKeyPair, amount: bigint): TransferOperationBuilder;
+  add_input_with_tracing(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, tracing_policies: TracingPolicies, key: XfrKeyPair, amount: BigInt): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to add an input to a transfer operation builder.
 * @param {TxoRef} txo_ref - Absolute or relative utxo reference
@@ -1106,10 +1106,10 @@ export class TransferOperationBuilder {
 * @param {ClientAssetRecord} asset_record
 * @param {OwnerMemo | undefined} owner_memo
 * @param {XfrKeyPair} key
-* @param {bigint} amount
+* @param {BigInt} amount
 * @returns {TransferOperationBuilder}
 */
-  add_input_no_tracing(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, key: XfrKeyPair, amount: bigint): TransferOperationBuilder;
+  add_input_no_tracing(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, key: XfrKeyPair, amount: BigInt): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to add an output to a transfer operation builder.
 *
@@ -1121,7 +1121,7 @@ export class TransferOperationBuilder {
 * @param conf_amount {boolean} - `true` means the output's asset amount is confidential, and `false` means it's nonconfidential.
 * @param conf_type {boolean} - `true` means the output's asset type is confidential, and `false` means it's nonconfidential.
 * @throws Will throw an error if `code` fails to deserialize.
-* @param {bigint} amount
+* @param {BigInt} amount
 * @param {XfrPublicKey} recipient
 * @param {TracingPolicies} tracing_policies
 * @param {string} code
@@ -1129,7 +1129,7 @@ export class TransferOperationBuilder {
 * @param {boolean} conf_type
 * @returns {TransferOperationBuilder}
 */
-  add_output_with_tracing(amount: bigint, recipient: XfrPublicKey, tracing_policies: TracingPolicies, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
+  add_output_with_tracing(amount: BigInt, recipient: XfrPublicKey, tracing_policies: TracingPolicies, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to add an output to a transfer operation builder.
 *
@@ -1139,14 +1139,14 @@ export class TransferOperationBuilder {
 * @param conf_amount {boolean} - `true` means the output's asset amount is confidential, and `false` means it's nonconfidential.
 * @param conf_type {boolean} - `true` means the output's asset type is confidential, and `false` means it's nonconfidential.
 * @throws Will throw an error if `code` fails to deserialize.
-* @param {bigint} amount
+* @param {BigInt} amount
 * @param {XfrPublicKey} recipient
 * @param {string} code
 * @param {boolean} conf_amount
 * @param {boolean} conf_type
 * @returns {TransferOperationBuilder}
 */
-  add_output_no_tracing(amount: bigint, recipient: XfrPublicKey, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
+  add_output_no_tracing(amount: BigInt, recipient: XfrPublicKey, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to ensure the transfer inputs and outputs are balanced.
 * This function will add change outputs for all unspent portions of input records.
@@ -1197,10 +1197,10 @@ export class TxoRef {
 *
 * # Arguments
 * @param {BigInt} idx -  Relative TXO (transaction output) SID.
-* @param {bigint} idx
+* @param {BigInt} idx
 * @returns {TxoRef}
 */
-  static relative(idx: bigint): TxoRef;
+  static relative(idx: BigInt): TxoRef;
 /**
 * Creates an absolute transaction reference as a JSON string.
 *
@@ -1209,16 +1209,17 @@ export class TxoRef {
 *
 * # Arguments
 * @param {BigInt} idx -  Txo (transaction output) SID.
-* @param {bigint} idx
+* @param {BigInt} idx
 * @returns {TxoRef}
 */
-  static absolute(idx: bigint): TxoRef;
+  static absolute(idx: BigInt): TxoRef;
 }
 /**
 */
 export class XfrKeyPair {
   free(): void;
 /**
+* @returns {XfrPublicKey}
 */
   pub_key: XfrPublicKey;
 }
