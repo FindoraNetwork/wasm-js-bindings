@@ -1854,6 +1854,24 @@ export class AnonTransferOperationBuilder {
         }
     }
     /**
+    * get_total_fee_estimate
+    * @returns {BigInt}
+    */
+    get_total_fee_estimate() {
+        try {
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            wasm.anontransferoperationbuilder_get_total_fee_estimate(retptr, this.ptr);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            u32CvtShim[0] = r0;
+            u32CvtShim[1] = r1;
+            const n0 = uint64CvtShim[0];
+            return n0;
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
+    }
+    /**
     * get_commitments returns a list of all the commitments for receiver public keys
     * @returns {any}
     */
@@ -3775,6 +3793,16 @@ export class TransactionBuilder {
         const ptr = this.__destroy_into_raw();
         _assertClass(kp, XfrKeyPair);
         var ret = wasm.transactionbuilder_sign(ptr, kp.ptr);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
+    * @param {XfrKeyPair} kp
+    * @returns {TransactionBuilder}
+    */
+    sign_origin(kp) {
+        const ptr = this.__destroy_into_raw();
+        _assertClass(kp, XfrKeyPair);
+        var ret = wasm.transactionbuilder_sign_origin(ptr, kp.ptr);
         return TransactionBuilder.__wrap(ret);
     }
     /**

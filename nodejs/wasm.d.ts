@@ -642,6 +642,11 @@ export class AnonTransferOperationBuilder {
 */
   get_expected_fee(): BigInt;
 /**
+* get_total_fee_estimate
+* @returns {BigInt}
+*/
+  get_total_fee_estimate(): BigInt;
+/**
 * get_commitments returns a list of all the commitments for receiver public keys
 * @returns {any}
 */
@@ -1481,6 +1486,11 @@ export class TransactionBuilder {
 * @returns {TransactionBuilder}
 */
   sign(kp: XfrKeyPair): TransactionBuilder;
+/**
+* @param {XfrKeyPair} kp
+* @returns {TransactionBuilder}
+*/
+  sign_origin(kp: XfrKeyPair): TransactionBuilder;
 /**
 * Extracts the serialized form of a transaction.
 * @returns {string}

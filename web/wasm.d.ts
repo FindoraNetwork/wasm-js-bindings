@@ -642,6 +642,11 @@ export class AnonTransferOperationBuilder {
 */
   get_expected_fee(): BigInt;
 /**
+* get_total_fee_estimate
+* @returns {BigInt}
+*/
+  get_total_fee_estimate(): BigInt;
+/**
 * get_commitments returns a list of all the commitments for receiver public keys
 * @returns {any}
 */
@@ -1482,6 +1487,11 @@ export class TransactionBuilder {
 */
   sign(kp: XfrKeyPair): TransactionBuilder;
 /**
+* @param {XfrKeyPair} kp
+* @returns {TransactionBuilder}
+*/
+  sign_origin(kp: XfrKeyPair): TransactionBuilder;
+/**
 * Extracts the serialized form of a transaction.
 * @returns {string}
 */
@@ -1814,6 +1824,7 @@ export interface InitOutput {
   readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number) => number;
   readonly transactionbuilder_build: (a: number) => number;
   readonly transactionbuilder_sign: (a: number, b: number) => number;
+  readonly transactionbuilder_sign_origin: (a: number, b: number) => number;
   readonly transactionbuilder_transaction: (a: number, b: number) => void;
   readonly transactionbuilder_transaction_handle: (a: number, b: number) => void;
   readonly transactionbuilder_get_owner_record: (a: number, b: number) => number;
@@ -1843,6 +1854,7 @@ export interface InitOutput {
   readonly anontransferoperationbuilder_add_input: (a: number, b: number, c: number, d: number, e: number) => number;
   readonly anontransferoperationbuilder_add_output: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly anontransferoperationbuilder_get_expected_fee: (a: number, b: number) => void;
+  readonly anontransferoperationbuilder_get_total_fee_estimate: (a: number, b: number) => void;
   readonly anontransferoperationbuilder_get_commitments: (a: number) => number;
   readonly anontransferoperationbuilder_get_commitment_map: (a: number) => number;
   readonly anontransferoperationbuilder_build: (a: number) => number;
