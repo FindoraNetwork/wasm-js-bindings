@@ -3029,6 +3029,14 @@ export const __wbg_now_4abbca4ef2aba8d6 = function(arg0) {
     return ret;
 };
 
+export const __wbg_randomFillSync_91e2b39becca6147 = handleError(function(arg0, arg1, arg2) {
+    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
+});
+
+export const __wbg_getRandomValues_b14734aa289bc356 = handleError(function(arg0, arg1) {
+    getObject(arg0).getRandomValues(getObject(arg1));
+});
+
 export const __wbg_process_e56fd54cf6319b6c = function(arg0) {
     var ret = getObject(arg0).process;
     return addHeapObject(ret);
@@ -3069,14 +3077,6 @@ export const __wbg_msCrypto_5a86d77a66230f81 = function(arg0) {
     var ret = getObject(arg0).msCrypto;
     return addHeapObject(ret);
 };
-
-export const __wbg_getRandomValues_b14734aa289bc356 = handleError(function(arg0, arg1) {
-    getObject(arg0).getRandomValues(getObject(arg1));
-});
-
-export const __wbg_randomFillSync_91e2b39becca6147 = handleError(function(arg0, arg1, arg2) {
-    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
-});
 
 export const __wbg_randomFillSync_d2ba53160aec6aba = function(arg0, arg1, arg2) {
     getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
