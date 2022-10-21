@@ -15,6 +15,12 @@ export function build_id(): string;
 */
 export function random_asset_type(): string;
 /**
+* Creates a new asset code with prefixing-hashing the original code to query the ledger.
+* @param {string} asset_code_string
+* @returns {string}
+*/
+export function hash_asset_code(asset_code_string: string): string;
+/**
 * Generates asset type as a Base64 string from a JSON-serialized JavaScript value.
 * @param {any} val
 * @returns {string}
@@ -78,52 +84,46 @@ export function get_serialized_address(address: string): string;
 export function gen_anon_keys(): AnonKeys;
 /**
 * Get balance for an Anonymous Blind Asset Record
-* @param {AnonBlindAssetRecord} abar - ABAR for which balance needs to be queried
-* @param {OwnerMemo} memo - memo corresponding to the abar
+* @param {AnonAssetRecord} abar - ABAR for which balance needs to be queried
+* @param {AxfrOwnerMemo} memo - memo corresponding to the abar
 * @param keypair {AXfrKeyPair} - AXfrKeyPair of the ABAR owner
-* @param dec_key {XSecretKey} - Decryption key of the abar owner to open the Owner Memo
 * @param MTLeafInfo {mt_leaf_info} - the Merkle proof of the ABAR from commitment tree
 * @throws Will throw an error if abar fails to open
-* @param {AnonBlindAssetRecord} abar
-* @param {OwnerMemo} memo
+* @param {AnonAssetRecord} abar
+* @param {AxfrOwnerMemo} memo
 * @param {AXfrKeyPair} keypair
-* @param {XSecretKey} dec_key
 * @param {MTLeafInfo} mt_leaf_info
 * @returns {BigInt}
 */
-export function get_anon_balance(abar: AnonBlindAssetRecord, memo: OwnerMemo, keypair: AXfrKeyPair, dec_key: XSecretKey, mt_leaf_info: MTLeafInfo): BigInt;
+export function get_anon_balance(abar: AnonAssetRecord, memo: AxfrOwnerMemo, keypair: AXfrKeyPair, mt_leaf_info: MTLeafInfo): BigInt;
 /**
 * Get OABAR (Open ABAR) using the ABAR, OwnerMemo and MTLeafInfo
-* @param {AnonBlindAssetRecord} abar - ABAR which needs to be opened
-* @param {OwnerMemo} memo - memo corresponding to the abar
+* @param {AnonAssetRecord} abar - ABAR which needs to be opened
+* @param {AxfrOwnerMemo} memo - memo corresponding to the abar
 * @param keypair {AXfrKeyPair} - AXfrKeyPair of the ABAR owner
-* @param dec_key {XSecretKey} - Decryption key of the abar owner to open the Owner Memo
 * @param MTLeafInfo {mt_leaf_info} - the Merkle proof of the ABAR from commitment tree
 * @throws Will throw an error if abar fails to open
-* @param {AnonBlindAssetRecord} abar
-* @param {OwnerMemo} memo
+* @param {AnonAssetRecord} abar
+* @param {AxfrOwnerMemo} memo
 * @param {AXfrKeyPair} keypair
-* @param {XSecretKey} dec_key
 * @param {MTLeafInfo} mt_leaf_info
 * @returns {any}
 */
-export function get_open_abar(abar: AnonBlindAssetRecord, memo: OwnerMemo, keypair: AXfrKeyPair, dec_key: XSecretKey, mt_leaf_info: MTLeafInfo): any;
+export function get_open_abar(abar: AnonAssetRecord, memo: AxfrOwnerMemo, keypair: AXfrKeyPair, mt_leaf_info: MTLeafInfo): any;
 /**
 * Generate nullifier hash using ABAR, OwnerMemo and MTLeafInfo
-* @param {AnonBlindAssetRecord} abar - ABAR for which balance needs to be queried
-* @param {OwnerMemo} memo - memo corresponding to the abar
+* @param {AnonAssetRecord} abar - ABAR for which balance needs to be queried
+* @param {AxfrOwnerMemo} memo - memo corresponding to the abar
 * @param keypair {AXfrKeyPair} - AXfrKeyPair of the ABAR owner
-* @param dec_key {XSecretKey} - Decryption key of the abar owner to open the Owner Memo
 * @param MTLeafInfo {mt_leaf_info} - the Merkle proof of the ABAR from commitment tree
 * @throws Will throw an error if abar fails to open
-* @param {AnonBlindAssetRecord} abar
-* @param {OwnerMemo} memo
+* @param {AnonAssetRecord} abar
+* @param {AxfrOwnerMemo} memo
 * @param {AXfrKeyPair} keypair
-* @param {XSecretKey} dec_key
 * @param {MTLeafInfo} mt_leaf_info
 * @returns {string}
 */
-export function gen_nullifier_hash(abar: AnonBlindAssetRecord, memo: OwnerMemo, keypair: AXfrKeyPair, dec_key: XSecretKey, mt_leaf_info: MTLeafInfo): string;
+export function gen_nullifier_hash(abar: AnonAssetRecord, memo: AxfrOwnerMemo, keypair: AXfrKeyPair, mt_leaf_info: MTLeafInfo): string;
 /**
 * Returns a JavaScript object containing decrypted owner record information,
 * where `amount` is the decrypted asset amount, and `asset_type` is the decrypted asset type code.
@@ -336,6 +336,11 @@ export function bech32_to_base64(pk: string): string;
 */
 export function base64_to_bech32(pk: string): string;
 /**
+* @param {string} data
+* @returns {string}
+*/
+export function base64_to_base58(data: string): string;
+/**
 * @param {string} key_pair
 * @param {string} password
 * @returns {Uint8Array}
@@ -412,6 +417,13 @@ export function fra_get_minimal_fee(): BigInt;
 */
 export function fra_get_minimal_fee_for_bar_to_abar(): BigInt;
 /**
+* Anon fee for a given number of inputs & outputs
+* @param {number} n_inputs
+* @param {number} n_outputs
+* @returns {number}
+*/
+export function get_anon_fee(n_inputs: number, n_outputs: number): number;
+/**
 * The destination for fee to be transfered to.
 * @returns {XfrPublicKey}
 */
@@ -444,6 +456,11 @@ export function get_delegation_max_amount(): BigInt;
 export function axfr_pubkey_from_string(key_str: string): AXfrPubKey;
 /**
 * @param {string} key_str
+* @returns {AXfrViewKey}
+*/
+export function axfr_viewkey_from_string(key_str: string): AXfrViewKey;
+/**
+* @param {string} key_str
 * @returns {AXfrKeyPair}
 */
 export function axfr_keypair_from_string(key_str: string): AXfrKeyPair;
@@ -459,28 +476,76 @@ export function x_pubkey_from_string(key_str: string): XPublicKey;
 export function x_secretkey_from_string(key_str: string): XSecretKey;
 /**
 * @param {any} json
-* @returns {AnonBlindAssetRecord}
+* @returns {AnonAssetRecord}
 */
-export function abar_from_json(json: any): AnonBlindAssetRecord;
+export function abar_from_json(json: any): AnonAssetRecord;
 /**
 * Decrypts an ABAR with owner memo and decryption key
-* @param {AnonBlindAssetRecord} abar
-* @param {OwnerMemo} memo
+* @param {AnonAssetRecord} abar
+* @param {AxfrOwnerMemo} memo
 * @param {AXfrKeyPair} keypair
-* @param {XSecretKey} dec_key
 * @returns {AmountAssetType}
 */
-export function open_abar(abar: AnonBlindAssetRecord, memo: OwnerMemo, keypair: AXfrKeyPair, dec_key: XSecretKey): AmountAssetType;
+export function open_abar(abar: AnonAssetRecord, memo: AxfrOwnerMemo, keypair: AXfrKeyPair): AmountAssetType;
+/**
+* Decrypts the owner anon memo.
+* * `memo` - Owner anon memo to decrypt
+* * `key_pair` - Owner anon keypair
+* * `abar` - Associated anonymous blind asset record to check memo info against.
+* Return Error if memo info does not match the commitment or public key.
+* Return Ok(amount, asset_type, blinding) otherwise.
+* @param {AxfrOwnerMemo} memo
+* @param {AXfrKeyPair} key_pair
+* @param {AnonAssetRecord} abar
+* @returns {AxfrOwnerMemoInfo}
+*/
+export function decrypt_axfr_memo(memo: AxfrOwnerMemo, key_pair: AXfrKeyPair, abar: AnonAssetRecord): AxfrOwnerMemoInfo;
+/**
+* Try to decrypt the owner memo to check if it is own.
+* * `memo` - Owner anon memo need to decrypt.
+* * `key_pair` - the memo bytes.
+* Return Ok(amount, asset_type, blinding) if memo is own.
+* @param {AxfrOwnerMemo} memo
+* @param {AXfrKeyPair} key_pair
+* @returns {Uint8Array}
+*/
+export function try_decrypt_axfr_memo(memo: AxfrOwnerMemo, key_pair: AXfrKeyPair): Uint8Array;
+/**
+* Parse the owner memo from bytes.
+* * `bytes` - the memo plain bytes.
+* * `key_pair` - the memo bytes.
+* * `abar` - Associated anonymous blind asset record to check memo info against.
+* Return Error if memo info does not match the commitment.
+* Return Ok(amount, asset_type, blinding) otherwise.
+* @param {Uint8Array} bytes
+* @param {AXfrKeyPair} key_pair
+* @param {AnonAssetRecord} abar
+* @returns {AxfrOwnerMemoInfo}
+*/
+export function parse_axfr_memo(bytes: Uint8Array, key_pair: AXfrKeyPair, abar: AnonAssetRecord): AxfrOwnerMemoInfo;
+/**
+* Convert Commitment to AnonAssetRecord.
+* @param {BLSScalar} commitment
+* @returns {AnonAssetRecord}
+*/
+export function commitment_to_aar(commitment: BLSScalar): AnonAssetRecord;
 /**
 * Keypair associated with an Anonymous records. It is used to spending it.
+* The key pair for anonymous payment.
 */
 export class AXfrKeyPair {
   free(): void;
 }
 /**
-* Public key used to address an Anonymous records and verify transaction spending it
+* The public key.
 */
 export class AXfrPubKey {
+  free(): void;
+}
+/**
+* The viewing key.
+*/
+export class AXfrViewKey {
   free(): void;
 }
 /**
@@ -497,11 +562,12 @@ export class AmountAssetType {
   readonly asset_type: string;
 }
 /**
-* Asset record to be published
+* Asset record to be put as leaves on the tree.
 */
-export class AnonBlindAssetRecord {
+export class AnonAssetRecord {
   free(): void;
 /**
+* The commitment.
 * @returns {BLSScalar}
 */
   commitment: BLSScalar;
@@ -523,19 +589,15 @@ export class AnonKeys {
 /**
 * @returns {string}
 */
-  axfr_public_key: string;
+  pub_key: string;
 /**
 * @returns {string}
 */
-  axfr_secret_key: string;
+  spend_key: string;
 /**
 * @returns {string}
 */
-  dec_key: string;
-/**
-* @returns {string}
-*/
-  enc_key: string;
+  view_key: string;
 }
 /**
 * Structure that enables clients to construct complex transfers.
@@ -550,33 +612,29 @@ export class AnonTransferOperationBuilder {
   static new(seq_id: BigInt): AnonTransferOperationBuilder;
 /**
 * add_input is used to add a new input source for Anon Transfer
-* @param {AnonBlindAssetRecord} abar - input ABAR to transfer
-* @param {OwnerMemo} memo - memo corresponding to the input abar
+* @param {AnonAssetRecord} abar - input ABAR to transfer
+* @param {AxfrOwnerMemo} memo - memo corresponding to the input abar
 * @param keypair {AXfrKeyPair} - AXfrKeyPair of the ABAR owner
-* @param dec_key {XSecretKey} - Decryption key of the abar owner to open the Owner Memo
 * @param MTLeafInfo {mt_leaf_info} - the Merkle proof of the ABAR from commitment tree
 * @throws Will throw an error if abar fails to open, input fails to get added to Operation
-* @param {AnonBlindAssetRecord} abar
-* @param {OwnerMemo} memo
+* @param {AnonAssetRecord} abar
+* @param {AxfrOwnerMemo} memo
 * @param {AXfrKeyPair} keypair
-* @param {XSecretKey} dec_key
 * @param {MTLeafInfo} mt_leaf_info
 * @returns {AnonTransferOperationBuilder}
 */
-  add_input(abar: AnonBlindAssetRecord, memo: OwnerMemo, keypair: AXfrKeyPair, dec_key: XSecretKey, mt_leaf_info: MTLeafInfo): AnonTransferOperationBuilder;
+  add_input(abar: AnonAssetRecord, memo: AxfrOwnerMemo, keypair: AXfrKeyPair, mt_leaf_info: MTLeafInfo): AnonTransferOperationBuilder;
 /**
 * add_output is used to add a output to the Anon Transfer
 * @param amount {u64} - amount to be sent to the receiver
 * @param to {AXfrPubKey} - original pub key of receiver
-* @param to_enc_key {XPublicKey} - The encryption public key of receiver.
 * @throws error if ABAR fails to be built
 * @param {BigInt} amount
 * @param {string} asset_type
 * @param {AXfrPubKey} to
-* @param {XPublicKey} to_enc_key
 * @returns {AnonTransferOperationBuilder}
 */
-  add_output(amount: BigInt, asset_type: string, to: AXfrPubKey, to_enc_key: XPublicKey): AnonTransferOperationBuilder;
+  add_output(amount: BigInt, asset_type: string, to: AXfrPubKey): AnonTransferOperationBuilder;
 /**
 * get_expected_fee is used to gather extra FRA that needs to be spent to make the transaction
 * have enough fees.
@@ -584,12 +642,10 @@ export class AnonTransferOperationBuilder {
 */
   get_expected_fee(): BigInt;
 /**
-* set_fra_remainder_receiver is used to set destination public key for remainder abar to get back the remainder amount
-* @param from_pubkey {XPublicKey} - The encryption public key of sender
-* @param {XPublicKey} from_pubkey
-* @returns {AnonTransferOperationBuilder}
+* get_total_fee_estimate
+* @returns {BigInt}
 */
-  set_fra_remainder_receiver(from_pubkey: XPublicKey): AnonTransferOperationBuilder;
+  get_total_fee_estimate(): BigInt;
 /**
 * get_commitments returns a list of all the commitments for receiver public keys
 * @returns {any}
@@ -766,6 +822,50 @@ export class AuthenticatedAssetRecord {
 * @returns {AuthenticatedAssetRecord}
 */
   static from_json_record(record: any): AuthenticatedAssetRecord;
+}
+/**
+* Asset owner memo. Contains information needed to decrypt an asset record.
+* @see {@link module:Findora-Wasm.ClientAssetRecord|ClientAssetRecord} for more details about asset records.
+*/
+export class AxfrOwnerMemo {
+  free(): void;
+/**
+* Builds an owner memo from a JSON-serialized JavaScript value.
+* @param {JsValue} val - JSON owner memo fetched from query server with the `get_owner_memo/{sid}` route,
+* where `sid` can be fetched from the query server with the `get_owned_utxos/{address}` route. See the example below.
+*
+* @example
+* {
+*   "blind_share":[91,251,44,28,7,221,67,155,175,213,25,183,70,90,119,232,212,238,226,142,159,200,54,19,60,115,38,221,248,202,74,248],
+*   "lock":{"ciphertext":[119,54,117,136,125,133,112,193],"encoded_rand":"8KDql2JphPB5WLd7-aYE1bxTQAcweFSmrqymLvPDntM="}
+* }
+* @param {any} val
+* @returns {AxfrOwnerMemo}
+*/
+  static from_json(val: any): AxfrOwnerMemo;
+/**
+* Creates a clone of the owner memo.
+* @returns {AxfrOwnerMemo}
+*/
+  clone(): AxfrOwnerMemo;
+}
+/**
+* Asset owner memo decrypted info. contains amount, asset_type and blind.
+*/
+export class AxfrOwnerMemoInfo {
+  free(): void;
+/**
+* @returns {BigInt}
+*/
+  readonly amount: BigInt;
+/**
+* @returns {string}
+*/
+  readonly asset_type: string;
+/**
+* @returns {BLSScalar}
+*/
+  readonly blind: BLSScalar;
 }
 /**
 * The wrapped struct for `ark_bls12_381::G1Projective`
@@ -1050,27 +1150,27 @@ export class MTLeafInfo {
   to_json(): any;
 }
 /**
-* A Merkle tree node which consists of the following:
-* * `siblings1` - the 1st sibling of the tree node
-* * `siblings2` - the 2nd sibling of the tree node
-* * `is_left_child` - indicates whether the tree node is the left child of its parent
-* * `is_right_child` - indicates whether the tree node is the right child of its parent
+* A Merkle tree node.
 */
 export class MTNode {
   free(): void;
 /**
+* Whether this node is the left chlid of the parent.
 * @returns {number}
 */
   is_left_child: number;
 /**
+* Whether this node is the right child of the parent.
 * @returns {number}
 */
   is_right_child: number;
 /**
+* The first sibling in a three-ary tree.
 * @returns {BLSScalar}
 */
   siblings1: BLSScalar;
 /**
+* The second sibling in a tree-ary tree.
 * @returns {BLSScalar}
 */
   siblings2: BLSScalar;
@@ -1274,37 +1374,35 @@ export class TransactionBuilder {
 * @param {AXfrKeyPair} abar_key_pair - abar receiver's public key
 * @param {TxoSID} input_sid - txo sid of input bar
 * @param {ClientAssetRecord} input_record -
+* @param {string} seed
 * @param {XfrKeyPair} auth_key_pair
 * @param {AXfrPubKey} abar_pubkey
 * @param {BigInt} txo_sid
 * @param {ClientAssetRecord} input_record
 * @param {OwnerMemo | undefined} owner_memo
-* @param {XPublicKey} enc_key
 * @returns {TransactionBuilder}
 */
-  add_operation_bar_to_abar(auth_key_pair: XfrKeyPair, abar_pubkey: AXfrPubKey, txo_sid: BigInt, input_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, enc_key: XPublicKey): TransactionBuilder;
+  add_operation_bar_to_abar(seed: string, auth_key_pair: XfrKeyPair, abar_pubkey: AXfrPubKey, txo_sid: BigInt, input_record: ClientAssetRecord, owner_memo?: OwnerMemo): TransactionBuilder;
 /**
 * Adds an operation to transaction builder which converts an abar to a bar.
 *
-* @param {AnonBlindAssetRecord} input - the ABAR to be converted
-* @param {OwnerMemo} owner_memo - the corresponding owner_memo of the ABAR to be converted
+* @param {AnonAssetRecord} input - the ABAR to be converted
+* @param {AxfrOwnerMemo} axfr owner_memo - the corresponding owner_memo of the ABAR to be converted
 * @param {MTLeafInfo} mt_leaf_info - the Merkle Proof of the ABAR
 * @param {AXfrKeyPair} from_keypair - the owners Anon Key pair
-* @param {XSecretKey} from_dec_key - the owners decryption key
 * @param {XfrPublic} recipient - the BAR owner public key
 * @param {bool} conf_amount - whether the BAR amount should be confidential
 * @param {bool} conf_type - whether the BAR asset type should be confidential
-* @param {AnonBlindAssetRecord} input
-* @param {OwnerMemo} owner_memo
+* @param {AnonAssetRecord} input
+* @param {AxfrOwnerMemo} owner_memo
 * @param {MTLeafInfo} mt_leaf_info
 * @param {AXfrKeyPair} from_keypair
-* @param {XSecretKey} from_dec_key
 * @param {XfrPublicKey} recipient
 * @param {boolean} conf_amount
 * @param {boolean} conf_type
 * @returns {TransactionBuilder}
 */
-  add_operation_abar_to_bar(input: AnonBlindAssetRecord, owner_memo: OwnerMemo, mt_leaf_info: MTLeafInfo, from_keypair: AXfrKeyPair, from_dec_key: XSecretKey, recipient: XfrPublicKey, conf_amount: boolean, conf_type: boolean): TransactionBuilder;
+  add_operation_abar_to_bar(input: AnonAssetRecord, owner_memo: AxfrOwnerMemo, mt_leaf_info: MTLeafInfo, from_keypair: AXfrKeyPair, recipient: XfrPublicKey, conf_amount: boolean, conf_type: boolean): TransactionBuilder;
 /**
 * Returns a list of commitment base64 strings as json
 * @returns {any}
@@ -1313,24 +1411,20 @@ export class TransactionBuilder {
 /**
 * Adds an operation to transaction builder which transfer a Anon Blind Asset Record
 *
-* @param {AnonBlindAssetRecord} input - input abar
-* @param {OwnerMemo} owner_memo - input owner memo
+* @param {AnonAssetRecord} input - input abar
+* @param {AxfrOwnerMemo} axfr owner_memo - input owner memo
 * @param {AXfrKeyPair} from_keypair - abar sender's private key
-* @param {XSecretKey} from_dec_key - sender's abar decryption key
 * @param {AXfrPubKey} to_pub_key - receiver's Anon public key
-* @param {XPublicKey} to_enc_key - receiver's encryption public key
 * @param {u64} to_amount - amount to send to receiver
-* @param {AnonBlindAssetRecord} input
-* @param {OwnerMemo} owner_memo
+* @param {AnonAssetRecord} input
+* @param {AxfrOwnerMemo} owner_memo
 * @param {MTLeafInfo} mt_leaf_info
 * @param {AXfrKeyPair} from_keypair
-* @param {XSecretKey} from_dec_key
 * @param {AXfrPubKey} to_pub_key
-* @param {XPublicKey} to_enc_key
 * @param {BigInt} to_amount
 * @returns {TransactionBuilder}
 */
-  add_operation_anon_transfer(input: AnonBlindAssetRecord, owner_memo: OwnerMemo, mt_leaf_info: MTLeafInfo, from_keypair: AXfrKeyPair, from_dec_key: XSecretKey, to_pub_key: AXfrPubKey, to_enc_key: XPublicKey, to_amount: BigInt): TransactionBuilder;
+  add_operation_anon_transfer(input: AnonAssetRecord, owner_memo: AxfrOwnerMemo, mt_leaf_info: MTLeafInfo, from_keypair: AXfrKeyPair, to_pub_key: AXfrPubKey, to_amount: BigInt): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
 * @param {BigInt} amount
@@ -1383,10 +1477,20 @@ export class TransactionBuilder {
 */
   add_transfer_operation(op: string): TransactionBuilder;
 /**
+* Builds the anon operations from pre-notes
+* @returns {TransactionBuilder}
+*/
+  build(): TransactionBuilder;
+/**
 * @param {XfrKeyPair} kp
 * @returns {TransactionBuilder}
 */
   sign(kp: XfrKeyPair): TransactionBuilder;
+/**
+* @param {XfrKeyPair} kp
+* @returns {TransactionBuilder}
+*/
+  sign_origin(kp: XfrKeyPair): TransactionBuilder;
 /**
 * Extracts the serialized form of a transaction.
 * @returns {string}
@@ -1576,25 +1680,30 @@ export class TxoRef {
   static absolute(idx: BigInt): TxoRef;
 }
 /**
+* The public key for the hybrid encryption scheme.
 */
 export class XPublicKey {
   free(): void;
 }
 /**
+* The secret key for the hybrid encryption scheme.
 */
 export class XSecretKey {
   free(): void;
 }
 /**
+* The keypair for confidential transfer.
 */
 export class XfrKeyPair {
   free(): void;
 /**
+* The public key.
 * @returns {XfrPublicKey}
 */
   pub_key: XfrPublicKey;
 }
 /**
+* The public key for confidential transfer.
 */
 export class XfrPublicKey {
   free(): void;
