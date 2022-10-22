@@ -52,12 +52,12 @@ export function get_null_pk(): XfrPublicKey;
 * @param {string} sk - Ethereum wallet private key.
 * @param {u64} nonce - Transaction nonce for sender.
 * @param {XfrPublicKey} recipient
-* @param {BigInt} amount
+* @param {bigint} amount
 * @param {string} sk
-* @param {BigInt} nonce
+* @param {bigint} nonce
 * @returns {string}
 */
-export function transfer_to_utxo_from_account(recipient: XfrPublicKey, amount: BigInt, sk: string, nonce: BigInt): string;
+export function transfer_to_utxo_from_account(recipient: XfrPublicKey, amount: bigint, sk: string, nonce: bigint): string;
 /**
 * Recover ecdsa private key from mnemonic.
 * @param {string} phrase
@@ -93,9 +93,9 @@ export function gen_anon_keys(): AnonKeys;
 * @param {AxfrOwnerMemo} memo
 * @param {AXfrKeyPair} keypair
 * @param {MTLeafInfo} mt_leaf_info
-* @returns {BigInt}
+* @returns {bigint}
 */
-export function get_anon_balance(abar: AnonAssetRecord, memo: AxfrOwnerMemo, keypair: AXfrKeyPair, mt_leaf_info: MTLeafInfo): BigInt;
+export function get_anon_balance(abar: AnonAssetRecord, memo: AxfrOwnerMemo, keypair: AXfrKeyPair, mt_leaf_info: MTLeafInfo): bigint;
 /**
 * Get OABAR (Open ABAR) using the ABAR, OwnerMemo and MTLeafInfo
 * @param {AnonAssetRecord} abar - ABAR which needs to be opened
@@ -354,9 +354,9 @@ export function encryption_pbkdf2_aes256gcm(key_pair: string, password: string):
 export function decryption_pbkdf2_aes256gcm(enc_key_pair: Uint8Array, password: string): string;
 /**
 * @param {string} sk_str
-* @returns {XfrKeyPair | undefined}
+* @returns {XfrKeyPair}
 */
-export function create_keypair_from_secret(sk_str: string): XfrKeyPair | undefined;
+export function create_keypair_from_secret(sk_str: string): XfrKeyPair;
 /**
 * @param {XfrKeyPair} kp
 * @returns {XfrPublicKey}
@@ -384,6 +384,13 @@ export function generate_mnemonic_custom(wordslen: number, lang: string): string
 */
 export function restore_keypair_from_mnemonic_default(phrase: string): XfrKeyPair;
 /**
+* Restore the XfrKeyPair from a mnemonic with a default bip44-path,
+* that is "m/44'/917'/0'/0/0" ("m/44'/coin'/account'/change/address").
+* @param {string} phrase
+* @returns {XfrKeyPair}
+*/
+export function restore_keypair_from_mnemonic_ed25519(phrase: string): XfrKeyPair;
+/**
 * Restore the XfrKeyPair from a mnemonic with custom params,
 * in bip44 form.
 * @param {string} phrase
@@ -408,14 +415,14 @@ export function restore_keypair_from_mnemonic_bip49(phrase: string, lang: string
 export function fra_get_asset_code(): string;
 /**
 * Fee smaller than this value will be denied.
-* @returns {BigInt}
+* @returns {bigint}
 */
-export function fra_get_minimal_fee(): BigInt;
+export function fra_get_minimal_fee(): bigint;
 /**
 * Fee smaller than this value will be denied.
-* @returns {BigInt}
+* @returns {bigint}
 */
-export function fra_get_minimal_fee_for_bar_to_abar(): BigInt;
+export function fra_get_minimal_fee_for_bar_to_abar(): bigint;
 /**
 * Anon fee for a given number of inputs & outputs
 * @param {number} n_inputs
@@ -442,23 +449,18 @@ export function get_coinbase_address(): string;
 */
 export function get_coinbase_principal_address(): string;
 /**
-* @returns {BigInt}
+* @returns {bigint}
 */
-export function get_delegation_min_amount(): BigInt;
+export function get_delegation_min_amount(): bigint;
 /**
-* @returns {BigInt}
+* @returns {bigint}
 */
-export function get_delegation_max_amount(): BigInt;
+export function get_delegation_max_amount(): bigint;
 /**
 * @param {string} key_str
 * @returns {AXfrPubKey}
 */
 export function axfr_pubkey_from_string(key_str: string): AXfrPubKey;
-/**
-* @param {string} key_str
-* @returns {AXfrViewKey}
-*/
-export function axfr_viewkey_from_string(key_str: string): AXfrViewKey;
 /**
 * @param {string} key_str
 * @returns {AXfrKeyPair}
@@ -543,21 +545,13 @@ export class AXfrPubKey {
   free(): void;
 }
 /**
-* The viewing key.
-*/
-export class AXfrViewKey {
-  free(): void;
-}
-/**
 */
 export class AmountAssetType {
   free(): void;
 /**
-* @returns {BigInt}
 */
-  amount: BigInt;
+  amount: bigint;
 /**
-* @returns {string}
 */
   readonly asset_type: string;
 }
@@ -568,7 +562,6 @@ export class AnonAssetRecord {
   free(): void;
 /**
 * The commitment.
-* @returns {BLSScalar}
 */
   commitment: BLSScalar;
 }
@@ -587,17 +580,11 @@ export class AnonKeys {
 */
   to_json(): any;
 /**
-* @returns {string}
 */
   pub_key: string;
 /**
-* @returns {string}
 */
-  spend_key: string;
-/**
-* @returns {string}
-*/
-  view_key: string;
+  secret_key: string;
 }
 /**
 * Structure that enables clients to construct complex transfers.
@@ -606,10 +593,10 @@ export class AnonTransferOperationBuilder {
   free(): void;
 /**
 * new is a constructor for AnonTransferOperationBuilder
-* @param {BigInt} seq_id
+* @param {bigint} seq_id
 * @returns {AnonTransferOperationBuilder}
 */
-  static new(seq_id: BigInt): AnonTransferOperationBuilder;
+  static new(seq_id: bigint): AnonTransferOperationBuilder;
 /**
 * add_input is used to add a new input source for Anon Transfer
 * @param {AnonAssetRecord} abar - input ABAR to transfer
@@ -629,23 +616,31 @@ export class AnonTransferOperationBuilder {
 * @param amount {u64} - amount to be sent to the receiver
 * @param to {AXfrPubKey} - original pub key of receiver
 * @throws error if ABAR fails to be built
-* @param {BigInt} amount
+* @param {bigint} amount
 * @param {string} asset_type
 * @param {AXfrPubKey} to
 * @returns {AnonTransferOperationBuilder}
 */
-  add_output(amount: BigInt, asset_type: string, to: AXfrPubKey): AnonTransferOperationBuilder;
+  add_output(amount: bigint, asset_type: string, to: AXfrPubKey): AnonTransferOperationBuilder;
+/**
+* add_keypair is used to add the sender's keypair for the nullifier generation
+* @param to {AXfrKeyPair} - original keypair of sender
+* @throws error if ABAR fails to be built
+* @param {AXfrKeyPair} keypair
+* @returns {AnonTransferOperationBuilder}
+*/
+  add_keypair(keypair: AXfrKeyPair): AnonTransferOperationBuilder;
 /**
 * get_expected_fee is used to gather extra FRA that needs to be spent to make the transaction
 * have enough fees.
-* @returns {BigInt}
+* @returns {bigint}
 */
-  get_expected_fee(): BigInt;
+  get_expected_fee(): bigint;
 /**
 * get_total_fee_estimate
-* @returns {BigInt}
+* @returns {bigint}
 */
-  get_total_fee_estimate(): BigInt;
+  get_total_fee_estimate(): bigint;
 /**
 * get_commitments returns a list of all the commitments for receiver public keys
 * @returns {any}
@@ -704,10 +699,10 @@ export class AssetRules {
 /**
 * Set a cap on the number of units of this asset that can be issued.
 * @param {BigInt} max_units - Maximum number of units that can be issued.
-* @param {BigInt} max_units
+* @param {bigint} max_units
 * @returns {AssetRules}
 */
-  set_max_units(max_units: BigInt): AssetRules;
+  set_max_units(max_units: bigint): AssetRules;
 /**
 * Transferability toggle. Assets that are not transferable can only be transferred by the asset
 * issuer.
@@ -855,39 +850,36 @@ export class AxfrOwnerMemo {
 export class AxfrOwnerMemoInfo {
   free(): void;
 /**
-* @returns {BigInt}
 */
-  readonly amount: BigInt;
+  readonly amount: bigint;
 /**
-* @returns {string}
 */
   readonly asset_type: string;
 /**
-* @returns {BLSScalar}
 */
   readonly blind: BLSScalar;
 }
 /**
-* The wrapped struct for `ark_bls12_381::G1Projective`
+* The wrapped struct for [`ark_bls12_381::G1Projective`](https://docs.rs/ark-bls12-381/0.3.0/ark_bls12_381/g1/type.G1Projective.html)
 */
 export class BLSG1 {
   free(): void;
 }
 /**
-* The wrapped struct for `ark_bls12_381::G2Projective`
+* The wrapped struct for [`ark_bls12_381::G2Projective`](https://docs.rs/ark-bls12-381/0.3.0/ark_bls12_381/g2/type.G2Projective.html)
 */
 export class BLSG2 {
   free(): void;
 }
 /**
-* The wrapped struct for `Fp12<ark_bls12_381::Fq12Parameters>`,
+* The wrapped struct for [`Fp12<ark_bls12_381::Fq12Parameters>`](https://docs.rs/ark-bls12-381/0.3.0/ark_bls12_381/fq12/struct.Fq12Parameters.html),
 * which is the pairing result
 */
 export class BLSGt {
   free(): void;
 }
 /**
-* The wrapped struct for `ark_bls12_381::Fr`
+* The wrapped struct for [`ark_bls12_381::Fr`](https://docs.rs/ark-bls12-381/0.3.0/ark_bls12_381/fr/struct.FrParameters.html)
 */
 export class BLSScalar {
   free(): void;
@@ -1118,22 +1110,28 @@ export class FeeInputs {
 */
   static new(): FeeInputs;
 /**
-* @param {BigInt} am
+* @param {bigint} am
 * @param {TxoRef} tr
 * @param {ClientAssetRecord} ar
 * @param {OwnerMemo | undefined} om
 * @param {XfrKeyPair} kp
 */
-  append(am: BigInt, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): void;
+  append(am: bigint, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): void;
 /**
-* @param {BigInt} am
+* @param {bigint} am
 * @param {TxoRef} tr
 * @param {ClientAssetRecord} ar
 * @param {OwnerMemo | undefined} om
 * @param {XfrKeyPair} kp
 * @returns {FeeInputs}
 */
-  append2(am: BigInt, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): FeeInputs;
+  append2(am: bigint, tr: TxoRef, ar: ClientAssetRecord, om: OwnerMemo | undefined, kp: XfrKeyPair): FeeInputs;
+}
+/**
+* The wrapped struct for `ark_ed_on_bls12_381::Fr`
+*/
+export class JubjubScalar {
+  free(): void;
 }
 /**
 */
@@ -1156,22 +1154,18 @@ export class MTNode {
   free(): void;
 /**
 * Whether this node is the left chlid of the parent.
-* @returns {number}
 */
   is_left_child: number;
 /**
 * Whether this node is the right child of the parent.
-* @returns {number}
 */
   is_right_child: number;
 /**
 * The first sibling in a three-ary tree.
-* @returns {BLSScalar}
 */
   siblings1: BLSScalar;
 /**
 * The second sibling in a tree-ary tree.
-* @returns {BLSScalar}
 */
   siblings2: BLSScalar;
 }
@@ -1202,6 +1196,30 @@ export class OwnerMemo {
   clone(): OwnerMemo;
 }
 /**
+* The wrapped struct for [`ark_bulletproofs_secq256k1::curve::secp256k1::G1Projective`](https://github.com/FindoraNetwork/ark-bulletproofs-secq256k1/blob/main/src/curve/secp256k1/g1.rs)
+*/
+export class SECP256K1G1 {
+  free(): void;
+}
+/**
+* The wrapped struct for [`ark_bulletproofs_secq256k1::curve::secp256k1::Fr`](https://github.com/FindoraNetwork/ark-bulletproofs-secq256k1/blob/main/src/curve/secp256k1/fr.rs)
+*/
+export class SECP256K1Scalar {
+  free(): void;
+}
+/**
+* The wrapped struct for [`ark_bulletproofs_secq256k1::curve::secq256k1::G1Projective`](https://github.com/FindoraNetwork/ark-bulletproofs-secq256k1/blob/main/src/curve/secq256k1/g1.rs)
+*/
+export class SECQ256K1G1 {
+  free(): void;
+}
+/**
+* The wrapped struct for [`ark_bulletproofs_secq256k1::curve::secq256k1::Fr`](https://github.com/FindoraNetwork/ark-bulletproofs-secq256k1/blob/main/src/curve/secq256k1/fr.rs)
+*/
+export class SECQ256K1Scalar {
+  free(): void;
+}
+/**
 * Stores threshold and weights for a multisignature requirement.
 */
 export class SignatureRules {
@@ -1214,11 +1232,11 @@ export class SignatureRules {
 * @param {JsValue} weights - Array of public key weights of the form `[["kAb...", BigInt(5)]]', where the
 * first element of each tuple is a base64 encoded public key and the second is the key's
 * associated weight.
-* @param {BigInt} threshold
+* @param {bigint} threshold
 * @param {any} weights
 * @returns {SignatureRules}
 */
-  static new(threshold: BigInt, weights: any): SignatureRules;
+  static new(threshold: bigint, weights: any): SignatureRules;
 }
 /**
 * A collection of tracing policies. Use this object when constructing asset transfers to generate
@@ -1291,10 +1309,10 @@ export class TransactionBuilder {
 /**
 * Create a new transaction builder.
 * @param {BigInt} seq_id - Unique sequence ID to prevent replay attacks.
-* @param {BigInt} seq_id
+* @param {bigint} seq_id
 * @returns {TransactionBuilder}
 */
-  static new(seq_id: BigInt): TransactionBuilder;
+  static new(seq_id: bigint): TransactionBuilder;
 /**
 * Deserialize transaction builder from string.
 * @param {string} s
@@ -1346,12 +1364,12 @@ export class TransactionBuilder {
 * @param {boolean} conf_amount - `true` means the asset amount is confidential, and `false` means it's nonconfidential.
 * @param {XfrKeyPair} key_pair
 * @param {string} code
-* @param {BigInt} seq_num
-* @param {BigInt} amount
+* @param {bigint} seq_num
+* @param {bigint} amount
 * @param {boolean} conf_amount
 * @returns {TransactionBuilder}
 */
-  add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: BigInt, amount: BigInt, conf_amount: boolean): TransactionBuilder;
+  add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: bigint, amount: bigint, conf_amount: boolean): TransactionBuilder;
 /**
 * Adds an operation to the transaction builder that adds a hash to the ledger's custom data
 * store.
@@ -1371,18 +1389,18 @@ export class TransactionBuilder {
 * Adds an operation to the transaction builder that converts a bar to abar.
 *
 * @param {XfrKeyPair} auth_key_pair - input bar owner key pair
-* @param {AXfrKeyPair} abar_key_pair - abar receiver's public key
+* @param {AXfrPubKey} abar_pubkey - abar receiver's public key
 * @param {TxoSID} input_sid - txo sid of input bar
 * @param {ClientAssetRecord} input_record -
 * @param {string} seed
 * @param {XfrKeyPair} auth_key_pair
 * @param {AXfrPubKey} abar_pubkey
-* @param {BigInt} txo_sid
+* @param {bigint} txo_sid
 * @param {ClientAssetRecord} input_record
 * @param {OwnerMemo | undefined} owner_memo
 * @returns {TransactionBuilder}
 */
-  add_operation_bar_to_abar(seed: string, auth_key_pair: XfrKeyPair, abar_pubkey: AXfrPubKey, txo_sid: BigInt, input_record: ClientAssetRecord, owner_memo?: OwnerMemo): TransactionBuilder;
+  add_operation_bar_to_abar(seed: string, auth_key_pair: XfrKeyPair, abar_pubkey: AXfrPubKey, txo_sid: bigint, input_record: ClientAssetRecord, owner_memo?: OwnerMemo): TransactionBuilder;
 /**
 * Adds an operation to transaction builder which converts an abar to a bar.
 *
@@ -1421,17 +1439,17 @@ export class TransactionBuilder {
 * @param {MTLeafInfo} mt_leaf_info
 * @param {AXfrKeyPair} from_keypair
 * @param {AXfrPubKey} to_pub_key
-* @param {BigInt} to_amount
+* @param {bigint} to_amount
 * @returns {TransactionBuilder}
 */
-  add_operation_anon_transfer(input: AnonAssetRecord, owner_memo: AxfrOwnerMemo, mt_leaf_info: MTLeafInfo, from_keypair: AXfrKeyPair, to_pub_key: AXfrPubKey, to_amount: BigInt): TransactionBuilder;
+  add_operation_anon_transfer(input: AnonAssetRecord, owner_memo: AxfrOwnerMemo, mt_leaf_info: MTLeafInfo, from_keypair: AXfrKeyPair, to_pub_key: AXfrPubKey, to_amount: bigint): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
-* @param {BigInt} amount
+* @param {bigint} amount
 * @param {string} validator
 * @returns {TransactionBuilder}
 */
-  add_operation_delegate(keypair: XfrKeyPair, amount: BigInt, validator: string): TransactionBuilder;
+  add_operation_delegate(keypair: XfrKeyPair, amount: bigint, validator: string): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
 * @returns {TransactionBuilder}
@@ -1439,11 +1457,11 @@ export class TransactionBuilder {
   add_operation_undelegate(keypair: XfrKeyPair): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
-* @param {BigInt} am
+* @param {bigint} am
 * @param {string} target_validator
 * @returns {TransactionBuilder}
 */
-  add_operation_undelegate_partially(keypair: XfrKeyPair, am: BigInt, target_validator: string): TransactionBuilder;
+  add_operation_undelegate_partially(keypair: XfrKeyPair, am: bigint, target_validator: string): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
 * @returns {TransactionBuilder}
@@ -1451,22 +1469,22 @@ export class TransactionBuilder {
   add_operation_claim(keypair: XfrKeyPair): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
-* @param {BigInt} am
+* @param {bigint} am
 * @returns {TransactionBuilder}
 */
-  add_operation_claim_custom(keypair: XfrKeyPair, am: BigInt): TransactionBuilder;
+  add_operation_claim_custom(keypair: XfrKeyPair, am: bigint): TransactionBuilder;
 /**
 * Adds an operation to the transaction builder that support transfer utxo asset to ethereum address.
 * @param {XfrKeyPair} keypair - Asset creator key pair.
 * @param {String} ethereum_address - The address to receive Ethereum assets.
 * @param {XfrKeyPair} keypair
 * @param {string} ethereum_address
-* @param {BigInt} amount
+* @param {bigint} amount
 * @param {string | undefined} asset
 * @param {string | undefined} lowlevel_data
 * @returns {TransactionBuilder}
 */
-  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string, amount: BigInt, asset?: string, lowlevel_data?: string): TransactionBuilder;
+  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string, amount: bigint, asset?: string, lowlevel_data?: string): TransactionBuilder;
 /**
 * Adds a serialized transfer asset operation to a transaction builder instance.
 * @param {string} op - a JSON-serialized transfer operation.
@@ -1546,10 +1564,10 @@ export class TransferOperationBuilder {
 * @param {OwnerMemo | undefined} owner_memo
 * @param {TracingPolicies} tracing_policies
 * @param {XfrKeyPair} key
-* @param {BigInt} amount
+* @param {bigint} amount
 * @returns {TransferOperationBuilder}
 */
-  add_input_with_tracing(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, tracing_policies: TracingPolicies, key: XfrKeyPair, amount: BigInt): TransferOperationBuilder;
+  add_input_with_tracing(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, tracing_policies: TracingPolicies, key: XfrKeyPair, amount: bigint): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to add an input to a transfer operation builder.
 * @param {TxoRef} txo_ref - Absolute or relative utxo reference
@@ -1566,10 +1584,10 @@ export class TransferOperationBuilder {
 * @param {ClientAssetRecord} asset_record
 * @param {OwnerMemo | undefined} owner_memo
 * @param {XfrKeyPair} key
-* @param {BigInt} amount
+* @param {bigint} amount
 * @returns {TransferOperationBuilder}
 */
-  add_input_no_tracing(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, key: XfrKeyPair, amount: BigInt): TransferOperationBuilder;
+  add_input_no_tracing(txo_ref: TxoRef, asset_record: ClientAssetRecord, owner_memo: OwnerMemo | undefined, key: XfrKeyPair, amount: bigint): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to add an output to a transfer operation builder.
 *
@@ -1581,7 +1599,7 @@ export class TransferOperationBuilder {
 * @param conf_amount {boolean} - `true` means the output's asset amount is confidential, and `false` means it's nonconfidential.
 * @param conf_type {boolean} - `true` means the output's asset type is confidential, and `false` means it's nonconfidential.
 * @throws Will throw an error if `code` fails to deserialize.
-* @param {BigInt} amount
+* @param {bigint} amount
 * @param {XfrPublicKey} recipient
 * @param {TracingPolicies} tracing_policies
 * @param {string} code
@@ -1589,7 +1607,7 @@ export class TransferOperationBuilder {
 * @param {boolean} conf_type
 * @returns {TransferOperationBuilder}
 */
-  add_output_with_tracing(amount: BigInt, recipient: XfrPublicKey, tracing_policies: TracingPolicies, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
+  add_output_with_tracing(amount: bigint, recipient: XfrPublicKey, tracing_policies: TracingPolicies, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to add an output to a transfer operation builder.
 *
@@ -1599,14 +1617,14 @@ export class TransferOperationBuilder {
 * @param conf_amount {boolean} - `true` means the output's asset amount is confidential, and `false` means it's nonconfidential.
 * @param conf_type {boolean} - `true` means the output's asset type is confidential, and `false` means it's nonconfidential.
 * @throws Will throw an error if `code` fails to deserialize.
-* @param {BigInt} amount
+* @param {bigint} amount
 * @param {XfrPublicKey} recipient
 * @param {string} code
 * @param {boolean} conf_amount
 * @param {boolean} conf_type
 * @returns {TransferOperationBuilder}
 */
-  add_output_no_tracing(amount: BigInt, recipient: XfrPublicKey, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
+  add_output_no_tracing(amount: bigint, recipient: XfrPublicKey, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to ensure the transfer inputs and outputs are balanced.
 * This function will add change outputs for all unspent portions of input records.
@@ -1662,10 +1680,10 @@ export class TxoRef {
 *
 * # Arguments
 * @param {BigInt} idx -  Relative TXO (transaction output) SID.
-* @param {BigInt} idx
+* @param {bigint} idx
 * @returns {TxoRef}
 */
-  static relative(idx: BigInt): TxoRef;
+  static relative(idx: bigint): TxoRef;
 /**
 * Creates an absolute transaction reference as a JSON string.
 *
@@ -1674,10 +1692,10 @@ export class TxoRef {
 *
 * # Arguments
 * @param {BigInt} idx -  Txo (transaction output) SID.
-* @param {BigInt} idx
+* @param {bigint} idx
 * @returns {TxoRef}
 */
-  static absolute(idx: BigInt): TxoRef;
+  static absolute(idx: bigint): TxoRef;
 }
 /**
 * The public key for the hybrid encryption scheme.
@@ -1698,12 +1716,11 @@ export class XfrKeyPair {
   free(): void;
 /**
 * The public key.
-* @returns {XfrPublicKey}
 */
   pub_key: XfrPublicKey;
 }
 /**
-* The public key for confidential transfer.
+* The public key wrapper for confidential transfer, for WASM compatability.
 */
 export class XfrPublicKey {
   free(): void;
