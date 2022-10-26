@@ -1802,8 +1802,8 @@ export interface InitOutput {
   readonly anonkeys_set_pub_key: (a: number, b: number, c: number) => void;
   readonly credentialrevealsig_get_commitment: (a: number) => number;
   readonly __wbg_credentialsignature_free: (a: number) => void;
-  readonly axfrownermemoinfo_amount: (a: number) => number;
   readonly credentialrevealsig_get_pok: (a: number) => number;
+  readonly axfrownermemoinfo_amount: (a: number) => number;
   readonly build_id: (a: number) => void;
   readonly random_asset_type: (a: number) => void;
   readonly hash_asset_code: (a: number, b: number, c: number) => void;
