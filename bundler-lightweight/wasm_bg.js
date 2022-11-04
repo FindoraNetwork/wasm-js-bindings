@@ -36,6 +36,18 @@ function addHeapObject(obj) {
 
 function getObject(idx) { return heap[idx]; }
 
+function dropObject(idx) {
+    if (idx < 36) return;
+    heap[idx] = heap_next;
+    heap_next = idx;
+}
+
+function takeObject(idx) {
+    const ret = getObject(idx);
+    dropObject(idx);
+    return ret;
+}
+
 let WASM_VECTOR_LEN = 0;
 
 const lTextEncoder = typeof TextEncoder === 'undefined' ? (0, module.require)('util').TextEncoder : TextEncoder;
@@ -102,18 +114,6 @@ function getInt32Memory0() {
     return cachedInt32Memory0;
 }
 
-function dropObject(idx) {
-    if (idx < 36) return;
-    heap[idx] = heap_next;
-    heap_next = idx;
-}
-
-function takeObject(idx) {
-    const ret = getObject(idx);
-    dropObject(idx);
-    return ret;
-}
-
 function debugString(val) {
     // primitive types
     const type = typeof val;
@@ -177,21 +177,6 @@ function debugString(val) {
     }
     // TODO we could test for more things here, like `Set`s and `Map`s.
     return className;
-}
-
-let stack_pointer = 32;
-
-function addBorrowedObject(obj) {
-    if (stack_pointer == 1) throw new Error('out of js stack');
-    heap[--stack_pointer] = obj;
-    return stack_pointer;
-}
-
-function _assertClass(instance, klass) {
-    if (!(instance instanceof klass)) {
-        throw new Error(`expected instance of ${klass.name}`);
-    }
-    return instance.ptr;
 }
 /**
 * Returns the git commit hash and commit date of the commit this library was built against.
@@ -259,6 +244,13 @@ export function hash_asset_code(asset_code_string) {
     }
 }
 
+let stack_pointer = 32;
+
+function addBorrowedObject(obj) {
+    if (stack_pointer == 1) throw new Error('out of js stack');
+    heap[--stack_pointer] = obj;
+    return stack_pointer;
+}
 /**
 * Generates asset type as a Base64 string from a JSON-serialized JavaScript value.
 * @param {any} val
@@ -326,6 +318,13 @@ export function verify_authenticated_txn(state_commitment, authenticated_txn) {
 export function get_null_pk() {
     const ret = wasm.get_null_pk();
     return XfrPublicKey.__wrap(ret);
+}
+
+function _assertClass(instance, klass) {
+    if (!(instance instanceof klass)) {
+        throw new Error(`expected instance of ${klass.name}`);
+    }
+    return instance.ptr;
 }
 
 function isLikeNone(x) {
@@ -3262,7 +3261,7 @@ export class CredentialRevealSig {
     * @returns {CredentialPoK}
     */
     get_pok() {
-        const ret = wasm.credentialcommitmentdata_get_pok(this.ptr);
+        const ret = wasm.credentialrevealsig_get_pok(this.ptr);
         return CredentialPoK.__wrap(ret);
     }
 }
@@ -3535,43 +3534,61 @@ export class MTNode {
         wasm.__wbg_mtnode_free(ptr);
     }
     /**
-    * The first sibling in a three-ary tree.
+    * The left child of its parent in a three-ary tree.
     * @returns {BLSScalar}
     */
-    get siblings1() {
+    get left() {
         const ret = wasm.__wbg_get_anonassetrecord_commitment(this.ptr);
         return BLSScalar.__wrap(ret);
     }
     /**
-    * The first sibling in a three-ary tree.
+    * The left child of its parent in a three-ary tree.
     * @param {BLSScalar} arg0
     */
-    set siblings1(arg0) {
+    set left(arg0) {
         _assertClass(arg0, BLSScalar);
         var ptr0 = arg0.ptr;
         arg0.ptr = 0;
         wasm.__wbg_set_anonassetrecord_commitment(this.ptr, ptr0);
     }
     /**
-    * The second sibling in a tree-ary tree.
+    * The mid child of its parent in a three-ary tree.
     * @returns {BLSScalar}
     */
-    get siblings2() {
-        const ret = wasm.__wbg_get_mtnode_siblings2(this.ptr);
+    get mid() {
+        const ret = wasm.__wbg_get_mtnode_mid(this.ptr);
         return BLSScalar.__wrap(ret);
     }
     /**
-    * The second sibling in a tree-ary tree.
+    * The mid child of its parent in a three-ary tree.
     * @param {BLSScalar} arg0
     */
-    set siblings2(arg0) {
+    set mid(arg0) {
         _assertClass(arg0, BLSScalar);
         var ptr0 = arg0.ptr;
         arg0.ptr = 0;
-        wasm.__wbg_set_mtnode_siblings2(this.ptr, ptr0);
+        wasm.__wbg_set_mtnode_mid(this.ptr, ptr0);
     }
     /**
-    * Whether this node is the left chlid of the parent.
+    * The right child of its parent in a three-ary tree.
+    * @returns {BLSScalar}
+    */
+    get right() {
+        const ret = wasm.__wbg_get_mtnode_right(this.ptr);
+        return BLSScalar.__wrap(ret);
+    }
+    /**
+    * The right child of its parent in a three-ary tree.
+    * @param {BLSScalar} arg0
+    */
+    set right(arg0) {
+        _assertClass(arg0, BLSScalar);
+        var ptr0 = arg0.ptr;
+        arg0.ptr = 0;
+        wasm.__wbg_set_mtnode_right(this.ptr, ptr0);
+    }
+    /**
+    * Whether this node is the left child of the parent.
     * @returns {number}
     */
     get is_left_child() {
@@ -3579,11 +3596,26 @@ export class MTNode {
         return ret;
     }
     /**
-    * Whether this node is the left chlid of the parent.
+    * Whether this node is the left child of the parent.
     * @param {number} arg0
     */
     set is_left_child(arg0) {
         wasm.__wbg_set_mtnode_is_left_child(this.ptr, arg0);
+    }
+    /**
+    * Whether this node is the mid child of the parent.
+    * @returns {number}
+    */
+    get is_mid_child() {
+        const ret = wasm.__wbg_get_mtnode_is_mid_child(this.ptr);
+        return ret;
+    }
+    /**
+    * Whether this node is the mid child of the parent.
+    * @param {number} arg0
+    */
+    set is_mid_child(arg0) {
+        wasm.__wbg_set_mtnode_is_mid_child(this.ptr, arg0);
     }
     /**
     * Whether this node is the right child of the parent.
@@ -3664,7 +3696,7 @@ export class OwnerMemo {
     }
 }
 /**
-* The wrapped struct for [`ark_bulletproofs_secq256k1::curve::secp256k1::G1Projective`](https://github.com/FindoraNetwork/ark-bulletproofs-secq256k1/blob/main/src/curve/secp256k1/g1.rs)
+* The wrapped struct for [`ark_bulletproofs::curve::secp256k1::G1Projective`](https://github.com/FindoraNetwork/ark-bulletproofs/blob/main/src/curve/secp256k1/g1.rs)
 */
 export class SECP256K1G1 {
 
@@ -3681,7 +3713,7 @@ export class SECP256K1G1 {
     }
 }
 /**
-* The wrapped struct for [`ark_bulletproofs_secq256k1::curve::secp256k1::Fr`](https://github.com/FindoraNetwork/ark-bulletproofs-secq256k1/blob/main/src/curve/secp256k1/fr.rs)
+* The wrapped struct for [`ark_bulletproofs::curve::secp256k1::Fr`](https://github.com/FindoraNetwork/ark-bulletproofs/blob/main/src/curve/secp256k1/fr.rs)
 */
 export class SECP256K1Scalar {
 
@@ -3698,7 +3730,7 @@ export class SECP256K1Scalar {
     }
 }
 /**
-* The wrapped struct for [`ark_bulletproofs_secq256k1::curve::secq256k1::G1Projective`](https://github.com/FindoraNetwork/ark-bulletproofs-secq256k1/blob/main/src/curve/secq256k1/g1.rs)
+* The wrapped struct for [`ark_bulletproofs::curve::secq256k1::G1Projective`](https://github.com/FindoraNetwork/ark-bulletproofs/blob/main/src/curve/secq256k1/g1.rs)
 */
 export class SECQ256K1G1 {
 
@@ -3715,7 +3747,7 @@ export class SECQ256K1G1 {
     }
 }
 /**
-* The wrapped struct for [`ark_bulletproofs_secq256k1::curve::secq256k1::Fr`](https://github.com/FindoraNetwork/ark-bulletproofs-secq256k1/blob/main/src/curve/secq256k1/fr.rs)
+* The wrapped struct for [`ark_bulletproofs::curve::secq256k1::Fr`](https://github.com/FindoraNetwork/ark-bulletproofs/blob/main/src/curve/secq256k1/fr.rs)
 */
 export class SECQ256K1Scalar {
 
@@ -5112,9 +5144,13 @@ export class XfrPublicKey {
     }
 }
 
-export function __wbindgen_json_parse(arg0, arg1) {
-    const ret = JSON.parse(getStringFromWasm0(arg0, arg1));
+export function __wbindgen_string_new(arg0, arg1) {
+    const ret = getStringFromWasm0(arg0, arg1);
     return addHeapObject(ret);
+};
+
+export function __wbindgen_object_drop_ref(arg0) {
+    takeObject(arg0);
 };
 
 export function __wbindgen_json_serialize(arg0, arg1) {
@@ -5126,13 +5162,9 @@ export function __wbindgen_json_serialize(arg0, arg1) {
     getInt32Memory0()[arg0 / 4 + 0] = ptr0;
 };
 
-export function __wbindgen_string_new(arg0, arg1) {
-    const ret = getStringFromWasm0(arg0, arg1);
+export function __wbindgen_json_parse(arg0, arg1) {
+    const ret = JSON.parse(getStringFromWasm0(arg0, arg1));
     return addHeapObject(ret);
-};
-
-export function __wbindgen_object_drop_ref(arg0) {
-    takeObject(arg0);
 };
 
 export function __wbindgen_object_clone_ref(arg0) {
@@ -5144,14 +5176,6 @@ export function __wbg_now_8172cd917e5eda6b(arg0) {
     const ret = getObject(arg0).now();
     return ret;
 };
-
-export function __wbg_randomFillSync_6894564c2c334c42() { return handleError(function (arg0, arg1, arg2) {
-    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
-}, arguments) };
-
-export function __wbg_getRandomValues_805f1c3d65988a5a() { return handleError(function (arg0, arg1) {
-    getObject(arg0).getRandomValues(getObject(arg1));
-}, arguments) };
 
 export function __wbg_crypto_e1d53a1d73fb10b8(arg0) {
     const ret = getObject(arg0).crypto;
@@ -5184,6 +5208,11 @@ export function __wbindgen_is_string(arg0) {
     return ret;
 };
 
+export function __wbg_msCrypto_6e7d3e1f92610cbb(arg0) {
+    const ret = getObject(arg0).msCrypto;
+    return addHeapObject(ret);
+};
+
 export function __wbg_require_78a3dcfbdba9cbce() { return handleError(function () {
     const ret = module.require;
     return addHeapObject(ret);
@@ -5194,10 +5223,13 @@ export function __wbindgen_is_function(arg0) {
     return ret;
 };
 
-export function __wbg_msCrypto_6e7d3e1f92610cbb(arg0) {
-    const ret = getObject(arg0).msCrypto;
-    return addHeapObject(ret);
-};
+export function __wbg_getRandomValues_805f1c3d65988a5a() { return handleError(function (arg0, arg1) {
+    getObject(arg0).getRandomValues(getObject(arg1));
+}, arguments) };
+
+export function __wbg_randomFillSync_6894564c2c334c42() { return handleError(function (arg0, arg1, arg2) {
+    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
+}, arguments) };
 
 export function __wbg_newnoargs_b5b063fc6c2f0376(arg0, arg1) {
     const ret = new Function(getStringFromWasm0(arg0, arg1));

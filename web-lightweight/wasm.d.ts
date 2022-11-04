@@ -1153,21 +1153,29 @@ export class MTLeafInfo {
 export class MTNode {
   free(): void;
 /**
-* Whether this node is the left chlid of the parent.
+* Whether this node is the left child of the parent.
 */
   is_left_child: number;
+/**
+* Whether this node is the mid child of the parent.
+*/
+  is_mid_child: number;
 /**
 * Whether this node is the right child of the parent.
 */
   is_right_child: number;
 /**
-* The first sibling in a three-ary tree.
+* The left child of its parent in a three-ary tree.
 */
-  siblings1: BLSScalar;
+  left: BLSScalar;
 /**
-* The second sibling in a tree-ary tree.
+* The mid child of its parent in a three-ary tree.
 */
-  siblings2: BLSScalar;
+  mid: BLSScalar;
+/**
+* The right child of its parent in a three-ary tree.
+*/
+  right: BLSScalar;
 }
 /**
 * Asset owner memo. Contains information needed to decrypt an asset record.
@@ -1196,25 +1204,25 @@ export class OwnerMemo {
   clone(): OwnerMemo;
 }
 /**
-* The wrapped struct for [`ark_bulletproofs_secq256k1::curve::secp256k1::G1Projective`](https://github.com/FindoraNetwork/ark-bulletproofs-secq256k1/blob/main/src/curve/secp256k1/g1.rs)
+* The wrapped struct for [`ark_bulletproofs::curve::secp256k1::G1Projective`](https://github.com/FindoraNetwork/ark-bulletproofs/blob/main/src/curve/secp256k1/g1.rs)
 */
 export class SECP256K1G1 {
   free(): void;
 }
 /**
-* The wrapped struct for [`ark_bulletproofs_secq256k1::curve::secp256k1::Fr`](https://github.com/FindoraNetwork/ark-bulletproofs-secq256k1/blob/main/src/curve/secp256k1/fr.rs)
+* The wrapped struct for [`ark_bulletproofs::curve::secp256k1::Fr`](https://github.com/FindoraNetwork/ark-bulletproofs/blob/main/src/curve/secp256k1/fr.rs)
 */
 export class SECP256K1Scalar {
   free(): void;
 }
 /**
-* The wrapped struct for [`ark_bulletproofs_secq256k1::curve::secq256k1::G1Projective`](https://github.com/FindoraNetwork/ark-bulletproofs-secq256k1/blob/main/src/curve/secq256k1/g1.rs)
+* The wrapped struct for [`ark_bulletproofs::curve::secq256k1::G1Projective`](https://github.com/FindoraNetwork/ark-bulletproofs/blob/main/src/curve/secq256k1/g1.rs)
 */
 export class SECQ256K1G1 {
   free(): void;
 }
 /**
-* The wrapped struct for [`ark_bulletproofs_secq256k1::curve::secq256k1::Fr`](https://github.com/FindoraNetwork/ark-bulletproofs-secq256k1/blob/main/src/curve/secq256k1/fr.rs)
+* The wrapped struct for [`ark_bulletproofs::curve::secq256k1::Fr`](https://github.com/FindoraNetwork/ark-bulletproofs/blob/main/src/curve/secq256k1/fr.rs)
 */
 export class SECQ256K1Scalar {
   free(): void;
@@ -1730,80 +1738,6 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly __wbg_txoref_free: (a: number) => void;
-  readonly txoref_relative: (a: number) => number;
-  readonly txoref_absolute: (a: number) => number;
-  readonly __wbg_authenticatedassetrecord_free: (a: number) => void;
-  readonly authenticatedassetrecord_is_valid: (a: number, b: number, c: number, d: number) => void;
-  readonly authenticatedassetrecord_from_json_record: (a: number, b: number) => void;
-  readonly __wbg_clientassetrecord_free: (a: number) => void;
-  readonly clientassetrecord_from_json: (a: number, b: number) => void;
-  readonly clientassetrecord_to_json: (a: number, b: number) => void;
-  readonly __wbg_assettracerkeypair_free: (a: number) => void;
-  readonly assettracerkeypair_new: () => number;
-  readonly __wbg_ownermemo_free: (a: number) => void;
-  readonly ownermemo_from_json: (a: number, b: number) => void;
-  readonly ownermemo_clone: (a: number) => number;
-  readonly __wbg_axfrownermemo_free: (a: number) => void;
-  readonly axfrownermemo_from_json: (a: number, b: number) => void;
-  readonly axfrownermemo_clone: (a: number) => number;
-  readonly __wbg_axfrownermemoinfo_free: (a: number) => void;
-  readonly axfrownermemoinfo_asset_type: (a: number, b: number) => void;
-  readonly axfrownermemoinfo_blind: (a: number) => number;
-  readonly __wbg_credentialuserkeypair_free: (a: number) => void;
-  readonly __wbg_credentialissuerkeypair_free: (a: number) => void;
-  readonly __wbg_credentialrevealsig_free: (a: number) => void;
-  readonly __wbg_credentialcommitmentdata_free: (a: number) => void;
-  readonly credentialcommitmentdata_get_commitment: (a: number) => number;
-  readonly credentialcommitmentdata_get_pok: (a: number) => number;
-  readonly credentialcommitmentdata_get_commit_key: (a: number) => number;
-  readonly __wbg_credentialcommitment_free: (a: number) => void;
-  readonly __wbg_credentialpok_free: (a: number) => void;
-  readonly __wbg_credentialcommitmentkey_free: (a: number) => void;
-  readonly __wbg_assettype_free: (a: number) => void;
-  readonly assettype_from_json: (a: number, b: number) => void;
-  readonly assettype_get_tracing_policies: (a: number) => number;
-  readonly __wbg_credential_free: (a: number) => void;
-  readonly credentialissuerkeypair_get_pk: (a: number) => number;
-  readonly credentialissuerkeypair_get_sk: (a: number) => number;
-  readonly credentialissuerkeypair_to_json: (a: number) => number;
-  readonly credentialissuerkeypair_from_json: (a: number, b: number) => void;
-  readonly credentialuserkeypair_get_pk: (a: number) => number;
-  readonly credentialuserkeypair_get_sk: (a: number) => number;
-  readonly credentialuserkeypair_to_json: (a: number) => number;
-  readonly credentialuserkeypair_from_json: (a: number, b: number) => void;
-  readonly __wbg_signaturerules_free: (a: number) => void;
-  readonly signaturerules_new: (a: number, b: number, c: number) => void;
-  readonly __wbg_tracingpolicies_free: (a: number) => void;
-  readonly __wbg_tracingpolicy_free: (a: number) => void;
-  readonly tracingpolicy_new_with_tracing: (a: number) => number;
-  readonly tracingpolicy_new_with_identity_tracing: (a: number, b: number, c: number, d: number, e: number) => void;
-  readonly __wbg_assetrules_free: (a: number) => void;
-  readonly assetrules_new: () => number;
-  readonly assetrules_add_tracing_policy: (a: number, b: number) => number;
-  readonly assetrules_set_max_units: (a: number, b: number) => number;
-  readonly assetrules_set_transferable: (a: number, b: number) => number;
-  readonly assetrules_set_updatable: (a: number, b: number) => number;
-  readonly assetrules_set_transfer_multisig_rules: (a: number, b: number) => number;
-  readonly assetrules_set_decimals: (a: number, b: number, c: number) => void;
-  readonly __wbg_mtleafinfo_free: (a: number) => void;
-  readonly mtleafinfo_from_json: (a: number, b: number) => void;
-  readonly mtleafinfo_to_json: (a: number, b: number) => void;
-  readonly __wbg_amountassettype_free: (a: number) => void;
-  readonly __wbg_get_amountassettype_amount: (a: number) => number;
-  readonly __wbg_set_amountassettype_amount: (a: number, b: number) => void;
-  readonly amountassettype_asset_type: (a: number, b: number) => void;
-  readonly __wbg_anonkeys_free: (a: number) => void;
-  readonly anonkeys_from_json: (a: number, b: number) => void;
-  readonly anonkeys_to_json: (a: number, b: number) => void;
-  readonly anonkeys_secret_key: (a: number, b: number) => void;
-  readonly anonkeys_set_secret_key: (a: number, b: number, c: number) => void;
-  readonly anonkeys_pub_key: (a: number, b: number) => void;
-  readonly anonkeys_set_pub_key: (a: number, b: number, c: number) => void;
-  readonly credentialrevealsig_get_commitment: (a: number) => number;
-  readonly __wbg_credentialsignature_free: (a: number) => void;
-  readonly credentialrevealsig_get_pok: (a: number) => number;
-  readonly axfrownermemoinfo_amount: (a: number) => number;
   readonly build_id: (a: number) => void;
   readonly random_asset_type: (a: number) => void;
   readonly hash_asset_code: (a: number, b: number, c: number) => void;
@@ -1931,22 +1865,100 @@ export interface InitOutput {
   readonly fra_get_minimal_fee_for_bar_to_abar: () => number;
   readonly get_delegation_min_amount: () => number;
   readonly get_delegation_max_amount: () => number;
+  readonly __wbg_txoref_free: (a: number) => void;
+  readonly txoref_relative: (a: number) => number;
+  readonly txoref_absolute: (a: number) => number;
+  readonly __wbg_authenticatedassetrecord_free: (a: number) => void;
+  readonly authenticatedassetrecord_is_valid: (a: number, b: number, c: number, d: number) => void;
+  readonly authenticatedassetrecord_from_json_record: (a: number, b: number) => void;
+  readonly __wbg_clientassetrecord_free: (a: number) => void;
+  readonly clientassetrecord_from_json: (a: number, b: number) => void;
+  readonly clientassetrecord_to_json: (a: number, b: number) => void;
+  readonly __wbg_assettracerkeypair_free: (a: number) => void;
+  readonly assettracerkeypair_new: () => number;
+  readonly __wbg_ownermemo_free: (a: number) => void;
+  readonly ownermemo_from_json: (a: number, b: number) => void;
+  readonly ownermemo_clone: (a: number) => number;
+  readonly __wbg_axfrownermemo_free: (a: number) => void;
+  readonly axfrownermemo_from_json: (a: number, b: number) => void;
+  readonly axfrownermemo_clone: (a: number) => number;
+  readonly __wbg_axfrownermemoinfo_free: (a: number) => void;
+  readonly axfrownermemoinfo_asset_type: (a: number, b: number) => void;
+  readonly axfrownermemoinfo_blind: (a: number) => number;
+  readonly __wbg_credentialuserkeypair_free: (a: number) => void;
+  readonly __wbg_credentialissuerkeypair_free: (a: number) => void;
+  readonly __wbg_credentialrevealsig_free: (a: number) => void;
+  readonly credentialrevealsig_get_pok: (a: number) => number;
+  readonly __wbg_credentialcommitmentdata_free: (a: number) => void;
+  readonly credentialcommitmentdata_get_commitment: (a: number) => number;
+  readonly credentialcommitmentdata_get_pok: (a: number) => number;
+  readonly credentialcommitmentdata_get_commit_key: (a: number) => number;
+  readonly __wbg_credentialcommitment_free: (a: number) => void;
+  readonly __wbg_credentialpok_free: (a: number) => void;
+  readonly __wbg_credentialcommitmentkey_free: (a: number) => void;
+  readonly __wbg_assettype_free: (a: number) => void;
+  readonly assettype_from_json: (a: number, b: number) => void;
+  readonly assettype_get_tracing_policies: (a: number) => number;
+  readonly __wbg_credential_free: (a: number) => void;
+  readonly credentialissuerkeypair_get_pk: (a: number) => number;
+  readonly credentialissuerkeypair_get_sk: (a: number) => number;
+  readonly credentialissuerkeypair_to_json: (a: number) => number;
+  readonly credentialissuerkeypair_from_json: (a: number, b: number) => void;
+  readonly credentialuserkeypair_get_pk: (a: number) => number;
+  readonly credentialuserkeypair_get_sk: (a: number) => number;
+  readonly credentialuserkeypair_to_json: (a: number) => number;
+  readonly credentialuserkeypair_from_json: (a: number, b: number) => void;
+  readonly __wbg_signaturerules_free: (a: number) => void;
+  readonly signaturerules_new: (a: number, b: number, c: number) => void;
+  readonly __wbg_tracingpolicies_free: (a: number) => void;
+  readonly __wbg_tracingpolicy_free: (a: number) => void;
+  readonly tracingpolicy_new_with_tracing: (a: number) => number;
+  readonly tracingpolicy_new_with_identity_tracing: (a: number, b: number, c: number, d: number, e: number) => void;
+  readonly __wbg_assetrules_free: (a: number) => void;
+  readonly assetrules_new: () => number;
+  readonly assetrules_add_tracing_policy: (a: number, b: number) => number;
+  readonly assetrules_set_max_units: (a: number, b: number) => number;
+  readonly assetrules_set_transferable: (a: number, b: number) => number;
+  readonly assetrules_set_updatable: (a: number, b: number) => number;
+  readonly assetrules_set_transfer_multisig_rules: (a: number, b: number) => number;
+  readonly assetrules_set_decimals: (a: number, b: number, c: number) => void;
+  readonly __wbg_mtleafinfo_free: (a: number) => void;
+  readonly mtleafinfo_from_json: (a: number, b: number) => void;
+  readonly mtleafinfo_to_json: (a: number, b: number) => void;
+  readonly __wbg_amountassettype_free: (a: number) => void;
+  readonly __wbg_get_amountassettype_amount: (a: number) => number;
+  readonly __wbg_set_amountassettype_amount: (a: number, b: number) => void;
+  readonly amountassettype_asset_type: (a: number, b: number) => void;
+  readonly __wbg_anonkeys_free: (a: number) => void;
+  readonly anonkeys_from_json: (a: number, b: number) => void;
+  readonly anonkeys_to_json: (a: number, b: number) => void;
+  readonly anonkeys_secret_key: (a: number, b: number) => void;
+  readonly anonkeys_set_secret_key: (a: number, b: number, c: number) => void;
+  readonly anonkeys_pub_key: (a: number, b: number) => void;
+  readonly anonkeys_set_pub_key: (a: number, b: number, c: number) => void;
+  readonly axfrownermemoinfo_amount: (a: number) => number;
+  readonly credentialrevealsig_get_commitment: (a: number) => number;
+  readonly __wbg_credentialsignature_free: (a: number) => void;
   readonly __wbg_credissuersecretkey_free: (a: number) => void;
   readonly __wbg_credissuerpublickey_free: (a: number) => void;
   readonly __wbg_creduserpublickey_free: (a: number) => void;
   readonly __wbg_credusersecretkey_free: (a: number) => void;
   readonly __wbg_mtnode_free: (a: number) => void;
-  readonly __wbg_get_mtnode_siblings2: (a: number) => number;
-  readonly __wbg_set_mtnode_siblings2: (a: number, b: number) => void;
+  readonly __wbg_get_mtnode_mid: (a: number) => number;
+  readonly __wbg_set_mtnode_mid: (a: number, b: number) => void;
+  readonly __wbg_get_mtnode_right: (a: number) => number;
+  readonly __wbg_set_mtnode_right: (a: number, b: number) => void;
   readonly __wbg_get_mtnode_is_left_child: (a: number) => number;
   readonly __wbg_set_mtnode_is_left_child: (a: number, b: number) => void;
+  readonly __wbg_get_mtnode_is_mid_child: (a: number) => number;
+  readonly __wbg_set_mtnode_is_mid_child: (a: number, b: number) => void;
   readonly __wbg_get_mtnode_is_right_child: (a: number) => number;
   readonly __wbg_set_mtnode_is_right_child: (a: number, b: number) => void;
   readonly __wbg_anonassetrecord_free: (a: number) => void;
   readonly __wbg_get_anonassetrecord_commitment: (a: number) => number;
   readonly __wbg_set_anonassetrecord_commitment: (a: number, b: number) => void;
-  readonly __wbg_set_mtnode_siblings1: (a: number, b: number) => void;
-  readonly __wbg_get_mtnode_siblings1: (a: number) => number;
+  readonly __wbg_set_mtnode_left: (a: number, b: number) => void;
+  readonly __wbg_get_mtnode_left: (a: number) => number;
   readonly __wbg_xfrpublickey_free: (a: number) => void;
   readonly __wbg_xfrkeypair_free: (a: number) => void;
   readonly __wbg_get_xfrkeypair_pub_key: (a: number) => number;
@@ -1955,15 +1967,15 @@ export interface InitOutput {
   readonly __wbg_axfrkeypair_free: (a: number) => void;
   readonly __wbg_xpublickey_free: (a: number) => void;
   readonly __wbg_xsecretkey_free: (a: number) => void;
+  readonly __wbg_blsscalar_free: (a: number) => void;
+  readonly __wbg_blsg1_free: (a: number) => void;
+  readonly __wbg_blsg2_free: (a: number) => void;
+  readonly __wbg_blsgt_free: (a: number) => void;
   readonly __wbg_secp256k1scalar_free: (a: number) => void;
   readonly __wbg_secp256k1g1_free: (a: number) => void;
   readonly __wbg_jubjubscalar_free: (a: number) => void;
   readonly __wbg_secq256k1scalar_free: (a: number) => void;
   readonly __wbg_secq256k1g1_free: (a: number) => void;
-  readonly __wbg_blsscalar_free: (a: number) => void;
-  readonly __wbg_blsg1_free: (a: number) => void;
-  readonly __wbg_blsg2_free: (a: number) => void;
-  readonly __wbg_blsgt_free: (a: number) => void;
   readonly __wbindgen_malloc: (a: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number) => number;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;

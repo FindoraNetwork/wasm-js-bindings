@@ -1153,21 +1153,29 @@ export class MTLeafInfo {
 export class MTNode {
   free(): void;
 /**
-* Whether this node is the left chlid of the parent.
+* Whether this node is the left child of the parent.
 */
   is_left_child: number;
+/**
+* Whether this node is the mid child of the parent.
+*/
+  is_mid_child: number;
 /**
 * Whether this node is the right child of the parent.
 */
   is_right_child: number;
 /**
-* The first sibling in a three-ary tree.
+* The left child of its parent in a three-ary tree.
 */
-  siblings1: BLSScalar;
+  left: BLSScalar;
 /**
-* The second sibling in a tree-ary tree.
+* The mid child of its parent in a three-ary tree.
 */
-  siblings2: BLSScalar;
+  mid: BLSScalar;
+/**
+* The right child of its parent in a three-ary tree.
+*/
+  right: BLSScalar;
 }
 /**
 * Asset owner memo. Contains information needed to decrypt an asset record.
@@ -1196,25 +1204,25 @@ export class OwnerMemo {
   clone(): OwnerMemo;
 }
 /**
-* The wrapped struct for [`ark_bulletproofs_secq256k1::curve::secp256k1::G1Projective`](https://github.com/FindoraNetwork/ark-bulletproofs-secq256k1/blob/main/src/curve/secp256k1/g1.rs)
+* The wrapped struct for [`ark_bulletproofs::curve::secp256k1::G1Projective`](https://github.com/FindoraNetwork/ark-bulletproofs/blob/main/src/curve/secp256k1/g1.rs)
 */
 export class SECP256K1G1 {
   free(): void;
 }
 /**
-* The wrapped struct for [`ark_bulletproofs_secq256k1::curve::secp256k1::Fr`](https://github.com/FindoraNetwork/ark-bulletproofs-secq256k1/blob/main/src/curve/secp256k1/fr.rs)
+* The wrapped struct for [`ark_bulletproofs::curve::secp256k1::Fr`](https://github.com/FindoraNetwork/ark-bulletproofs/blob/main/src/curve/secp256k1/fr.rs)
 */
 export class SECP256K1Scalar {
   free(): void;
 }
 /**
-* The wrapped struct for [`ark_bulletproofs_secq256k1::curve::secq256k1::G1Projective`](https://github.com/FindoraNetwork/ark-bulletproofs-secq256k1/blob/main/src/curve/secq256k1/g1.rs)
+* The wrapped struct for [`ark_bulletproofs::curve::secq256k1::G1Projective`](https://github.com/FindoraNetwork/ark-bulletproofs/blob/main/src/curve/secq256k1/g1.rs)
 */
 export class SECQ256K1G1 {
   free(): void;
 }
 /**
-* The wrapped struct for [`ark_bulletproofs_secq256k1::curve::secq256k1::Fr`](https://github.com/FindoraNetwork/ark-bulletproofs-secq256k1/blob/main/src/curve/secq256k1/fr.rs)
+* The wrapped struct for [`ark_bulletproofs::curve::secq256k1::Fr`](https://github.com/FindoraNetwork/ark-bulletproofs/blob/main/src/curve/secq256k1/fr.rs)
 */
 export class SECQ256K1Scalar {
   free(): void;
