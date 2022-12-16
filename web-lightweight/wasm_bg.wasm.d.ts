@@ -121,9 +121,9 @@ export function decrypt_axfr_memo(a: number, b: number, c: number, d: number): v
 export function try_decrypt_axfr_memo(a: number, b: number, c: number): void;
 export function parse_axfr_memo(a: number, b: number, c: number, d: number, e: number): void;
 export function commitment_to_aar(a: number): number;
+export function get_anon_fee(a: number, b: number): number;
 export function get_delegation_target_address(a: number): void;
 export function get_coinbase_principal_address(a: number): void;
-export function get_anon_fee(a: number, b: number): number;
 export function fra_get_minimal_fee(): number;
 export function fra_get_minimal_fee_for_bar_to_abar(): number;
 export function get_delegation_min_amount(): number;

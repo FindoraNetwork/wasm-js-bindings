@@ -1858,9 +1858,9 @@ export interface InitOutput {
   readonly try_decrypt_axfr_memo: (a: number, b: number, c: number) => void;
   readonly parse_axfr_memo: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly commitment_to_aar: (a: number) => number;
+  readonly get_anon_fee: (a: number, b: number) => number;
   readonly get_delegation_target_address: (a: number) => void;
   readonly get_coinbase_principal_address: (a: number) => void;
-  readonly get_anon_fee: (a: number, b: number) => number;
   readonly fra_get_minimal_fee: () => number;
   readonly fra_get_minimal_fee_for_bar_to_abar: () => number;
   readonly get_delegation_min_amount: () => number;
