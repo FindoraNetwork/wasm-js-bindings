@@ -152,6 +152,22 @@ export function get_pub_key_str(key_pair: XfrKeyPair): string;
 */
 export function get_priv_key_str(key_pair: XfrKeyPair): string;
 /**
+* @param {string} phrase
+* @param {number} num
+* @returns {string}
+*/
+export function get_priv_key_hex_str_by_mnemonic(phrase: string, num: number): string;
+/**
+* @param {string} hex_priv_key
+* @returns {string}
+*/
+export function get_pub_key_hex_str_by_priv_key(hex_priv_key: string): string;
+/**
+* @param {string} hex_pub_key
+* @returns {string}
+*/
+export function get_address_by_public_key(hex_pub_key: string): string;
+/**
 * Extracts the public key as a string from a transfer key pair.
 * @param {XfrKeyPair} key_pair
 * @returns {string}
