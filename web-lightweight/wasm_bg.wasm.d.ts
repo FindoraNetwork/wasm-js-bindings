@@ -75,6 +75,8 @@ export function anontransferoperationbuilder_transaction(a: number, b: number): 
 export function open_client_asset_record(a: number, b: number, c: number): number;
 export function get_pub_key_str(a: number, b: number): void;
 export function get_priv_key_str(a: number, b: number): void;
+export function get_pub_key_str_old(a: number, b: number): void;
+export function get_priv_key_str_old(a: number, b: number): void;
 export function new_keypair(): number;
 export function new_keypair_from_seed(a: number, b: number, c: number, d: number): number;
 export function public_key_to_base64(a: number, b: number): void;

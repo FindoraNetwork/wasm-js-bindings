@@ -152,6 +152,18 @@ export function get_pub_key_str(key_pair: XfrKeyPair): string;
 */
 export function get_priv_key_str(key_pair: XfrKeyPair): string;
 /**
+* Extracts the public key as a string from a transfer key pair.
+* @param {XfrKeyPair} key_pair
+* @returns {string}
+*/
+export function get_pub_key_str_old(key_pair: XfrKeyPair): string;
+/**
+* Extracts the private key as a string from a transfer key pair.
+* @param {XfrKeyPair} key_pair
+* @returns {string}
+*/
+export function get_priv_key_str_old(key_pair: XfrKeyPair): string;
+/**
 * Creates a new transfer key pair.
 * @returns {XfrKeyPair}
 */

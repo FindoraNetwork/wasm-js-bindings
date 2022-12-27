@@ -152,6 +152,18 @@ export function get_pub_key_str(key_pair: XfrKeyPair): string;
 */
 export function get_priv_key_str(key_pair: XfrKeyPair): string;
 /**
+* Extracts the public key as a string from a transfer key pair.
+* @param {XfrKeyPair} key_pair
+* @returns {string}
+*/
+export function get_pub_key_str_old(key_pair: XfrKeyPair): string;
+/**
+* Extracts the private key as a string from a transfer key pair.
+* @param {XfrKeyPair} key_pair
+* @returns {string}
+*/
+export function get_priv_key_str_old(key_pair: XfrKeyPair): string;
+/**
 * Creates a new transfer key pair.
 * @returns {XfrKeyPair}
 */
@@ -1827,6 +1839,8 @@ export interface InitOutput {
   readonly open_client_asset_record: (a: number, b: number, c: number) => number;
   readonly get_pub_key_str: (a: number, b: number) => void;
   readonly get_priv_key_str: (a: number, b: number) => void;
+  readonly get_pub_key_str_old: (a: number, b: number) => void;
+  readonly get_priv_key_str_old: (a: number, b: number) => void;
   readonly new_keypair: () => number;
   readonly new_keypair_from_seed: (a: number, b: number, c: number, d: number) => number;
   readonly public_key_to_base64: (a: number, b: number) => void;
