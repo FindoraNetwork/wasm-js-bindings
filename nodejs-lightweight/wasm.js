@@ -625,6 +625,17 @@ module.exports.get_priv_key_hex_str_by_mnemonic = function(phrase, num) {
 
 /**
 * @param {string} hex_priv_key
+* @returns {XfrKeyPair}
+*/
+module.exports.get_keypair_by_pri_key = function(hex_priv_key) {
+    var ptr0 = passStringToWasm0(hex_priv_key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    var len0 = WASM_VECTOR_LEN;
+    var ret = wasm.get_keypair_by_pri_key(ptr0, len0);
+    return XfrKeyPair.__wrap(ret);
+};
+
+/**
+* @param {string} hex_priv_key
 * @returns {string}
 */
 module.exports.get_pub_key_hex_str_by_priv_key = function(hex_priv_key) {

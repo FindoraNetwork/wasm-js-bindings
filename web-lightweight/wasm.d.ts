@@ -159,6 +159,11 @@ export function get_priv_key_str(key_pair: XfrKeyPair): string;
 export function get_priv_key_hex_str_by_mnemonic(phrase: string, num: number): string;
 /**
 * @param {string} hex_priv_key
+* @returns {XfrKeyPair}
+*/
+export function get_keypair_by_pri_key(hex_priv_key: string): XfrKeyPair;
+/**
+* @param {string} hex_priv_key
 * @returns {string}
 */
 export function get_pub_key_hex_str_by_priv_key(hex_priv_key: string): string;
@@ -1856,6 +1861,7 @@ export interface InitOutput {
   readonly get_pub_key_str: (a: number, b: number) => void;
   readonly get_priv_key_str: (a: number, b: number) => void;
   readonly get_priv_key_hex_str_by_mnemonic: (a: number, b: number, c: number, d: number) => void;
+  readonly get_keypair_by_pri_key: (a: number, b: number) => number;
   readonly get_pub_key_hex_str_by_priv_key: (a: number, b: number, c: number) => void;
   readonly get_address_by_public_key: (a: number, b: number, c: number) => void;
   readonly get_pub_key_str_old: (a: number, b: number) => void;
