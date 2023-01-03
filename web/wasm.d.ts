@@ -367,6 +367,11 @@ export function bech32_to_base64(pk: string): string;
 * @param {string} pk
 * @returns {string}
 */
+export function bech32_to_base64_old(pk: string): string;
+/**
+* @param {string} pk
+* @returns {string}
+*/
 export function base64_to_bech32(pk: string): string;
 /**
 * @param {string} data
@@ -1885,6 +1890,7 @@ export interface InitOutput {
   readonly public_key_to_bech32: (a: number, b: number) => void;
   readonly public_key_from_bech32: (a: number, b: number) => number;
   readonly bech32_to_base64: (a: number, b: number, c: number) => void;
+  readonly bech32_to_base64_old: (a: number, b: number, c: number) => void;
   readonly base64_to_bech32: (a: number, b: number, c: number) => void;
   readonly base64_to_base58: (a: number, b: number, c: number) => void;
   readonly encryption_pbkdf2_aes256gcm: (a: number, b: number, c: number, d: number, e: number) => void;

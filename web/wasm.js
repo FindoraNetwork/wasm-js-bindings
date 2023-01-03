@@ -1037,6 +1037,25 @@ export function bech32_to_base64(pk) {
 * @param {string} pk
 * @returns {string}
 */
+export function bech32_to_base64_old(pk) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        var ptr0 = passStringToWasm0(pk, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.bech32_to_base64_old(retptr, ptr0, len0);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
+/**
+* @param {string} pk
+* @returns {string}
+*/
 export function base64_to_bech32(pk) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);

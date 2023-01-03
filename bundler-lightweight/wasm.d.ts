@@ -367,6 +367,11 @@ export function bech32_to_base64(pk: string): string;
 * @param {string} pk
 * @returns {string}
 */
+export function bech32_to_base64_old(pk: string): string;
+/**
+* @param {string} pk
+* @returns {string}
+*/
 export function base64_to_bech32(pk: string): string;
 /**
 * @param {string} data
