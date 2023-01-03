@@ -5177,14 +5177,6 @@ export function __wbg_now_8172cd917e5eda6b(arg0) {
     return ret;
 };
 
-export function __wbg_randomFillSync_6894564c2c334c42() { return handleError(function (arg0, arg1, arg2) {
-    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
-}, arguments) };
-
-export function __wbg_getRandomValues_805f1c3d65988a5a() { return handleError(function (arg0, arg1) {
-    getObject(arg0).getRandomValues(getObject(arg1));
-}, arguments) };
-
 export function __wbg_crypto_e1d53a1d73fb10b8(arg0) {
     const ret = getObject(arg0).crypto;
     return addHeapObject(ret);
@@ -5230,6 +5222,14 @@ export function __wbindgen_is_function(arg0) {
     const ret = typeof(getObject(arg0)) === 'function';
     return ret;
 };
+
+export function __wbg_getRandomValues_805f1c3d65988a5a() { return handleError(function (arg0, arg1) {
+    getObject(arg0).getRandomValues(getObject(arg1));
+}, arguments) };
+
+export function __wbg_randomFillSync_6894564c2c334c42() { return handleError(function (arg0, arg1, arg2) {
+    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
+}, arguments) };
 
 export function __wbg_newnoargs_b5b063fc6c2f0376(arg0, arg1) {
     const ret = new Function(getStringFromWasm0(arg0, arg1));
