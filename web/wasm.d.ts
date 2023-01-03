@@ -152,6 +152,39 @@ export function get_pub_key_str(key_pair: XfrKeyPair): string;
 */
 export function get_priv_key_str(key_pair: XfrKeyPair): string;
 /**
+* @param {string} phrase
+* @param {number} num
+* @returns {string}
+*/
+export function get_priv_key_hex_str_by_mnemonic(phrase: string, num: number): string;
+/**
+* @param {string} hex_priv_key
+* @returns {XfrKeyPair}
+*/
+export function get_keypair_by_pri_key(hex_priv_key: string): XfrKeyPair;
+/**
+* @param {string} hex_priv_key
+* @returns {string}
+*/
+export function get_pub_key_hex_str_by_priv_key(hex_priv_key: string): string;
+/**
+* @param {string} hex_pub_key
+* @returns {string}
+*/
+export function get_address_by_public_key(hex_pub_key: string): string;
+/**
+* Extracts the public key as a string from a transfer key pair.
+* @param {XfrKeyPair} key_pair
+* @returns {string}
+*/
+export function get_pub_key_str_old(key_pair: XfrKeyPair): string;
+/**
+* Extracts the private key as a string from a transfer key pair.
+* @param {XfrKeyPair} key_pair
+* @returns {string}
+*/
+export function get_priv_key_str_old(key_pair: XfrKeyPair): string;
+/**
 * Creates a new transfer key pair.
 * @returns {XfrKeyPair}
 */
@@ -330,6 +363,11 @@ export function public_key_from_bech32(addr: string): XfrPublicKey;
 * @returns {string}
 */
 export function bech32_to_base64(pk: string): string;
+/**
+* @param {string} pk
+* @returns {string}
+*/
+export function bech32_to_base64_old(pk: string): string;
 /**
 * @param {string} pk
 * @returns {string}
@@ -1812,6 +1850,12 @@ export interface InitOutput {
   readonly open_client_asset_record: (a: number, b: number, c: number, d: number) => void;
   readonly get_pub_key_str: (a: number, b: number) => void;
   readonly get_priv_key_str: (a: number, b: number) => void;
+  readonly get_priv_key_hex_str_by_mnemonic: (a: number, b: number, c: number, d: number) => void;
+  readonly get_keypair_by_pri_key: (a: number, b: number, c: number) => void;
+  readonly get_pub_key_hex_str_by_priv_key: (a: number, b: number, c: number) => void;
+  readonly get_address_by_public_key: (a: number, b: number, c: number) => void;
+  readonly get_pub_key_str_old: (a: number, b: number) => void;
+  readonly get_priv_key_str_old: (a: number, b: number) => void;
   readonly new_keypair: () => number;
   readonly new_keypair_from_seed: (a: number, b: number, c: number, d: number) => number;
   readonly public_key_to_base64: (a: number, b: number) => void;
@@ -1831,6 +1875,7 @@ export interface InitOutput {
   readonly public_key_to_bech32: (a: number, b: number) => void;
   readonly public_key_from_bech32: (a: number, b: number, c: number) => void;
   readonly bech32_to_base64: (a: number, b: number, c: number) => void;
+  readonly bech32_to_base64_old: (a: number, b: number, c: number) => void;
   readonly base64_to_bech32: (a: number, b: number, c: number) => void;
   readonly base64_to_base58: (a: number, b: number, c: number) => void;
   readonly encryption_pbkdf2_aes256gcm: (a: number, b: number, c: number, d: number, e: number) => void;
