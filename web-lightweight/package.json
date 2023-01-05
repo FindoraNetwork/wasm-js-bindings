@@ -1,0 +1,21 @@
+{
+  "name": "wasm",
+  "collaborators": [
+    "ChainZK"
+  ],
+  "description": "",
+  "version": "0.2.11",
+  "license": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "files": [
+    "wasm_bg.wasm",
+    "wasm.js",
+    "wasm.d.ts"
+  ],
+  "module": "wasm.js",
+  "types": "wasm.d.ts",
+  "sideEffects": false
+}
