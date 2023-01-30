@@ -1849,7 +1849,7 @@ export class CredentialRevealSig {
     * @returns {CredentialCommitment}
     */
     get_commitment() {
-        var ret = wasm.credentialcommitmentdata_get_commitment(this.ptr);
+        var ret = wasm.credentialrevealsig_get_commitment(this.ptr);
         return CredentialCommitment.__wrap(ret);
     }
     /**

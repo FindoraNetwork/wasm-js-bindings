@@ -1341,6 +1341,7 @@ export interface InitOutput {
   readonly __wbg_credentialuserkeypair_free: (a: number) => void;
   readonly __wbg_credentialissuerkeypair_free: (a: number) => void;
   readonly __wbg_credentialrevealsig_free: (a: number) => void;
+  readonly credentialrevealsig_get_commitment: (a: number) => number;
   readonly credentialrevealsig_get_pok: (a: number) => number;
   readonly __wbg_credentialcommitmentdata_free: (a: number) => void;
   readonly credentialcommitmentdata_get_commitment: (a: number) => number;
@@ -1375,7 +1376,6 @@ export interface InitOutput {
   readonly assetrules_set_updatable: (a: number, b: number) => number;
   readonly assetrules_set_transfer_multisig_rules: (a: number, b: number) => number;
   readonly assetrules_set_decimals: (a: number, b: number) => number;
-  readonly credentialrevealsig_get_commitment: (a: number) => number;
   readonly __wbg_credentialsignature_free: (a: number) => void;
   readonly __wbg_credissuersecretkey_free: (a: number) => void;
   readonly __wbg_credissuerpublickey_free: (a: number) => void;
