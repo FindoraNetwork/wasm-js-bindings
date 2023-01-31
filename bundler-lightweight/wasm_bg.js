@@ -605,11 +605,127 @@ export function get_priv_key_str(key_pair) {
 }
 
 /**
+* @param {string} phrase
+* @param {number} num
+* @returns {string}
+*/
+export function get_priv_key_hex_str_by_mnemonic(phrase, num) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        var ptr0 = passStringToWasm0(phrase, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.get_priv_key_hex_str_by_mnemonic(retptr, ptr0, len0, num);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
+/**
+* @param {string} hex_priv_key
+* @returns {XfrKeyPair}
+*/
+export function get_keypair_by_pri_key(hex_priv_key) {
+    var ptr0 = passStringToWasm0(hex_priv_key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    var len0 = WASM_VECTOR_LEN;
+    var ret = wasm.get_keypair_by_pri_key(ptr0, len0);
+    return XfrKeyPair.__wrap(ret);
+}
+
+/**
+* @param {string} hex_priv_key
+* @returns {string}
+*/
+export function get_pub_key_hex_str_by_priv_key(hex_priv_key) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        var ptr0 = passStringToWasm0(hex_priv_key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.get_pub_key_hex_str_by_priv_key(retptr, ptr0, len0);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
+/**
+* @param {string} hex_pub_key
+* @returns {string}
+*/
+export function get_address_by_public_key(hex_pub_key) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        var ptr0 = passStringToWasm0(hex_pub_key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.get_address_by_public_key(retptr, ptr0, len0);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
+/**
+* Extracts the public key as a string from a transfer key pair.
+* @param {XfrKeyPair} key_pair
+* @returns {string}
+*/
+export function get_pub_key_str_old(key_pair) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        _assertClass(key_pair, XfrKeyPair);
+        wasm.get_pub_key_str_old(retptr, key_pair.ptr);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
+/**
+* Extracts the private key as a string from a transfer key pair.
+* @param {XfrKeyPair} key_pair
+* @returns {string}
+*/
+export function get_priv_key_str_old(key_pair) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        _assertClass(key_pair, XfrKeyPair);
+        wasm.get_priv_key_str_old(retptr, key_pair.ptr);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
+/**
 * Creates a new transfer key pair.
 * @returns {XfrKeyPair}
 */
 export function new_keypair() {
     var ret = wasm.new_keypair();
+    return XfrKeyPair.__wrap(ret);
+}
+
+/**
+* Creates a new transfer key pair.
+* @returns {XfrKeyPair}
+*/
+export function new_keypair_old() {
+    var ret = wasm.new_keypair_old();
     return XfrKeyPair.__wrap(ret);
 }
 
@@ -920,6 +1036,25 @@ export function bech32_to_base64(pk) {
         var ptr0 = passStringToWasm0(pk, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
         wasm.bech32_to_base64(retptr, ptr0, len0);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
+/**
+* @param {string} pk
+* @returns {string}
+*/
+export function bech32_to_base64_old(pk) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        var ptr0 = passStringToWasm0(pk, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.bech32_to_base64_old(retptr, ptr0, len0);
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         return getStringFromWasm0(r0, r1);
@@ -2254,7 +2389,7 @@ export class AxfrOwnerMemoInfo {
     get amount() {
         try {
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.__wbg_get_amountassettype_amount(retptr, this.ptr);
+            wasm.axfrownermemoinfo_amount(retptr, this.ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             u32CvtShim[0] = r0;
@@ -2812,7 +2947,7 @@ export class CredentialRevealSig {
     * @returns {CredentialCommitment}
     */
     get_commitment() {
-        var ret = wasm.credentialcommitmentdata_get_commitment(this.ptr);
+        var ret = wasm.credentialrevealsig_get_commitment(this.ptr);
         return CredentialCommitment.__wrap(ret);
     }
     /**
