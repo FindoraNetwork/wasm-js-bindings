@@ -718,6 +718,15 @@ export function new_keypair() {
 }
 
 /**
+* Creates a new transfer key pair.
+* @returns {XfrKeyPair}
+*/
+export function new_keypair_old() {
+    var ret = wasm.new_keypair_old();
+    return XfrKeyPair.__wrap(ret);
+}
+
+/**
 * Generates a new keypair deterministically from a seed string and an optional name.
 * @param {string} seed_str
 * @param {string | undefined} name
@@ -2377,7 +2386,7 @@ export class AxfrOwnerMemoInfo {
     get amount() {
         try {
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.__wbg_get_amountassettype_amount(retptr, this.ptr);
+            wasm.axfrownermemoinfo_amount(retptr, this.ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             u32CvtShim[0] = r0;
@@ -2935,7 +2944,7 @@ export class CredentialRevealSig {
     * @returns {CredentialCommitment}
     */
     get_commitment() {
-        var ret = wasm.credentialcommitmentdata_get_commitment(this.ptr);
+        var ret = wasm.credentialrevealsig_get_commitment(this.ptr);
         return CredentialCommitment.__wrap(ret);
     }
     /**
