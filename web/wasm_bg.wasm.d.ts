@@ -82,7 +82,6 @@ export function get_address_by_public_key(a: number, b: number, c: number): void
 export function get_pub_key_str_old(a: number, b: number): void;
 export function get_priv_key_str_old(a: number, b: number): void;
 export function new_keypair(): number;
-export function new_keypair_old(): number;
 export function new_keypair_from_seed(a: number, b: number, c: number, d: number): number;
 export function public_key_to_base64(a: number, b: number): void;
 export function public_key_from_base64(a: number, b: number): number;

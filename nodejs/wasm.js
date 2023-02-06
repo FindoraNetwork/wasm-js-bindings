@@ -720,15 +720,6 @@ module.exports.new_keypair = function() {
 };
 
 /**
-* Creates a new transfer key pair.
-* @returns {XfrKeyPair}
-*/
-module.exports.new_keypair_old = function() {
-    var ret = wasm.new_keypair_old();
-    return XfrKeyPair.__wrap(ret);
-};
-
-/**
 * Generates a new keypair deterministically from a seed string and an optional name.
 * @param {string} seed_str
 * @param {string | undefined} name

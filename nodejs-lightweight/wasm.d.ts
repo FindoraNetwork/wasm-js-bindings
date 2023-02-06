@@ -190,11 +190,6 @@ export function get_priv_key_str_old(key_pair: XfrKeyPair): string;
 */
 export function new_keypair(): XfrKeyPair;
 /**
-* Creates a new transfer key pair.
-* @returns {XfrKeyPair}
-*/
-export function new_keypair_old(): XfrKeyPair;
-/**
 * Generates a new keypair deterministically from a seed string and an optional name.
 * @param {string} seed_str
 * @param {string | undefined} name
