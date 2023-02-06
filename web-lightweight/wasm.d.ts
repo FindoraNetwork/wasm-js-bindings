@@ -190,6 +190,11 @@ export function get_priv_key_str_old(key_pair: XfrKeyPair): string;
 */
 export function new_keypair(): XfrKeyPair;
 /**
+* Creates a new transfer key pair.
+* @returns {XfrKeyPair}
+*/
+export function new_keypair_old(): XfrKeyPair;
+/**
 * Generates a new keypair deterministically from a seed string and an optional name.
 * @param {string} seed_str
 * @param {string | undefined} name
@@ -1872,6 +1877,7 @@ export interface InitOutput {
   readonly get_pub_key_str_old: (a: number, b: number) => void;
   readonly get_priv_key_str_old: (a: number, b: number) => void;
   readonly new_keypair: () => number;
+  readonly new_keypair_old: () => number;
   readonly new_keypair_from_seed: (a: number, b: number, c: number, d: number) => number;
   readonly public_key_to_base64: (a: number, b: number) => void;
   readonly public_key_from_base64: (a: number, b: number) => number;
@@ -1922,9 +1928,9 @@ export interface InitOutput {
   readonly try_decrypt_axfr_memo: (a: number, b: number, c: number) => void;
   readonly parse_axfr_memo: (a: number, b: number, c: number, d: number) => number;
   readonly commitment_to_aar: (a: number) => number;
-  readonly get_anon_fee: (a: number, b: number) => number;
   readonly get_delegation_target_address: (a: number) => void;
   readonly get_coinbase_principal_address: (a: number) => void;
+  readonly get_anon_fee: (a: number, b: number) => number;
   readonly __wbg_txoref_free: (a: number) => void;
   readonly txoref_relative: (a: number, b: number) => number;
   readonly txoref_absolute: (a: number, b: number) => number;

@@ -82,6 +82,7 @@ export function get_address_by_public_key(a: number, b: number, c: number): void
 export function get_pub_key_str_old(a: number, b: number): void;
 export function get_priv_key_str_old(a: number, b: number): void;
 export function new_keypair(): number;
+export function new_keypair_old(): number;
 export function new_keypair_from_seed(a: number, b: number, c: number, d: number): number;
 export function public_key_to_base64(a: number, b: number): void;
 export function public_key_from_base64(a: number, b: number): number;
@@ -132,9 +133,9 @@ export function decrypt_axfr_memo(a: number, b: number, c: number): number;
 export function try_decrypt_axfr_memo(a: number, b: number, c: number): void;
 export function parse_axfr_memo(a: number, b: number, c: number, d: number): number;
 export function commitment_to_aar(a: number): number;
-export function get_anon_fee(a: number, b: number): number;
 export function get_delegation_target_address(a: number): void;
 export function get_coinbase_principal_address(a: number): void;
+export function get_anon_fee(a: number, b: number): number;
 export function __wbg_txoref_free(a: number): void;
 export function txoref_relative(a: number, b: number): number;
 export function txoref_absolute(a: number, b: number): number;
