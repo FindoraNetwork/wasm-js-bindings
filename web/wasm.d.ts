@@ -15,6 +15,12 @@ export function build_id(): string;
 */
 export function random_asset_type(): string;
 /**
+* Creates a new asset code with prefixing-hashing the original code to query the ledger.
+* @param {string} asset_code_string
+* @returns {string}
+*/
+export function hash_asset_code(asset_code_string: string): string;
+/**
 * Generates asset type as a Base64 string from a JSON-serialized JavaScript value.
 * @param {any} val
 * @returns {string}
@@ -1009,9 +1015,11 @@ export class TransactionBuilder {
 * @param {XfrKeyPair} keypair
 * @param {string} ethereum_address
 * @param {BigInt} amount
+* @param {string | undefined} asset
+* @param {string | undefined} lowlevel_data
 * @returns {TransactionBuilder}
 */
-  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string, amount: BigInt): TransactionBuilder;
+  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string, amount: BigInt, asset?: string, lowlevel_data?: string): TransactionBuilder;
 /**
 * Adds a serialized transfer asset operation to a transaction builder instance.
 * @param {string} op - a JSON-serialized transfer operation.
@@ -1235,6 +1243,7 @@ export interface InitOutput {
   readonly memory: WebAssembly.Memory;
   readonly build_id: (a: number) => void;
   readonly random_asset_type: (a: number) => void;
+  readonly hash_asset_code: (a: number, b: number, c: number) => void;
   readonly asset_type_from_jsvalue: (a: number, b: number) => void;
   readonly verify_authenticated_txn: (a: number, b: number, c: number, d: number) => number;
   readonly get_null_pk: () => number;
@@ -1257,7 +1266,7 @@ export interface InitOutput {
   readonly transactionbuilder_add_operation_undelegate_partially: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly transactionbuilder_add_operation_claim: (a: number, b: number) => number;
   readonly transactionbuilder_add_operation_claim_custom: (a: number, b: number, c: number, d: number) => number;
-  readonly transactionbuilder_add_operation_convert_account: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
+  readonly transactionbuilder_add_operation_convert_account: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;
   readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number) => number;
   readonly transactionbuilder_sign: (a: number, b: number) => number;
   readonly transactionbuilder_sign_origin: (a: number, b: number) => number;

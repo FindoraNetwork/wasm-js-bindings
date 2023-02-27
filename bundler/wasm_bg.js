@@ -214,6 +214,26 @@ export function random_asset_type() {
     }
 }
 
+/**
+* Creates a new asset code with prefixing-hashing the original code to query the ledger.
+* @param {string} asset_code_string
+* @returns {string}
+*/
+export function hash_asset_code(asset_code_string) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        var ptr0 = passStringToWasm0(asset_code_string, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.hash_asset_code(retptr, ptr0, len0);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        return getStringFromWasm0(r0, r1);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+        wasm.__wbindgen_free(r0, r1);
+    }
+}
+
 let stack_pointer = 32;
 
 function addBorrowedObject(obj) {
@@ -2527,9 +2547,11 @@ export class TransactionBuilder {
     * @param {XfrKeyPair} keypair
     * @param {string} ethereum_address
     * @param {BigInt} amount
+    * @param {string | undefined} asset
+    * @param {string | undefined} lowlevel_data
     * @returns {TransactionBuilder}
     */
-    add_operation_convert_account(keypair, ethereum_address, amount) {
+    add_operation_convert_account(keypair, ethereum_address, amount, asset, lowlevel_data) {
         const ptr = this.__destroy_into_raw();
         _assertClass(keypair, XfrKeyPair);
         var ptr0 = passStringToWasm0(ethereum_address, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -2537,7 +2559,11 @@ export class TransactionBuilder {
         uint64CvtShim[0] = amount;
         const low1 = u32CvtShim[0];
         const high1 = u32CvtShim[1];
-        var ret = wasm.transactionbuilder_add_operation_convert_account(ptr, keypair.ptr, ptr0, len0, low1, high1);
+        var ptr2 = isLikeNone(asset) ? 0 : passStringToWasm0(asset, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len2 = WASM_VECTOR_LEN;
+        var ptr3 = isLikeNone(lowlevel_data) ? 0 : passStringToWasm0(lowlevel_data, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len3 = WASM_VECTOR_LEN;
+        var ret = wasm.transactionbuilder_add_operation_convert_account(ptr, keypair.ptr, ptr0, len0, low1, high1, ptr2, len2, ptr3, len3);
         return TransactionBuilder.__wrap(ret);
     }
     /**
