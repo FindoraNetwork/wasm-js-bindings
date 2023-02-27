@@ -959,10 +959,9 @@ export class TransactionBuilder {
 * @param {BigInt} seq_num
 * @param {BigInt} amount
 * @param {boolean} conf_amount
-* @param {PublicParams} zei_params
 * @returns {TransactionBuilder}
 */
-  add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: BigInt, amount: BigInt, conf_amount: boolean, zei_params: PublicParams): TransactionBuilder;
+  add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: BigInt, amount: BigInt, conf_amount: boolean): TransactionBuilder;
 /**
 * Adds an operation to the transaction builder that adds a hash to the ledger's custom data
 * store.
@@ -1029,6 +1028,11 @@ export class TransactionBuilder {
 * @returns {TransactionBuilder}
 */
   add_transfer_operation(op: string): TransactionBuilder;
+/**
+* Do nothing, compatible with frontend
+* @returns {TransactionBuilder}
+*/
+  build(): TransactionBuilder;
 /**
 * @param {XfrKeyPair} kp
 * @returns {TransactionBuilder}

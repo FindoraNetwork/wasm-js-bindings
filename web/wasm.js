@@ -2427,10 +2427,9 @@ export class TransactionBuilder {
     * @param {BigInt} seq_num
     * @param {BigInt} amount
     * @param {boolean} conf_amount
-    * @param {PublicParams} zei_params
     * @returns {TransactionBuilder}
     */
-    add_basic_issue_asset(key_pair, code, seq_num, amount, conf_amount, zei_params) {
+    add_basic_issue_asset(key_pair, code, seq_num, amount, conf_amount) {
         const ptr = this.__destroy_into_raw();
         _assertClass(key_pair, XfrKeyPair);
         var ptr0 = passStringToWasm0(code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -2441,8 +2440,7 @@ export class TransactionBuilder {
         uint64CvtShim[0] = amount;
         const low2 = u32CvtShim[0];
         const high2 = u32CvtShim[1];
-        _assertClass(zei_params, PublicParams);
-        var ret = wasm.transactionbuilder_add_basic_issue_asset(ptr, key_pair.ptr, ptr0, len0, low1, high1, low2, high2, conf_amount, zei_params.ptr);
+        var ret = wasm.transactionbuilder_add_basic_issue_asset(ptr, key_pair.ptr, ptr0, len0, low1, high1, low2, high2, conf_amount);
         return TransactionBuilder.__wrap(ret);
     }
     /**
@@ -2576,6 +2574,15 @@ export class TransactionBuilder {
         var ptr0 = passStringToWasm0(op, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
         var ret = wasm.transactionbuilder_add_transfer_operation(ptr, ptr0, len0);
+        return TransactionBuilder.__wrap(ret);
+    }
+    /**
+    * Do nothing, compatible with frontend
+    * @returns {TransactionBuilder}
+    */
+    build() {
+        const ptr = this.__destroy_into_raw();
+        var ret = wasm.transactionbuilder_build(ptr);
         return TransactionBuilder.__wrap(ret);
     }
     /**

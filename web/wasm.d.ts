@@ -959,10 +959,9 @@ export class TransactionBuilder {
 * @param {BigInt} seq_num
 * @param {BigInt} amount
 * @param {boolean} conf_amount
-* @param {PublicParams} zei_params
 * @returns {TransactionBuilder}
 */
-  add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: BigInt, amount: BigInt, conf_amount: boolean, zei_params: PublicParams): TransactionBuilder;
+  add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: BigInt, amount: BigInt, conf_amount: boolean): TransactionBuilder;
 /**
 * Adds an operation to the transaction builder that adds a hash to the ledger's custom data
 * store.
@@ -1029,6 +1028,11 @@ export class TransactionBuilder {
 * @returns {TransactionBuilder}
 */
   add_transfer_operation(op: string): TransactionBuilder;
+/**
+* Do nothing, compatible with frontend
+* @returns {TransactionBuilder}
+*/
+  build(): TransactionBuilder;
 /**
 * @param {XfrKeyPair} kp
 * @returns {TransactionBuilder}
@@ -1259,7 +1263,7 @@ export interface InitOutput {
   readonly transactionbuilder_new: (a: number, b: number) => number;
   readonly transactionbuilder_add_operation_create_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => number;
   readonly transactionbuilder_add_operation_create_asset_with_policy: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => number;
-  readonly transactionbuilder_add_basic_issue_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;
+  readonly transactionbuilder_add_basic_issue_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => number;
   readonly transactionbuilder_add_operation_update_memo: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly transactionbuilder_add_operation_delegate: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly transactionbuilder_add_operation_undelegate: (a: number, b: number) => number;
@@ -1268,6 +1272,7 @@ export interface InitOutput {
   readonly transactionbuilder_add_operation_claim_custom: (a: number, b: number, c: number, d: number) => number;
   readonly transactionbuilder_add_operation_convert_account: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;
   readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number) => number;
+  readonly transactionbuilder_build: (a: number) => number;
   readonly transactionbuilder_sign: (a: number, b: number) => number;
   readonly transactionbuilder_sign_origin: (a: number, b: number) => number;
   readonly transactionbuilder_transaction: (a: number, b: number) => void;

@@ -19,7 +19,7 @@ export function transactionbuilder_check_fee(a: number): number;
 export function transactionbuilder_new(a: number, b: number): number;
 export function transactionbuilder_add_operation_create_asset(a: number, b: number, c: number, d: number, e: number, f: number, g: number): number;
 export function transactionbuilder_add_operation_create_asset_with_policy(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number): number;
-export function transactionbuilder_add_basic_issue_asset(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number): number;
+export function transactionbuilder_add_basic_issue_asset(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number): number;
 export function transactionbuilder_add_operation_update_memo(a: number, b: number, c: number, d: number, e: number, f: number): number;
 export function transactionbuilder_add_operation_delegate(a: number, b: number, c: number, d: number, e: number, f: number): number;
 export function transactionbuilder_add_operation_undelegate(a: number, b: number): number;
@@ -28,6 +28,7 @@ export function transactionbuilder_add_operation_claim(a: number, b: number): nu
 export function transactionbuilder_add_operation_claim_custom(a: number, b: number, c: number, d: number): number;
 export function transactionbuilder_add_operation_convert_account(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number): number;
 export function transactionbuilder_add_transfer_operation(a: number, b: number, c: number): number;
+export function transactionbuilder_build(a: number): number;
 export function transactionbuilder_sign(a: number, b: number): number;
 export function transactionbuilder_sign_origin(a: number, b: number): number;
 export function transactionbuilder_transaction(a: number, b: number): void;
