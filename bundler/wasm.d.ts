@@ -15,6 +15,12 @@ export function build_id(): string;
 */
 export function random_asset_type(): string;
 /**
+* Creates a new asset code with prefixing-hashing the original code to query the ledger.
+* @param {string} asset_code_string
+* @returns {string}
+*/
+export function hash_asset_code(asset_code_string: string): string;
+/**
 * Generates asset type as a Base64 string from a JSON-serialized JavaScript value.
 * @param {any} val
 * @returns {string}
@@ -953,10 +959,9 @@ export class TransactionBuilder {
 * @param {BigInt} seq_num
 * @param {BigInt} amount
 * @param {boolean} conf_amount
-* @param {PublicParams} zei_params
 * @returns {TransactionBuilder}
 */
-  add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: BigInt, amount: BigInt, conf_amount: boolean, zei_params: PublicParams): TransactionBuilder;
+  add_basic_issue_asset(key_pair: XfrKeyPair, code: string, seq_num: BigInt, amount: BigInt, conf_amount: boolean): TransactionBuilder;
 /**
 * Adds an operation to the transaction builder that adds a hash to the ledger's custom data
 * store.
@@ -1009,9 +1014,11 @@ export class TransactionBuilder {
 * @param {XfrKeyPair} keypair
 * @param {string} ethereum_address
 * @param {BigInt} amount
+* @param {string | undefined} asset
+* @param {string | undefined} lowlevel_data
 * @returns {TransactionBuilder}
 */
-  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string, amount: BigInt): TransactionBuilder;
+  add_operation_convert_account(keypair: XfrKeyPair, ethereum_address: string, amount: BigInt, asset?: string, lowlevel_data?: string): TransactionBuilder;
 /**
 * Adds a serialized transfer asset operation to a transaction builder instance.
 * @param {string} op - a JSON-serialized transfer operation.
@@ -1021,6 +1028,11 @@ export class TransactionBuilder {
 * @returns {TransactionBuilder}
 */
   add_transfer_operation(op: string): TransactionBuilder;
+/**
+* Do nothing, compatible with frontend
+* @returns {TransactionBuilder}
+*/
+  build(): TransactionBuilder;
 /**
 * @param {XfrKeyPair} kp
 * @returns {TransactionBuilder}
