@@ -3124,12 +3124,6 @@ async function init(input) {
     imports.wbg.__wbg_randomFillSync_f20541303a990429 = handleError(function(arg0, arg1, arg2) {
         getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
     });
-    imports.wbg.__wbg_randomFillSync_d2ba53160aec6aba = function(arg0, arg1, arg2) {
-        getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
-    };
-    imports.wbg.__wbg_getRandomValues_e57c9b75ddead065 = function(arg0, arg1) {
-        getObject(arg0).getRandomValues(getObject(arg1));
-    };
     imports.wbg.__wbg_self_86b4b13392c7af56 = handleError(function() {
         var ret = self.self;
         return addHeapObject(ret);
@@ -3157,6 +3151,12 @@ async function init(input) {
     imports.wbg.__wbg_getRandomValues_dd27e6b0652b3236 = function(arg0) {
         var ret = getObject(arg0).getRandomValues;
         return addHeapObject(ret);
+    };
+    imports.wbg.__wbg_getRandomValues_e57c9b75ddead065 = function(arg0, arg1) {
+        getObject(arg0).getRandomValues(getObject(arg1));
+    };
+    imports.wbg.__wbg_randomFillSync_d2ba53160aec6aba = function(arg0, arg1, arg2) {
+        getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
     };
     imports.wbg.__wbg_get_0c6963cbab34fbb6 = handleError(function(arg0, arg1) {
         var ret = Reflect.get(getObject(arg0), getObject(arg1));
