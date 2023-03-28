@@ -3056,6 +3056,14 @@ export const __wbg_now_4abbca4ef2aba8d6 = function(arg0) {
     return ret;
 };
 
+export const __wbg_randomFillSync_f20541303a990429 = handleError(function(arg0, arg1, arg2) {
+    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
+});
+
+export const __wbg_getRandomValues_f308e7233e5601b7 = handleError(function(arg0, arg1) {
+    getObject(arg0).getRandomValues(getObject(arg1));
+});
+
 export const __wbg_crypto_8fd02d72c4ba6c5c = function(arg0) {
     var ret = getObject(arg0).crypto;
     return addHeapObject(ret);
@@ -3097,22 +3105,6 @@ export const __wbindgen_is_function = function(arg0) {
     return ret;
 };
 
-export const __wbg_getRandomValues_f308e7233e5601b7 = handleError(function(arg0, arg1) {
-    getObject(arg0).getRandomValues(getObject(arg1));
-});
-
-export const __wbg_randomFillSync_f20541303a990429 = handleError(function(arg0, arg1, arg2) {
-    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
-});
-
-export const __wbg_randomFillSync_d2ba53160aec6aba = function(arg0, arg1, arg2) {
-    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
-};
-
-export const __wbg_getRandomValues_e57c9b75ddead065 = function(arg0, arg1) {
-    getObject(arg0).getRandomValues(getObject(arg1));
-};
-
 export const __wbg_self_86b4b13392c7af56 = handleError(function() {
     var ret = self.self;
     return addHeapObject(ret);
@@ -3146,6 +3138,14 @@ export const __wbg_require_f5521a5b85ad2542 = function(arg0, arg1, arg2) {
 export const __wbg_getRandomValues_dd27e6b0652b3236 = function(arg0) {
     var ret = getObject(arg0).getRandomValues;
     return addHeapObject(ret);
+};
+
+export const __wbg_getRandomValues_e57c9b75ddead065 = function(arg0, arg1) {
+    getObject(arg0).getRandomValues(getObject(arg1));
+};
+
+export const __wbg_randomFillSync_d2ba53160aec6aba = function(arg0, arg1, arg2) {
+    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
 };
 
 export const __wbg_get_0c6963cbab34fbb6 = handleError(function(arg0, arg1) {
