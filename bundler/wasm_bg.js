@@ -195,6 +195,44 @@ function debugString(val) {
     // TODO we could test for more things here, like `Set`s and `Map`s.
     return className;
 }
+
+function makeMutClosure(arg0, arg1, dtor, f) {
+    const state = { a: arg0, b: arg1, cnt: 1, dtor };
+    const real = (...args) => {
+        // First up with a closure we increment the internal reference
+        // count. This ensures that the Rust closure environment won't
+        // be deallocated while we're invoking it.
+        state.cnt++;
+        const a = state.a;
+        state.a = 0;
+        try {
+            return f(a, state.b, ...args);
+        } finally {
+            if (--state.cnt === 0) {
+                wasm.__wbindgen_export_2.get(state.dtor)(a, state.b);
+
+            } else {
+                state.a = a;
+            }
+        }
+    };
+    real.original = state;
+
+    return real;
+}
+function __wbg_adapter_32(arg0, arg1, arg2) {
+    wasm._dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__ha90c8bd1acee21a4(arg0, arg1, addHeapObject(arg2));
+}
+
+/**
+* Init noah anon xfr
+* @returns {Promise<void>}
+*/
+export function init_noah() {
+    const ret = wasm.init_noah();
+    return takeObject(ret);
+}
+
 /**
 * Returns the git commit hash and commit date of the commit this library was built against.
 * @returns {string}
@@ -1816,6 +1854,10 @@ function handleError(f, args) {
         wasm.__wbindgen_exn_store(addHeapObject(e));
     }
 }
+function __wbg_adapter_255(arg0, arg1, arg2, arg3) {
+    wasm.wasm_bindgen__convert__closures__invoke2_mut__h8fbb61d8b6a3c8ff(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
+}
+
 /**
 */
 export class AmountAssetType {
@@ -5233,6 +5275,16 @@ export function __wbindgen_string_new(arg0, arg1) {
     return addHeapObject(ret);
 };
 
+export function __wbindgen_cb_drop(arg0) {
+    const obj = takeObject(arg0).original;
+    if (obj.cnt-- == 1) {
+        obj.a = 0;
+        return true;
+    }
+    const ret = false;
+    return ret;
+};
+
 export function __wbindgen_number_new(arg0) {
     const ret = arg0;
     return addHeapObject(ret);
@@ -5324,6 +5376,11 @@ export function __wbg_call_95d1ea488d03e4e8() { return handleError(function (arg
     return addHeapObject(ret);
 }, arguments) };
 
+export function __wbg_new_f9876326328f45ed() {
+    const ret = new Object();
+    return addHeapObject(ret);
+};
+
 export function __wbg_self_e7c1f827057f6584() { return handleError(function () {
     const ret = self.self;
     return addHeapObject(ret);
@@ -5368,6 +5425,40 @@ export function __wbg_call_9495de66fdbe016b() { return handleError(function (arg
     return addHeapObject(ret);
 }, arguments) };
 
+export function __wbg_new_9d3a9ce4282a18a8(arg0, arg1) {
+    try {
+        var state0 = {a: arg0, b: arg1};
+        var cb0 = (arg0, arg1) => {
+            const a = state0.a;
+            state0.a = 0;
+            try {
+                return __wbg_adapter_255(a, state0.b, arg0, arg1);
+            } finally {
+                state0.a = a;
+            }
+        };
+        const ret = new Promise(cb0);
+        return addHeapObject(ret);
+    } finally {
+        state0.a = state0.b = 0;
+    }
+};
+
+export function __wbg_resolve_fd40f858d9db1a04(arg0) {
+    const ret = Promise.resolve(getObject(arg0));
+    return addHeapObject(ret);
+};
+
+export function __wbg_then_ec5db6d509eb475f(arg0, arg1) {
+    const ret = getObject(arg0).then(getObject(arg1));
+    return addHeapObject(ret);
+};
+
+export function __wbg_then_f753623316e2873a(arg0, arg1, arg2) {
+    const ret = getObject(arg0).then(getObject(arg1), getObject(arg2));
+    return addHeapObject(ret);
+};
+
 export function __wbg_buffer_cf65c07de34b9a08(arg0) {
     const ret = getObject(arg0).buffer;
     return addHeapObject(ret);
@@ -5406,6 +5497,22 @@ export function __wbg_setindex_e050e698161bd575(arg0, arg1, arg2) {
     getObject(arg0)[arg1 >>> 0] = arg2;
 };
 
+export function __wbg_instantiate_94393b2aeffd4469(arg0, arg1, arg2) {
+    const ret = WebAssembly.instantiate(getArrayU8FromWasm0(arg0, arg1), getObject(arg2));
+    return addHeapObject(ret);
+};
+
+export function __wbg_instanceof_Instance_f25d9939a09a738e(arg0) {
+    let result;
+    try {
+        result = getObject(arg0) instanceof WebAssembly.Instance;
+    } catch {
+        result = false;
+    }
+    const ret = result;
+    return ret;
+};
+
 export function __wbg_exports_ff0a0a2b2c092053(arg0) {
     const ret = getObject(arg0).exports;
     return addHeapObject(ret);
@@ -5436,6 +5543,11 @@ export function __wbindgen_throw(arg0, arg1) {
 
 export function __wbindgen_memory() {
     const ret = wasm.memory;
+    return addHeapObject(ret);
+};
+
+export function __wbindgen_closure_wrapper8668(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 2800, __wbg_adapter_32);
     return addHeapObject(ret);
 };
 

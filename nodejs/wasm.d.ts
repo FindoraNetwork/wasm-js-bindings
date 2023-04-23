@@ -1,6 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
+* Init noah anon xfr
+* @returns {Promise<void>}
+*/
+export function init_noah(): Promise<void>;
+/**
 * Returns the git commit hash and commit date of the commit this library was built against.
 * @returns {string}
 */
