@@ -3868,6 +3868,14 @@ module.exports.__wbg_now_c644db5194be8437 = function(arg0) {
     return ret;
 };
 
+module.exports.__wbg_getRandomValues_3774744e221a22ad = function() { return handleError(function (arg0, arg1) {
+    getObject(arg0).getRandomValues(getObject(arg1));
+}, arguments) };
+
+module.exports.__wbg_randomFillSync_e950366c42764a07 = function() { return handleError(function (arg0, arg1) {
+    getObject(arg0).randomFillSync(takeObject(arg1));
+}, arguments) };
+
 module.exports.__wbg_crypto_70a96de3b6b73dac = function(arg0) {
     const ret = getObject(arg0).crypto;
     return addHeapObject(ret);
@@ -3914,13 +3922,13 @@ module.exports.__wbindgen_is_function = function(arg0) {
     return ret;
 };
 
-module.exports.__wbg_getRandomValues_3774744e221a22ad = function() { return handleError(function (arg0, arg1) {
-    getObject(arg0).getRandomValues(getObject(arg1));
-}, arguments) };
+module.exports.__wbg_randomFillSync_85b3f4c52c56c313 = function(arg0, arg1, arg2) {
+    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
+};
 
-module.exports.__wbg_randomFillSync_e950366c42764a07 = function() { return handleError(function (arg0, arg1) {
-    getObject(arg0).randomFillSync(takeObject(arg1));
-}, arguments) };
+module.exports.__wbg_getRandomValues_cd175915511f705e = function(arg0, arg1) {
+    getObject(arg0).getRandomValues(getObject(arg1));
+};
 
 module.exports.__wbg_self_7eede1f4488bf346 = function() { return handleError(function () {
     const ret = self.self;
@@ -3955,14 +3963,6 @@ module.exports.__wbg_require_900d5c3984fe7703 = function(arg0, arg1, arg2) {
 module.exports.__wbg_getRandomValues_307049345d0bd88c = function(arg0) {
     const ret = getObject(arg0).getRandomValues;
     return addHeapObject(ret);
-};
-
-module.exports.__wbg_getRandomValues_cd175915511f705e = function(arg0, arg1) {
-    getObject(arg0).getRandomValues(getObject(arg1));
-};
-
-module.exports.__wbg_randomFillSync_85b3f4c52c56c313 = function(arg0, arg1, arg2) {
-    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
 };
 
 module.exports.__wbg_newnoargs_2b8b6bd7753c76ba = function(arg0, arg1) {
