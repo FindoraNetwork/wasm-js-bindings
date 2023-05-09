@@ -2020,8 +2020,8 @@ export interface InitOutput {
   readonly __wbg_jubjubscalar_free: (a: number) => void;
   readonly __wbg_zorroscalar_free: (a: number) => void;
   readonly __wbg_secq256k1g1_free: (a: number) => void;
-  readonly __wbg_zorrofq_free: (a: number) => void;
   readonly __wbg_zorrog1_free: (a: number) => void;
+  readonly __wbg_zorrofq_free: (a: number) => void;
   readonly __wbg_blsg2_free: (a: number) => void;
   readonly __wbg_secp256k1g1_free: (a: number) => void;
   readonly __wbg_ed25519point_free: (a: number) => void;
@@ -2031,11 +2031,11 @@ export interface InitOutput {
   readonly __wbindgen_malloc: (a: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number) => number;
   readonly __wbindgen_export_2: WebAssembly.Table;
-  readonly _dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__ha90c8bd1acee21a4: (a: number, b: number, c: number) => void;
+  readonly _dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__hc47b2185e1ef8642: (a: number, b: number, c: number) => void;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
   readonly __wbindgen_free: (a: number, b: number) => void;
   readonly __wbindgen_exn_store: (a: number) => void;
-  readonly wasm_bindgen__convert__closures__invoke2_mut__h8fbb61d8b6a3c8ff: (a: number, b: number, c: number, d: number) => void;
+  readonly wasm_bindgen__convert__closures__invoke2_mut__h3ac7c2306bcc3e1f: (a: number, b: number, c: number, d: number) => void;
 }
 
 export type SyncInitInput = BufferSource | WebAssembly.Module;
