@@ -1506,9 +1506,9 @@ export interface InitOutput {
   readonly __wbg_blsg2_free: (a: number) => void;
   readonly __wbg_secp256k1g1_free: (a: number) => void;
   readonly __wbg_ed25519point_free: (a: number) => void;
-  readonly __wbg_secq256k1scalar_free: (a: number) => void;
-  readonly __wbg_blsscalar_free: (a: number) => void;
   readonly __wbg_secp256k1scalar_free: (a: number) => void;
+  readonly __wbg_blsscalar_free: (a: number) => void;
+  readonly __wbg_secq256k1scalar_free: (a: number) => void;
   readonly __wbg_blsfq_free: (a: number) => void;
   readonly __wbg_credissuersecretkey_free: (a: number) => void;
   readonly __wbg_credissuerpublickey_free: (a: number) => void;
