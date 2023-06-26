@@ -539,10 +539,10 @@ export function try_decrypt_axfr_memo(memo: AxfrOwnerMemo, key_pair: XfrKeyPair)
 export function parse_axfr_memo(bytes: Uint8Array, key_pair: XfrKeyPair, abar: AnonAssetRecord): AxfrOwnerMemoInfo;
 /**
 * Convert Commitment to AnonAssetRecord.
-* @param {BLSScalar} commitment
+* @param {BN254Scalar} commitment
 * @returns {AnonAssetRecord}
 */
-export function commitment_to_aar(commitment: BLSScalar): AnonAssetRecord;
+export function commitment_to_aar(commitment: BN254Scalar): AnonAssetRecord;
 /**
 */
 export class AmountAssetType {
@@ -562,7 +562,7 @@ export class AnonAssetRecord {
 /**
 * The commitment.
 */
-  commitment: BLSScalar;
+  commitment: BN254Scalar;
 }
 /**
 * AnonKeys is used to store keys for Anon proofs
@@ -856,7 +856,7 @@ export class AxfrOwnerMemoInfo {
   readonly asset_type: string;
 /**
 */
-  readonly blind: BLSScalar;
+  readonly blind: BN254Scalar;
 }
 /**
 * The wrapped struct for `ark_bls12_381::Fq`
@@ -887,6 +887,43 @@ export class BLSGt {
 * The wrapped struct for `ark_bls12_381::Fr`
 */
 export class BLSScalar {
+  free(): void;
+}
+/**
+* The wrapped struct for `ark_bn254::Fq`
+*/
+export class BN254Fq {
+  free(): void;
+}
+/**
+* The wrapped struct for ark_bn254::G1Projective
+*/
+export class BN254G1 {
+  free(): void;
+}
+/**
+* The wrapped struct for `ark_bn254::G2Projective`
+*/
+export class BN254G2 {
+  free(): void;
+}
+/**
+* The wrapped struct for [`Fp12<ark_bn254::Fq12Parameters>`](https://docs.rs/ark-bn254/0.3.0/ark_bn254/fq12/struct.Fq12Parameters.html),
+* which is the pairing result
+*/
+export class BN254Gt {
+  free(): void;
+}
+/**
+* The wrapped struct for `ark_bn254::Fr`
+*/
+export class BN254Scalar {
+  free(): void;
+}
+/**
+* The wrapped struct for `ark_ed_on_bn254::Fr`
+*/
+export class BabyJubjubScalar {
   free(): void;
 }
 /**
@@ -1190,15 +1227,15 @@ export class MTNode {
 /**
 * The left child of its parent in a three-ary tree.
 */
-  left: BLSScalar;
+  left: BN254Scalar;
 /**
 * The mid child of its parent in a three-ary tree.
 */
-  mid: BLSScalar;
+  mid: BN254Scalar;
 /**
 * The right child of its parent in a three-ary tree.
 */
-  right: BLSScalar;
+  right: BN254Scalar;
 }
 /**
 * Asset owner memo. Contains information needed to decrypt an asset record.
@@ -1904,9 +1941,9 @@ export interface InitOutput {
   readonly try_decrypt_axfr_memo: (a: number, b: number, c: number) => void;
   readonly parse_axfr_memo: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly commitment_to_aar: (a: number) => number;
-  readonly get_delegation_target_address: (a: number) => void;
-  readonly get_anon_fee: (a: number, b: number) => number;
   readonly new_keypair_old: () => number;
+  readonly get_anon_fee: (a: number, b: number) => number;
+  readonly get_delegation_target_address: (a: number) => void;
   readonly fra_get_minimal_fee: () => number;
   readonly fra_get_minimal_fee_for_bar_to_abar: () => number;
   readonly get_delegation_min_amount: () => number;
@@ -1935,7 +1972,6 @@ export interface InitOutput {
   readonly __wbg_credentialuserkeypair_free: (a: number) => void;
   readonly __wbg_credentialissuerkeypair_free: (a: number) => void;
   readonly __wbg_credentialrevealsig_free: (a: number) => void;
-  readonly credentialrevealsig_get_commitment: (a: number) => number;
   readonly credentialrevealsig_get_pok: (a: number) => number;
   readonly __wbg_credentialcommitmentdata_free: (a: number) => void;
   readonly credentialcommitmentdata_get_commitment: (a: number) => number;
@@ -1984,6 +2020,7 @@ export interface InitOutput {
   readonly anonkeys_set_secret_key: (a: number, b: number, c: number) => void;
   readonly anonkeys_pub_key: (a: number, b: number) => void;
   readonly anonkeys_set_pub_key: (a: number, b: number, c: number) => void;
+  readonly credentialrevealsig_get_commitment: (a: number) => number;
   readonly __wbg_credentialsignature_free: (a: number) => void;
   readonly __wbg_credissuersecretkey_free: (a: number) => void;
   readonly __wbg_credissuerpublickey_free: (a: number) => void;
@@ -2007,35 +2044,41 @@ export interface InitOutput {
   readonly __wbg_anonassetrecord_free: (a: number) => void;
   readonly __wbg_get_anonassetrecord_commitment: (a: number) => number;
   readonly __wbg_set_anonassetrecord_commitment: (a: number, b: number) => void;
-  readonly __wbg_publickey_free: (a: number) => void;
-  readonly __wbg_keypair_free: (a: number) => void;
   readonly __wbg_set_mtnode_left: (a: number, b: number) => void;
   readonly __wbg_get_mtnode_left: (a: number) => number;
+  readonly __wbg_publickey_free: (a: number) => void;
+  readonly __wbg_keypair_free: (a: number) => void;
   readonly __wbg_xpublickey_free: (a: number) => void;
   readonly __wbg_xsecretkey_free: (a: number) => void;
+  readonly __wbg_babyjubjubscalar_free: (a: number) => void;
+  readonly __wbg_jubjubscalar_free: (a: number) => void;
+  readonly __wbg_zorroscalar_free: (a: number) => void;
+  readonly __wbg_ed25519scalar_free: (a: number) => void;
   readonly __wbg_blsg1_free: (a: number) => void;
+  readonly __wbg_bn254g1_free: (a: number) => void;
   readonly __wbg_zorrofq_free: (a: number) => void;
   readonly __wbg_secq256k1g1_free: (a: number) => void;
-  readonly __wbg_zorrog1_free: (a: number) => void;
   readonly __wbg_blsg2_free: (a: number) => void;
-  readonly __wbg_secp256k1g1_free: (a: number) => void;
-  readonly __wbg_ed25519point_free: (a: number) => void;
+  readonly __wbg_bn254g2_free: (a: number) => void;
+  readonly __wbg_zorrog1_free: (a: number) => void;
   readonly __wbg_blsscalar_free: (a: number) => void;
+  readonly __wbg_bn254gt_free: (a: number) => void;
+  readonly __wbg_bn254scalar_free: (a: number) => void;
   readonly __wbg_secq256k1scalar_free: (a: number) => void;
   readonly __wbg_secp256k1scalar_free: (a: number) => void;
-  readonly __wbg_blsfq_free: (a: number) => void;
   readonly __wbg_blsgt_free: (a: number) => void;
-  readonly __wbg_ed25519scalar_free: (a: number) => void;
-  readonly __wbg_zorroscalar_free: (a: number) => void;
-  readonly __wbg_jubjubscalar_free: (a: number) => void;
+  readonly __wbg_secp256k1g1_free: (a: number) => void;
+  readonly __wbg_blsfq_free: (a: number) => void;
+  readonly __wbg_bn254fq_free: (a: number) => void;
+  readonly __wbg_ed25519point_free: (a: number) => void;
   readonly __wbindgen_malloc: (a: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number) => number;
   readonly __wbindgen_export_2: WebAssembly.Table;
-  readonly _dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h6f186d9f5be205a8: (a: number, b: number, c: number) => void;
+  readonly _dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h3f8132c8a162b8fc: (a: number, b: number, c: number) => void;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
   readonly __wbindgen_free: (a: number, b: number) => void;
   readonly __wbindgen_exn_store: (a: number) => void;
-  readonly wasm_bindgen__convert__closures__invoke2_mut__h0a5790931534a0f2: (a: number, b: number, c: number, d: number) => void;
+  readonly wasm_bindgen__convert__closures__invoke2_mut__ha26bba197aba11cf: (a: number, b: number, c: number, d: number) => void;
 }
 
 export type SyncInitInput = BufferSource | WebAssembly.Module;

@@ -539,10 +539,10 @@ export function try_decrypt_axfr_memo(memo: AxfrOwnerMemo, key_pair: XfrKeyPair)
 export function parse_axfr_memo(bytes: Uint8Array, key_pair: XfrKeyPair, abar: AnonAssetRecord): AxfrOwnerMemoInfo;
 /**
 * Convert Commitment to AnonAssetRecord.
-* @param {BLSScalar} commitment
+* @param {BN254Scalar} commitment
 * @returns {AnonAssetRecord}
 */
-export function commitment_to_aar(commitment: BLSScalar): AnonAssetRecord;
+export function commitment_to_aar(commitment: BN254Scalar): AnonAssetRecord;
 /**
 */
 export class AmountAssetType {
@@ -562,7 +562,7 @@ export class AnonAssetRecord {
 /**
 * The commitment.
 */
-  commitment: BLSScalar;
+  commitment: BN254Scalar;
 }
 /**
 * AnonKeys is used to store keys for Anon proofs
@@ -856,7 +856,7 @@ export class AxfrOwnerMemoInfo {
   readonly asset_type: string;
 /**
 */
-  readonly blind: BLSScalar;
+  readonly blind: BN254Scalar;
 }
 /**
 * The wrapped struct for `ark_bls12_381::Fq`
@@ -887,6 +887,43 @@ export class BLSGt {
 * The wrapped struct for `ark_bls12_381::Fr`
 */
 export class BLSScalar {
+  free(): void;
+}
+/**
+* The wrapped struct for `ark_bn254::Fq`
+*/
+export class BN254Fq {
+  free(): void;
+}
+/**
+* The wrapped struct for ark_bn254::G1Projective
+*/
+export class BN254G1 {
+  free(): void;
+}
+/**
+* The wrapped struct for `ark_bn254::G2Projective`
+*/
+export class BN254G2 {
+  free(): void;
+}
+/**
+* The wrapped struct for [`Fp12<ark_bn254::Fq12Parameters>`](https://docs.rs/ark-bn254/0.3.0/ark_bn254/fq12/struct.Fq12Parameters.html),
+* which is the pairing result
+*/
+export class BN254Gt {
+  free(): void;
+}
+/**
+* The wrapped struct for `ark_bn254::Fr`
+*/
+export class BN254Scalar {
+  free(): void;
+}
+/**
+* The wrapped struct for `ark_ed_on_bn254::Fr`
+*/
+export class BabyJubjubScalar {
   free(): void;
 }
 /**
@@ -1190,15 +1227,15 @@ export class MTNode {
 /**
 * The left child of its parent in a three-ary tree.
 */
-  left: BLSScalar;
+  left: BN254Scalar;
 /**
 * The mid child of its parent in a three-ary tree.
 */
-  mid: BLSScalar;
+  mid: BN254Scalar;
 /**
 * The right child of its parent in a three-ary tree.
 */
-  right: BLSScalar;
+  right: BN254Scalar;
 }
 /**
 * Asset owner memo. Contains information needed to decrypt an asset record.
