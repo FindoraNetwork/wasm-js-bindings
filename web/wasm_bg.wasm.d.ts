@@ -24,8 +24,8 @@ export function transactionbuilder_add_operation_update_memo(a: number, b: numbe
 export function transactionbuilder_add_operation_delegate(a: number, b: number, c: number, d: number, e: number, f: number): void;
 export function transactionbuilder_add_operation_undelegate(a: number, b: number, c: number): void;
 export function transactionbuilder_add_operation_undelegate_partially(a: number, b: number, c: number, d: number, e: number, f: number): void;
-export function transactionbuilder_add_operation_claim(a: number, b: number, c: number): void;
-export function transactionbuilder_add_operation_claim_custom(a: number, b: number, c: number, d: number): void;
+export function transactionbuilder_add_operation_claim(a: number, b: number, c: number, d: number, e: number): void;
+export function transactionbuilder_add_operation_claim_custom(a: number, b: number, c: number, d: number, e: number, f: number): void;
 export function transactionbuilder_add_operation_convert_account(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number): void;
 export function transactionbuilder_add_transfer_operation(a: number, b: number, c: number, d: number): void;
 export function transactionbuilder_build(a: number, b: number): void;
