@@ -3892,14 +3892,6 @@ export function __wbindgen_is_function(arg0) {
     return ret;
 };
 
-export function __wbg_randomFillSync_85b3f4c52c56c313(arg0, arg1, arg2) {
-    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
-};
-
-export function __wbg_getRandomValues_cd175915511f705e(arg0, arg1) {
-    getObject(arg0).getRandomValues(getObject(arg1));
-};
-
 export function __wbg_self_7eede1f4488bf346() { return handleError(function () {
     const ret = self.self;
     return addHeapObject(ret);
@@ -3933,6 +3925,14 @@ export function __wbg_require_900d5c3984fe7703(arg0, arg1, arg2) {
 export function __wbg_getRandomValues_307049345d0bd88c(arg0) {
     const ret = getObject(arg0).getRandomValues;
     return addHeapObject(ret);
+};
+
+export function __wbg_getRandomValues_cd175915511f705e(arg0, arg1) {
+    getObject(arg0).getRandomValues(getObject(arg1));
+};
+
+export function __wbg_randomFillSync_85b3f4c52c56c313(arg0, arg1, arg2) {
+    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
 };
 
 export function __wbg_newnoargs_2b8b6bd7753c76ba(arg0, arg1) {
