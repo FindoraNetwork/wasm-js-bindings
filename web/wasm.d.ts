@@ -1071,17 +1071,15 @@ export class TransactionBuilder {
   add_operation_undelegate_partially(keypair: XfrKeyPair, am: bigint, target_validator: string): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
-* @param {Uint8Array} td_addr
 * @returns {TransactionBuilder}
 */
-  add_operation_claim(keypair: XfrKeyPair, td_addr: Uint8Array): TransactionBuilder;
+  add_operation_claim(keypair: XfrKeyPair): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
-* @param {Uint8Array} td_addr
 * @param {bigint} am
 * @returns {TransactionBuilder}
 */
-  add_operation_claim_custom(keypair: XfrKeyPair, td_addr: Uint8Array, am: bigint): TransactionBuilder;
+  add_operation_claim_custom(keypair: XfrKeyPair, am: bigint): TransactionBuilder;
 /**
 * Adds an operation to the transaction builder that support transfer utxo asset to ethereum address.
 * @param {XfrKeyPair} keypair - Asset creator key pair.
@@ -1372,8 +1370,8 @@ export interface InitOutput {
   readonly transactionbuilder_add_operation_delegate: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
   readonly transactionbuilder_add_operation_undelegate: (a: number, b: number, c: number) => void;
   readonly transactionbuilder_add_operation_undelegate_partially: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
-  readonly transactionbuilder_add_operation_claim: (a: number, b: number, c: number, d: number, e: number) => void;
-  readonly transactionbuilder_add_operation_claim_custom: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
+  readonly transactionbuilder_add_operation_claim: (a: number, b: number, c: number) => void;
+  readonly transactionbuilder_add_operation_claim_custom: (a: number, b: number, c: number, d: number) => void;
   readonly transactionbuilder_add_operation_convert_account: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => void;
   readonly transactionbuilder_add_transfer_operation: (a: number, b: number, c: number, d: number) => void;
   readonly transactionbuilder_build: (a: number, b: number) => void;
@@ -1509,9 +1507,9 @@ export interface InitOutput {
   readonly __wbg_blsg1_free: (a: number) => void;
   readonly __wbg_blsg2_free: (a: number) => void;
   readonly __wbg_blsgt_free: (a: number) => void;
-  readonly __wbg_secq256k1scalar_free: (a: number) => void;
-  readonly __wbg_blsscalar_free: (a: number) => void;
   readonly __wbg_secp256k1scalar_free: (a: number) => void;
+  readonly __wbg_blsscalar_free: (a: number) => void;
+  readonly __wbg_secq256k1scalar_free: (a: number) => void;
   readonly __wbg_credissuersecretkey_free: (a: number) => void;
   readonly __wbg_credissuerpublickey_free: (a: number) => void;
   readonly __wbg_creduserpublickey_free: (a: number) => void;

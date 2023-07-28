@@ -1071,17 +1071,15 @@ export class TransactionBuilder {
   add_operation_undelegate_partially(keypair: XfrKeyPair, am: bigint, target_validator: string): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
-* @param {Uint8Array} td_addr
 * @returns {TransactionBuilder}
 */
-  add_operation_claim(keypair: XfrKeyPair, td_addr: Uint8Array): TransactionBuilder;
+  add_operation_claim(keypair: XfrKeyPair): TransactionBuilder;
 /**
 * @param {XfrKeyPair} keypair
-* @param {Uint8Array} td_addr
 * @param {bigint} am
 * @returns {TransactionBuilder}
 */
-  add_operation_claim_custom(keypair: XfrKeyPair, td_addr: Uint8Array, am: bigint): TransactionBuilder;
+  add_operation_claim_custom(keypair: XfrKeyPair, am: bigint): TransactionBuilder;
 /**
 * Adds an operation to the transaction builder that support transfer utxo asset to ethereum address.
 * @param {XfrKeyPair} keypair - Asset creator key pair.
