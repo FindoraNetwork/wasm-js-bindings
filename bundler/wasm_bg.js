@@ -40,6 +40,18 @@ function addHeapObject(obj) {
 
 function getObject(idx) { return heap[idx]; }
 
+function dropObject(idx) {
+    if (idx < 132) return;
+    heap[idx] = heap_next;
+    heap_next = idx;
+}
+
+function takeObject(idx) {
+    const ret = getObject(idx);
+    dropObject(idx);
+    return ret;
+}
+
 let WASM_VECTOR_LEN = 0;
 
 const lTextEncoder = typeof TextEncoder === 'undefined' ? (0, module.require)('util').TextEncoder : TextEncoder;
@@ -104,18 +116,6 @@ function getInt32Memory0() {
         cachedInt32Memory0 = new Int32Array(wasm.memory.buffer);
     }
     return cachedInt32Memory0;
-}
-
-function dropObject(idx) {
-    if (idx < 132) return;
-    heap[idx] = heap_next;
-    heap_next = idx;
-}
-
-function takeObject(idx) {
-    const ret = getObject(idx);
-    dropObject(idx);
-    return ret;
 }
 
 function debugString(val) {
@@ -232,34 +232,6 @@ export function random_asset_type() {
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(r0, r1);
-    }
-}
-
-/**
-* Creates a new asset code with prefixing-hashing the original code to query the ledger.
-* @param {string} asset_code_string
-* @returns {string}
-*/
-export function hash_asset_code(asset_code_string) {
-    try {
-        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-        const ptr0 = passStringToWasm0(asset_code_string, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        const len0 = WASM_VECTOR_LEN;
-        wasm.hash_asset_code(retptr, ptr0, len0);
-        var r0 = getInt32Memory0()[retptr / 4 + 0];
-        var r1 = getInt32Memory0()[retptr / 4 + 1];
-        var r2 = getInt32Memory0()[retptr / 4 + 2];
-        var r3 = getInt32Memory0()[retptr / 4 + 3];
-        var ptr1 = r0;
-        var len1 = r1;
-        if (r3) {
-            ptr1 = 0; len1 = 0;
-            throw takeObject(r2);
-        }
-        return getStringFromWasm0(ptr1, len1);
-    } finally {
-        wasm.__wbindgen_add_to_stack_pointer(16);
-        wasm.__wbindgen_free(ptr1, len1);
     }
 }
 
@@ -1324,6 +1296,40 @@ function handleError(f, args) {
     }
 }
 /**
+* Asset record to be put as leaves on the tree.
+*/
+export class AnonAssetRecord {
+
+    __destroy_into_raw() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_anonassetrecord_free(ptr);
+    }
+    /**
+    * The commitment.
+    * @returns {BN254Scalar}
+    */
+    get commitment() {
+        const ret = wasm.__wbg_get_anonassetrecord_commitment(this.ptr);
+        return BN254Scalar.__wrap(ret);
+    }
+    /**
+    * The commitment.
+    * @param {BN254Scalar} arg0
+    */
+    set commitment(arg0) {
+        _assertClass(arg0, BN254Scalar);
+        var ptr0 = arg0.__destroy_into_raw();
+        wasm.__wbg_set_anonassetrecord_commitment(this.ptr, ptr0);
+    }
+}
+/**
 * When an asset is defined, several options governing the assets must be
 * specified:
 * 1. **Traceable**: Records and identities of traceable assets can be decrypted by a provided tracing key. By defaults, assets do not have
@@ -1727,6 +1733,116 @@ export class BLSScalar {
     free() {
         const ptr = this.__destroy_into_raw();
         wasm.__wbg_blsscalar_free(ptr);
+    }
+}
+/**
+* The wrapped struct for `ark_bn254::Fq`
+*/
+export class BN254Fq {
+
+    __destroy_into_raw() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_bn254fq_free(ptr);
+    }
+}
+/**
+* The wrapped struct for ark_bn254::G1Projective
+*/
+export class BN254G1 {
+
+    __destroy_into_raw() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_bn254g1_free(ptr);
+    }
+}
+/**
+* The wrapped struct for `ark_bn254::G2Projective`
+*/
+export class BN254G2 {
+
+    __destroy_into_raw() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_bn254g2_free(ptr);
+    }
+}
+/**
+* The wrapped struct for [`Fp12<ark_bn254::Fq12Parameters>`](https://docs.rs/ark-bn254/0.3.0/ark_bn254/fq12/struct.Fq12Parameters.html),
+* which is the pairing result
+*/
+export class BN254Gt {
+
+    __destroy_into_raw() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_bn254gt_free(ptr);
+    }
+}
+/**
+* The wrapped struct for `ark_bn254::Fr`
+*/
+export class BN254Scalar {
+
+    static __wrap(ptr) {
+        const obj = Object.create(BN254Scalar.prototype);
+        obj.ptr = ptr;
+
+        return obj;
+    }
+
+    __destroy_into_raw() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_bn254scalar_free(ptr);
+    }
+}
+/**
+* The wrapped struct for `ark_ed_on_bn254::Fr`
+*/
+export class BabyJubjubScalar {
+
+    __destroy_into_raw() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_babyjubjubscalar_free(ptr);
     }
 }
 /**
@@ -2204,7 +2320,7 @@ export class CredentialRevealSig {
     * @returns {CredentialCommitment}
     */
     get_commitment() {
-        const ret = wasm.credentialrevealsig_get_commitment(this.ptr);
+        const ret = wasm.credentialcommitmentdata_get_commitment(this.ptr);
         return CredentialCommitment.__wrap(ret);
     }
     /**
@@ -2438,6 +2554,136 @@ export class JubjubScalar {
     }
 }
 /**
+* The keypair for confidential transfer.
+*/
+export class KeyPair {
+
+    __destroy_into_raw() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_keypair_free(ptr);
+    }
+}
+/**
+* A Merkle tree node.
+*/
+export class MTNode {
+
+    __destroy_into_raw() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_mtnode_free(ptr);
+    }
+    /**
+    * The left child of its parent in a three-ary tree.
+    * @returns {BN254Scalar}
+    */
+    get left() {
+        const ret = wasm.__wbg_get_anonassetrecord_commitment(this.ptr);
+        return BN254Scalar.__wrap(ret);
+    }
+    /**
+    * The left child of its parent in a three-ary tree.
+    * @param {BN254Scalar} arg0
+    */
+    set left(arg0) {
+        _assertClass(arg0, BN254Scalar);
+        var ptr0 = arg0.__destroy_into_raw();
+        wasm.__wbg_set_anonassetrecord_commitment(this.ptr, ptr0);
+    }
+    /**
+    * The mid child of its parent in a three-ary tree.
+    * @returns {BN254Scalar}
+    */
+    get mid() {
+        const ret = wasm.__wbg_get_mtnode_mid(this.ptr);
+        return BN254Scalar.__wrap(ret);
+    }
+    /**
+    * The mid child of its parent in a three-ary tree.
+    * @param {BN254Scalar} arg0
+    */
+    set mid(arg0) {
+        _assertClass(arg0, BN254Scalar);
+        var ptr0 = arg0.__destroy_into_raw();
+        wasm.__wbg_set_mtnode_mid(this.ptr, ptr0);
+    }
+    /**
+    * The right child of its parent in a three-ary tree.
+    * @returns {BN254Scalar}
+    */
+    get right() {
+        const ret = wasm.__wbg_get_mtnode_right(this.ptr);
+        return BN254Scalar.__wrap(ret);
+    }
+    /**
+    * The right child of its parent in a three-ary tree.
+    * @param {BN254Scalar} arg0
+    */
+    set right(arg0) {
+        _assertClass(arg0, BN254Scalar);
+        var ptr0 = arg0.__destroy_into_raw();
+        wasm.__wbg_set_mtnode_right(this.ptr, ptr0);
+    }
+    /**
+    * Whether this node is the left child of the parent.
+    * @returns {number}
+    */
+    get is_left_child() {
+        const ret = wasm.__wbg_get_mtnode_is_left_child(this.ptr);
+        return ret;
+    }
+    /**
+    * Whether this node is the left child of the parent.
+    * @param {number} arg0
+    */
+    set is_left_child(arg0) {
+        wasm.__wbg_set_mtnode_is_left_child(this.ptr, arg0);
+    }
+    /**
+    * Whether this node is the mid child of the parent.
+    * @returns {number}
+    */
+    get is_mid_child() {
+        const ret = wasm.__wbg_get_mtnode_is_mid_child(this.ptr);
+        return ret;
+    }
+    /**
+    * Whether this node is the mid child of the parent.
+    * @param {number} arg0
+    */
+    set is_mid_child(arg0) {
+        wasm.__wbg_set_mtnode_is_mid_child(this.ptr, arg0);
+    }
+    /**
+    * Whether this node is the right child of the parent.
+    * @returns {number}
+    */
+    get is_right_child() {
+        const ret = wasm.__wbg_get_mtnode_is_right_child(this.ptr);
+        return ret;
+    }
+    /**
+    * Whether this node is the right child of the parent.
+    * @param {number} arg0
+    */
+    set is_right_child(arg0) {
+        wasm.__wbg_set_mtnode_is_right_child(this.ptr, arg0);
+    }
+}
+/**
 * Asset owner memo. Contains information needed to decrypt an asset record.
 * @see {@link module:Findora-Wasm.ClientAssetRecord|ClientAssetRecord} for more details about asset records.
 */
@@ -2500,19 +2746,9 @@ export class OwnerMemo {
     }
 }
 /**
-* Public parameters necessary for generating asset records. Generating this is expensive and
-* should be done as infrequently as possible.
-* @see {@link module:Findora-Wasm~TransactionBuilder#add_basic_issue_asset|add_basic_issue_asset}
-* for information using public parameters to create issuance asset records.
+* The public key wrapper for anon/confidential transfer, for WASM compatability.
 */
-export class PublicParams {
-
-    static __wrap(ptr) {
-        const obj = Object.create(PublicParams.prototype);
-        obj.ptr = ptr;
-
-        return obj;
-    }
+export class PublicKey {
 
     __destroy_into_raw() {
         const ptr = this.ptr;
@@ -2523,15 +2759,7 @@ export class PublicParams {
 
     free() {
         const ptr = this.__destroy_into_raw();
-        wasm.__wbg_publicparams_free(ptr);
-    }
-    /**
-    * Generates a new set of parameters.
-    * @returns {PublicParams}
-    */
-    static new() {
-        const ret = wasm.publicparams_new();
-        return PublicParams.__wrap(ret);
+        wasm.__wbg_publickey_free(ptr);
     }
 }
 /**
@@ -3811,15 +4039,6 @@ export function __wbindgen_string_new(arg0, arg1) {
     return addHeapObject(ret);
 };
 
-export function __wbindgen_json_serialize(arg0, arg1) {
-    const obj = getObject(arg1);
-    const ret = JSON.stringify(obj === undefined ? null : obj);
-    const ptr0 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    const len0 = WASM_VECTOR_LEN;
-    getInt32Memory0()[arg0 / 4 + 1] = len0;
-    getInt32Memory0()[arg0 / 4 + 0] = ptr0;
-};
-
 export function __wbindgen_object_drop_ref(arg0) {
     takeObject(arg0);
 };
@@ -3827,6 +4046,15 @@ export function __wbindgen_object_drop_ref(arg0) {
 export function __wbindgen_json_parse(arg0, arg1) {
     const ret = JSON.parse(getStringFromWasm0(arg0, arg1));
     return addHeapObject(ret);
+};
+
+export function __wbindgen_json_serialize(arg0, arg1) {
+    const obj = getObject(arg1);
+    const ret = JSON.stringify(obj === undefined ? null : obj);
+    const ptr0 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len0 = WASM_VECTOR_LEN;
+    getInt32Memory0()[arg0 / 4 + 1] = len0;
+    getInt32Memory0()[arg0 / 4 + 0] = ptr0;
 };
 
 export function __wbindgen_object_clone_ref(arg0) {
@@ -3893,49 +4121,6 @@ export function __wbg_randomFillSync_dc1e9a60c158336d() { return handleError(fun
     getObject(arg0).randomFillSync(takeObject(arg1));
 }, arguments) };
 
-export function __wbg_self_7eede1f4488bf346() { return handleError(function () {
-    const ret = self.self;
-    return addHeapObject(ret);
-}, arguments) };
-
-export function __wbg_crypto_c909fb428dcbddb6(arg0) {
-    const ret = getObject(arg0).crypto;
-    return addHeapObject(ret);
-};
-
-export function __wbg_msCrypto_511eefefbfc70ae4(arg0) {
-    const ret = getObject(arg0).msCrypto;
-    return addHeapObject(ret);
-};
-
-export function __wbindgen_is_undefined(arg0) {
-    const ret = getObject(arg0) === undefined;
-    return ret;
-};
-
-export function __wbg_static_accessor_MODULE_ef3aa2eb251158a5() {
-    const ret = module;
-    return addHeapObject(ret);
-};
-
-export function __wbg_require_900d5c3984fe7703(arg0, arg1, arg2) {
-    const ret = getObject(arg0).require(getStringFromWasm0(arg1, arg2));
-    return addHeapObject(ret);
-};
-
-export function __wbg_getRandomValues_307049345d0bd88c(arg0) {
-    const ret = getObject(arg0).getRandomValues;
-    return addHeapObject(ret);
-};
-
-export function __wbg_getRandomValues_cd175915511f705e(arg0, arg1) {
-    getObject(arg0).getRandomValues(getObject(arg1));
-};
-
-export function __wbg_randomFillSync_85b3f4c52c56c313(arg0, arg1, arg2) {
-    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
-};
-
 export function __wbg_newnoargs_2b8b6bd7753c76ba(arg0, arg1) {
     const ret = new Function(getStringFromWasm0(arg0, arg1));
     return addHeapObject(ret);
@@ -3971,6 +4156,11 @@ export function __wbg_global_c85a9259e621f3db() { return handleError(function ()
     return addHeapObject(ret);
 }, arguments) };
 
+export function __wbindgen_is_undefined(arg0) {
+    const ret = getObject(arg0) === undefined;
+    return ret;
+};
+
 export function __wbg_call_9495de66fdbe016b() { return handleError(function (arg0, arg1, arg2) {
     const ret = getObject(arg0).call(getObject(arg1), getObject(arg2));
     return addHeapObject(ret);
@@ -3993,11 +4183,6 @@ export function __wbg_new_537b7341ce90bb31(arg0) {
 
 export function __wbg_set_17499e8aa4003ebd(arg0, arg1, arg2) {
     getObject(arg0).set(getObject(arg1), arg2 >>> 0);
-};
-
-export function __wbg_length_27a2afe8ab42b09f(arg0) {
-    const ret = getObject(arg0).length;
-    return ret;
 };
 
 export function __wbg_newwithlength_b56c882b57805732(arg0) {

@@ -15,12 +15,6 @@ export function build_id(): string;
 */
 export function random_asset_type(): string;
 /**
-* Creates a new asset code with prefixing-hashing the original code to query the ledger.
-* @param {string} asset_code_string
-* @returns {string}
-*/
-export function hash_asset_code(asset_code_string: string): string;
-/**
 * Generates asset type as a Base64 string from a JSON-serialized JavaScript value.
 * @param {any} val
 * @returns {string}
@@ -386,6 +380,16 @@ export function get_delegation_min_amount(): bigint;
 */
 export function get_delegation_max_amount(): bigint;
 /**
+* Asset record to be put as leaves on the tree.
+*/
+export class AnonAssetRecord {
+  free(): void;
+/**
+* The commitment.
+*/
+  commitment: BN254Scalar;
+}
+/**
 * When an asset is defined, several options governing the assets must be
 * specified:
 * 1. **Traceable**: Records and identities of traceable assets can be decrypted by a provided tracing key. By defaults, assets do not have
@@ -569,6 +573,43 @@ export class BLSGt {
 * The wrapped struct for `ark_bls12_381::Fr`
 */
 export class BLSScalar {
+  free(): void;
+}
+/**
+* The wrapped struct for `ark_bn254::Fq`
+*/
+export class BN254Fq {
+  free(): void;
+}
+/**
+* The wrapped struct for ark_bn254::G1Projective
+*/
+export class BN254G1 {
+  free(): void;
+}
+/**
+* The wrapped struct for `ark_bn254::G2Projective`
+*/
+export class BN254G2 {
+  free(): void;
+}
+/**
+* The wrapped struct for [`Fp12<ark_bn254::Fq12Parameters>`](https://docs.rs/ark-bn254/0.3.0/ark_bn254/fq12/struct.Fq12Parameters.html),
+* which is the pairing result
+*/
+export class BN254Gt {
+  free(): void;
+}
+/**
+* The wrapped struct for `ark_bn254::Fr`
+*/
+export class BN254Scalar {
+  free(): void;
+}
+/**
+* The wrapped struct for `ark_ed_on_bn254::Fr`
+*/
+export class BabyJubjubScalar {
   free(): void;
 }
 /**
@@ -833,6 +874,42 @@ export class JubjubScalar {
   free(): void;
 }
 /**
+* The keypair for confidential transfer.
+*/
+export class KeyPair {
+  free(): void;
+}
+/**
+* A Merkle tree node.
+*/
+export class MTNode {
+  free(): void;
+/**
+* Whether this node is the left child of the parent.
+*/
+  is_left_child: number;
+/**
+* Whether this node is the mid child of the parent.
+*/
+  is_mid_child: number;
+/**
+* Whether this node is the right child of the parent.
+*/
+  is_right_child: number;
+/**
+* The left child of its parent in a three-ary tree.
+*/
+  left: BN254Scalar;
+/**
+* The mid child of its parent in a three-ary tree.
+*/
+  mid: BN254Scalar;
+/**
+* The right child of its parent in a three-ary tree.
+*/
+  right: BN254Scalar;
+}
+/**
 * Asset owner memo. Contains information needed to decrypt an asset record.
 * @see {@link module:Findora-Wasm.ClientAssetRecord|ClientAssetRecord} for more details about asset records.
 */
@@ -859,18 +936,10 @@ export class OwnerMemo {
   clone(): OwnerMemo;
 }
 /**
-* Public parameters necessary for generating asset records. Generating this is expensive and
-* should be done as infrequently as possible.
-* @see {@link module:Findora-Wasm~TransactionBuilder#add_basic_issue_asset|add_basic_issue_asset}
-* for information using public parameters to create issuance asset records.
+* The public key wrapper for anon/confidential transfer, for WASM compatability.
 */
-export class PublicParams {
+export class PublicKey {
   free(): void;
-/**
-* Generates a new set of parameters.
-* @returns {PublicParams}
-*/
-  static new(): PublicParams;
 }
 /**
 * The wrapped struct for `ark_secp256k1::Projective`
