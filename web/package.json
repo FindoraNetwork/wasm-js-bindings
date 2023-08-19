@@ -17,7 +17,5 @@
   ],
   "module": "wasm.js",
   "types": "wasm.d.ts",
-  "sideEffects": [
-    "./snippets/*"
-  ]
+  "sideEffects": false
 }
