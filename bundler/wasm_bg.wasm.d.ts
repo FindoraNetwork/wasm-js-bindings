@@ -164,6 +164,7 @@ export function __wbg_secp256k1g1_free(a: number): void;
 export function __wbg_jubjubscalar_free(a: number): void;
 export function __wbg_blsgt_free(a: number): void;
 export function __wbg_blsfq_free(a: number): void;
+export function ring_core_0_17_2_bn_mul_mont(a: number, b: number, c: number, d: number, e: number, f: number): void;
 export function __wbg_credissuersecretkey_free(a: number): void;
 export function __wbg_credissuerpublickey_free(a: number): void;
 export function __wbg_creduserpublickey_free(a: number): void;

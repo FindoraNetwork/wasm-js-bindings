@@ -1512,6 +1512,7 @@ export interface InitOutput {
   readonly __wbg_jubjubscalar_free: (a: number) => void;
   readonly __wbg_blsgt_free: (a: number) => void;
   readonly __wbg_blsfq_free: (a: number) => void;
+  readonly ring_core_0_17_2_bn_mul_mont: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
   readonly __wbg_credissuersecretkey_free: (a: number) => void;
   readonly __wbg_credissuerpublickey_free: (a: number) => void;
   readonly __wbg_creduserpublickey_free: (a: number) => void;
