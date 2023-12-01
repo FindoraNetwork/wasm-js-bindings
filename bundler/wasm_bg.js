@@ -3838,7 +3838,7 @@ export function __wbindgen_object_clone_ref(arg0) {
     return addHeapObject(ret);
 };
 
-export function __wbg_crypto_c48a774b022d20ac(arg0) {
+export function __wbg_crypto_58f13aa23ffcb166(arg0) {
     const ret = getObject(arg0).crypto;
     return addHeapObject(ret);
 };
@@ -3849,17 +3849,17 @@ export function __wbindgen_is_object(arg0) {
     return ret;
 };
 
-export function __wbg_process_298734cf255a885d(arg0) {
+export function __wbg_process_5b786e71d465a513(arg0) {
     const ret = getObject(arg0).process;
     return addHeapObject(ret);
 };
 
-export function __wbg_versions_e2e78e134e3e5d01(arg0) {
+export function __wbg_versions_c2ab80650590b6a2(arg0) {
     const ret = getObject(arg0).versions;
     return addHeapObject(ret);
 };
 
-export function __wbg_node_1cd7a5d853dbea79(arg0) {
+export function __wbg_node_523d7bd03ef69fba(arg0) {
     const ret = getObject(arg0).node;
     return addHeapObject(ret);
 };
@@ -3869,12 +3869,12 @@ export function __wbindgen_is_string(arg0) {
     return ret;
 };
 
-export function __wbg_msCrypto_bcb970640f50a1e8(arg0) {
+export function __wbg_msCrypto_abcb1295e768d1f2(arg0) {
     const ret = getObject(arg0).msCrypto;
     return addHeapObject(ret);
 };
 
-export function __wbg_require_8f08ceecec0f4fee() { return handleError(function () {
+export function __wbg_require_2784e593a4674877() { return handleError(function () {
     const ret = module.require;
     return addHeapObject(ret);
 }, arguments) };
@@ -3884,12 +3884,12 @@ export function __wbindgen_is_function(arg0) {
     return ret;
 };
 
-export function __wbg_getRandomValues_37fa2ca9e4e07fab() { return handleError(function (arg0, arg1) {
-    getObject(arg0).getRandomValues(getObject(arg1));
+export function __wbg_randomFillSync_a0d98aa11c81fe89() { return handleError(function (arg0, arg1) {
+    getObject(arg0).randomFillSync(takeObject(arg1));
 }, arguments) };
 
-export function __wbg_randomFillSync_dc1e9a60c158336d() { return handleError(function (arg0, arg1) {
-    getObject(arg0).randomFillSync(takeObject(arg1));
+export function __wbg_getRandomValues_504510b5564925af() { return handleError(function (arg0, arg1) {
+    getObject(arg0).getRandomValues(getObject(arg1));
 }, arguments) };
 
 export function __wbg_self_7eede1f4488bf346() { return handleError(function () {
