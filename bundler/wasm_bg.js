@@ -2762,15 +2762,18 @@ export class TransactionBuilder {
     * @param am: amount to pay
     * @param kp: owner's XfrKeyPair
     * @param {XfrKeyPair} kp
+    * @param {string | undefined} memo
     * @returns {TransactionBuilder}
     */
-    add_fee_relative_auto(kp) {
+    add_fee_relative_auto(kp, memo) {
         try {
             const ptr = this.__destroy_into_raw();
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
             _assertClass(kp, XfrKeyPair);
             var ptr0 = kp.__destroy_into_raw();
-            wasm.transactionbuilder_add_fee_relative_auto(retptr, ptr, ptr0);
+            var ptr1 = isLikeNone(memo) ? 0 : passStringToWasm0(memo, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            var len1 = WASM_VECTOR_LEN;
+            wasm.transactionbuilder_add_fee_relative_auto(retptr, ptr, ptr0, ptr1, len1);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             var r2 = getInt32Memory0()[retptr / 4 + 2];
@@ -2806,15 +2809,18 @@ export class TransactionBuilder {
     * As the last operation of any transaction,
     * add a static fee to the transaction.
     * @param {FeeInputs} inputs
+    * @param {string | undefined} memo
     * @returns {TransactionBuilder}
     */
-    add_fee(inputs) {
+    add_fee(inputs, memo) {
         try {
             const ptr = this.__destroy_into_raw();
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
             _assertClass(inputs, FeeInputs);
             var ptr0 = inputs.__destroy_into_raw();
-            wasm.transactionbuilder_add_fee(retptr, ptr, ptr0);
+            var ptr1 = isLikeNone(memo) ? 0 : passStringToWasm0(memo, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            var len1 = WASM_VECTOR_LEN;
+            wasm.transactionbuilder_add_fee(retptr, ptr, ptr0, ptr1, len1);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             var r2 = getInt32Memory0()[retptr / 4 + 2];
@@ -3434,9 +3440,10 @@ export class TransferOperationBuilder {
     * @param {string} code
     * @param {boolean} conf_amount
     * @param {boolean} conf_type
+    * @param {string | undefined} memo
     * @returns {TransferOperationBuilder}
     */
-    add_output_with_tracing(amount, recipient, tracing_policies, code, conf_amount, conf_type) {
+    add_output_with_tracing(amount, recipient, tracing_policies, code, conf_amount, conf_type, memo) {
         try {
             const ptr = this.__destroy_into_raw();
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
@@ -3444,7 +3451,9 @@ export class TransferOperationBuilder {
             _assertClass(tracing_policies, TracingPolicies);
             const ptr0 = passStringToWasm0(code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
             const len0 = WASM_VECTOR_LEN;
-            wasm.transferoperationbuilder_add_output_with_tracing(retptr, ptr, amount, recipient.ptr, tracing_policies.ptr, ptr0, len0, conf_amount, conf_type);
+            var ptr1 = isLikeNone(memo) ? 0 : passStringToWasm0(memo, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            var len1 = WASM_VECTOR_LEN;
+            wasm.transferoperationbuilder_add_output_with_tracing(retptr, ptr, amount, recipient.ptr, tracing_policies.ptr, ptr0, len0, conf_amount, conf_type, ptr1, len1);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             var r2 = getInt32Memory0()[retptr / 4 + 2];
@@ -3470,16 +3479,19 @@ export class TransferOperationBuilder {
     * @param {string} code
     * @param {boolean} conf_amount
     * @param {boolean} conf_type
+    * @param {string | undefined} memo
     * @returns {TransferOperationBuilder}
     */
-    add_output_no_tracing(amount, recipient, code, conf_amount, conf_type) {
+    add_output_no_tracing(amount, recipient, code, conf_amount, conf_type, memo) {
         try {
             const ptr = this.__destroy_into_raw();
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
             _assertClass(recipient, XfrPublicKey);
             const ptr0 = passStringToWasm0(code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
             const len0 = WASM_VECTOR_LEN;
-            wasm.transferoperationbuilder_add_output_no_tracing(retptr, ptr, amount, recipient.ptr, ptr0, len0, conf_amount, conf_type);
+            var ptr1 = isLikeNone(memo) ? 0 : passStringToWasm0(memo, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            var len1 = WASM_VECTOR_LEN;
+            wasm.transferoperationbuilder_add_output_no_tracing(retptr, ptr, amount, recipient.ptr, ptr0, len0, conf_amount, conf_type, ptr1, len1);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             var r2 = getInt32Memory0()[retptr / 4 + 2];
@@ -3838,7 +3850,7 @@ export function __wbindgen_object_clone_ref(arg0) {
     return addHeapObject(ret);
 };
 
-export function __wbg_crypto_58f13aa23ffcb166(arg0) {
+export function __wbg_crypto_d05b68a3572bb8ca(arg0) {
     const ret = getObject(arg0).crypto;
     return addHeapObject(ret);
 };
@@ -3849,17 +3861,17 @@ export function __wbindgen_is_object(arg0) {
     return ret;
 };
 
-export function __wbg_process_5b786e71d465a513(arg0) {
+export function __wbg_process_b02b3570280d0366(arg0) {
     const ret = getObject(arg0).process;
     return addHeapObject(ret);
 };
 
-export function __wbg_versions_c2ab80650590b6a2(arg0) {
+export function __wbg_versions_c1cb42213cedf0f5(arg0) {
     const ret = getObject(arg0).versions;
     return addHeapObject(ret);
 };
 
-export function __wbg_node_523d7bd03ef69fba(arg0) {
+export function __wbg_node_43b1089f407e4ec2(arg0) {
     const ret = getObject(arg0).node;
     return addHeapObject(ret);
 };
@@ -3869,12 +3881,12 @@ export function __wbindgen_is_string(arg0) {
     return ret;
 };
 
-export function __wbg_msCrypto_abcb1295e768d1f2(arg0) {
+export function __wbg_msCrypto_10fc94afee92bd76(arg0) {
     const ret = getObject(arg0).msCrypto;
     return addHeapObject(ret);
 };
 
-export function __wbg_require_2784e593a4674877() { return handleError(function () {
+export function __wbg_require_9a7e0f667ead4995() { return handleError(function () {
     const ret = module.require;
     return addHeapObject(ret);
 }, arguments) };
@@ -3884,11 +3896,11 @@ export function __wbindgen_is_function(arg0) {
     return ret;
 };
 
-export function __wbg_randomFillSync_a0d98aa11c81fe89() { return handleError(function (arg0, arg1) {
+export function __wbg_randomFillSync_b70ccbdf4926a99d() { return handleError(function (arg0, arg1) {
     getObject(arg0).randomFillSync(takeObject(arg1));
 }, arguments) };
 
-export function __wbg_getRandomValues_504510b5564925af() { return handleError(function (arg0, arg1) {
+export function __wbg_getRandomValues_7e42b4fb8779dc6d() { return handleError(function (arg0, arg1) {
     getObject(arg0).getRandomValues(getObject(arg1));
 }, arguments) };
 

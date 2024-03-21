@@ -951,9 +951,10 @@ export class TransactionBuilder {
 * @param am: amount to pay
 * @param kp: owner's XfrKeyPair
 * @param {XfrKeyPair} kp
+* @param {string | undefined} memo
 * @returns {TransactionBuilder}
 */
-  add_fee_relative_auto(kp: XfrKeyPair): TransactionBuilder;
+  add_fee_relative_auto(kp: XfrKeyPair, memo?: string): TransactionBuilder;
 /**
 * Use this func to get the necessary infomations for generating `Relative Inputs`
 *
@@ -966,9 +967,10 @@ export class TransactionBuilder {
 * As the last operation of any transaction,
 * add a static fee to the transaction.
 * @param {FeeInputs} inputs
+* @param {string | undefined} memo
 * @returns {TransactionBuilder}
 */
-  add_fee(inputs: FeeInputs): TransactionBuilder;
+  add_fee(inputs: FeeInputs, memo?: string): TransactionBuilder;
 /**
 * A simple fee checker for mainnet v1.0.
 *
@@ -1214,9 +1216,10 @@ export class TransferOperationBuilder {
 * @param {string} code
 * @param {boolean} conf_amount
 * @param {boolean} conf_type
+* @param {string | undefined} memo
 * @returns {TransferOperationBuilder}
 */
-  add_output_with_tracing(amount: bigint, recipient: XfrPublicKey, tracing_policies: TracingPolicies, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
+  add_output_with_tracing(amount: bigint, recipient: XfrPublicKey, tracing_policies: TracingPolicies, code: string, conf_amount: boolean, conf_type: boolean, memo?: string): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to add an output to a transfer operation builder.
 *
@@ -1231,9 +1234,10 @@ export class TransferOperationBuilder {
 * @param {string} code
 * @param {boolean} conf_amount
 * @param {boolean} conf_type
+* @param {string | undefined} memo
 * @returns {TransferOperationBuilder}
 */
-  add_output_no_tracing(amount: bigint, recipient: XfrPublicKey, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
+  add_output_no_tracing(amount: bigint, recipient: XfrPublicKey, code: string, conf_amount: boolean, conf_type: boolean, memo?: string): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to ensure the transfer inputs and outputs are balanced.
 * This function will add change outputs for all unspent portions of input records.
@@ -1360,9 +1364,9 @@ export interface InitOutput {
   readonly feeinputs_new: () => number;
   readonly feeinputs_append: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
   readonly feeinputs_append2: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
-  readonly transactionbuilder_add_fee_relative_auto: (a: number, b: number, c: number) => void;
+  readonly transactionbuilder_add_fee_relative_auto: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly transactionbuilder_get_relative_outputs: (a: number, b: number) => void;
-  readonly transactionbuilder_add_fee: (a: number, b: number, c: number) => void;
+  readonly transactionbuilder_add_fee: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly transactionbuilder_check_fee: (a: number) => number;
   readonly transactionbuilder_new: (a: number) => number;
   readonly transactionbuilder_add_operation_create_asset: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => void;
@@ -1391,8 +1395,8 @@ export interface InitOutput {
   readonly transferoperationbuilder_new: () => number;
   readonly transferoperationbuilder_add_input_with_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => void;
   readonly transferoperationbuilder_add_input_no_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => void;
-  readonly transferoperationbuilder_add_output_with_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => void;
-  readonly transferoperationbuilder_add_output_no_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => void;
+  readonly transferoperationbuilder_add_output_with_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number, k: number) => void;
+  readonly transferoperationbuilder_add_output_no_tracing: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => void;
   readonly transferoperationbuilder_balance: (a: number, b: number) => void;
   readonly transferoperationbuilder_create: (a: number, b: number) => void;
   readonly transferoperationbuilder_sign: (a: number, b: number, c: number) => void;
@@ -1433,13 +1437,13 @@ export interface InitOutput {
   readonly restore_keypair_from_mnemonic_bip44: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
   readonly restore_keypair_from_mnemonic_bip49: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
   readonly fra_get_asset_code: (a: number) => void;
+  readonly fra_get_minimal_fee: () => number;
   readonly fra_get_dest_pubkey: () => number;
   readonly get_coinbase_address: (a: number) => void;
-  readonly get_delegation_target_address: (a: number) => void;
-  readonly get_coinbase_principal_address: (a: number) => void;
-  readonly fra_get_minimal_fee: () => number;
   readonly get_delegation_min_amount: () => number;
   readonly get_delegation_max_amount: () => number;
+  readonly get_delegation_target_address: (a: number) => void;
+  readonly get_coinbase_principal_address: (a: number) => void;
   readonly __wbg_publicparams_free: (a: number) => void;
   readonly publicparams_new: () => number;
   readonly __wbg_txoref_free: (a: number) => void;
@@ -1497,22 +1501,22 @@ export interface InitOutput {
   readonly __wbg_credentialsignature_free: (a: number) => void;
   readonly __wbg_xpublickey_free: (a: number) => void;
   readonly __wbg_xsecretkey_free: (a: number) => void;
-  readonly __wbg_blsg2_free: (a: number) => void;
   readonly __wbg_blsscalar_free: (a: number) => void;
-  readonly __wbg_blsg1_free: (a: number) => void;
+  readonly __wbg_blsg2_free: (a: number) => void;
   readonly __wbg_secp256k1g1_free: (a: number) => void;
-  readonly __wbg_jubjubscalar_free: (a: number) => void;
+  readonly __wbg_zorroscalar_free: (a: number) => void;
   readonly __wbg_zorrog1_free: (a: number) => void;
   readonly __wbg_ed25519scalar_free: (a: number) => void;
-  readonly __wbg_zorrofq_free: (a: number) => void;
-  readonly __wbg_secq256k1g1_free: (a: number) => void;
-  readonly __wbg_zorroscalar_free: (a: number) => void;
-  readonly __wbg_secq256k1scalar_free: (a: number) => void;
-  readonly __wbg_secp256k1scalar_free: (a: number) => void;
-  readonly __wbg_blsfq_free: (a: number) => void;
   readonly __wbg_blsgt_free: (a: number) => void;
   readonly __wbg_ed25519point_free: (a: number) => void;
-  readonly ring_core_0_17_6_bn_mul_mont: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
+  readonly __wbg_blsg1_free: (a: number) => void;
+  readonly __wbg_zorrofq_free: (a: number) => void;
+  readonly __wbg_secp256k1scalar_free: (a: number) => void;
+  readonly __wbg_blsfq_free: (a: number) => void;
+  readonly __wbg_secq256k1scalar_free: (a: number) => void;
+  readonly __wbg_secq256k1g1_free: (a: number) => void;
+  readonly __wbg_jubjubscalar_free: (a: number) => void;
+  readonly ring_core_0_17_8_bn_mul_mont: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
   readonly __wbg_credissuersecretkey_free: (a: number) => void;
   readonly __wbg_credissuerpublickey_free: (a: number) => void;
   readonly __wbg_creduserpublickey_free: (a: number) => void;
