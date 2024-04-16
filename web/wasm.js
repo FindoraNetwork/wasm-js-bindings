@@ -2754,15 +2754,18 @@ export class TransactionBuilder {
     * @param am: amount to pay
     * @param kp: owner's XfrKeyPair
     * @param {XfrKeyPair} kp
+    * @param {string | undefined} memo
     * @returns {TransactionBuilder}
     */
-    add_fee_relative_auto(kp) {
+    add_fee_relative_auto(kp, memo) {
         try {
             const ptr = this.__destroy_into_raw();
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
             _assertClass(kp, XfrKeyPair);
             var ptr0 = kp.__destroy_into_raw();
-            wasm.transactionbuilder_add_fee_relative_auto(retptr, ptr, ptr0);
+            var ptr1 = isLikeNone(memo) ? 0 : passStringToWasm0(memo, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            var len1 = WASM_VECTOR_LEN;
+            wasm.transactionbuilder_add_fee_relative_auto(retptr, ptr, ptr0, ptr1, len1);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             var r2 = getInt32Memory0()[retptr / 4 + 2];
@@ -2798,15 +2801,18 @@ export class TransactionBuilder {
     * As the last operation of any transaction,
     * add a static fee to the transaction.
     * @param {FeeInputs} inputs
+    * @param {string | undefined} memo
     * @returns {TransactionBuilder}
     */
-    add_fee(inputs) {
+    add_fee(inputs, memo) {
         try {
             const ptr = this.__destroy_into_raw();
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
             _assertClass(inputs, FeeInputs);
             var ptr0 = inputs.__destroy_into_raw();
-            wasm.transactionbuilder_add_fee(retptr, ptr, ptr0);
+            var ptr1 = isLikeNone(memo) ? 0 : passStringToWasm0(memo, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            var len1 = WASM_VECTOR_LEN;
+            wasm.transactionbuilder_add_fee(retptr, ptr, ptr0, ptr1, len1);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             var r2 = getInt32Memory0()[retptr / 4 + 2];
@@ -3426,9 +3432,10 @@ export class TransferOperationBuilder {
     * @param {string} code
     * @param {boolean} conf_amount
     * @param {boolean} conf_type
+    * @param {string | undefined} memo
     * @returns {TransferOperationBuilder}
     */
-    add_output_with_tracing(amount, recipient, tracing_policies, code, conf_amount, conf_type) {
+    add_output_with_tracing(amount, recipient, tracing_policies, code, conf_amount, conf_type, memo) {
         try {
             const ptr = this.__destroy_into_raw();
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
@@ -3436,7 +3443,9 @@ export class TransferOperationBuilder {
             _assertClass(tracing_policies, TracingPolicies);
             const ptr0 = passStringToWasm0(code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
             const len0 = WASM_VECTOR_LEN;
-            wasm.transferoperationbuilder_add_output_with_tracing(retptr, ptr, amount, recipient.ptr, tracing_policies.ptr, ptr0, len0, conf_amount, conf_type);
+            var ptr1 = isLikeNone(memo) ? 0 : passStringToWasm0(memo, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            var len1 = WASM_VECTOR_LEN;
+            wasm.transferoperationbuilder_add_output_with_tracing(retptr, ptr, amount, recipient.ptr, tracing_policies.ptr, ptr0, len0, conf_amount, conf_type, ptr1, len1);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             var r2 = getInt32Memory0()[retptr / 4 + 2];
@@ -3462,16 +3471,19 @@ export class TransferOperationBuilder {
     * @param {string} code
     * @param {boolean} conf_amount
     * @param {boolean} conf_type
+    * @param {string | undefined} memo
     * @returns {TransferOperationBuilder}
     */
-    add_output_no_tracing(amount, recipient, code, conf_amount, conf_type) {
+    add_output_no_tracing(amount, recipient, code, conf_amount, conf_type, memo) {
         try {
             const ptr = this.__destroy_into_raw();
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
             _assertClass(recipient, XfrPublicKey);
             const ptr0 = passStringToWasm0(code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
             const len0 = WASM_VECTOR_LEN;
-            wasm.transferoperationbuilder_add_output_no_tracing(retptr, ptr, amount, recipient.ptr, ptr0, len0, conf_amount, conf_type);
+            var ptr1 = isLikeNone(memo) ? 0 : passStringToWasm0(memo, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            var len1 = WASM_VECTOR_LEN;
+            wasm.transferoperationbuilder_add_output_no_tracing(retptr, ptr, amount, recipient.ptr, ptr0, len0, conf_amount, conf_type, ptr1, len1);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             var r2 = getInt32Memory0()[retptr / 4 + 2];
@@ -3854,11 +3866,7 @@ function getImports() {
         const ret = getObject(arg0).now();
         return ret;
     };
-    imports.wbg.__wbindgen_object_clone_ref = function(arg0) {
-        const ret = getObject(arg0);
-        return addHeapObject(ret);
-    };
-    imports.wbg.__wbg_crypto_58f13aa23ffcb166 = function(arg0) {
+    imports.wbg.__wbg_crypto_566d7465cdbb6b7a = function(arg0) {
         const ret = getObject(arg0).crypto;
         return addHeapObject(ret);
     };
@@ -3867,15 +3875,15 @@ function getImports() {
         const ret = typeof(val) === 'object' && val !== null;
         return ret;
     };
-    imports.wbg.__wbg_process_5b786e71d465a513 = function(arg0) {
+    imports.wbg.__wbg_process_dc09a8c7d59982f6 = function(arg0) {
         const ret = getObject(arg0).process;
         return addHeapObject(ret);
     };
-    imports.wbg.__wbg_versions_c2ab80650590b6a2 = function(arg0) {
+    imports.wbg.__wbg_versions_d98c6400c6ca2bd8 = function(arg0) {
         const ret = getObject(arg0).versions;
         return addHeapObject(ret);
     };
-    imports.wbg.__wbg_node_523d7bd03ef69fba = function(arg0) {
+    imports.wbg.__wbg_node_caaf83d002149bd5 = function(arg0) {
         const ret = getObject(arg0).node;
         return addHeapObject(ret);
     };
@@ -3883,11 +3891,11 @@ function getImports() {
         const ret = typeof(getObject(arg0)) === 'string';
         return ret;
     };
-    imports.wbg.__wbg_msCrypto_abcb1295e768d1f2 = function(arg0) {
+    imports.wbg.__wbg_msCrypto_0b84745e9245cdf6 = function(arg0) {
         const ret = getObject(arg0).msCrypto;
         return addHeapObject(ret);
     };
-    imports.wbg.__wbg_require_2784e593a4674877 = function() { return handleError(function () {
+    imports.wbg.__wbg_require_94a9da52636aacbf = function() { return handleError(function () {
         const ret = module.require;
         return addHeapObject(ret);
     }, arguments) };
@@ -3895,10 +3903,10 @@ function getImports() {
         const ret = typeof(getObject(arg0)) === 'function';
         return ret;
     };
-    imports.wbg.__wbg_randomFillSync_a0d98aa11c81fe89 = function() { return handleError(function (arg0, arg1) {
+    imports.wbg.__wbg_randomFillSync_290977693942bf03 = function() { return handleError(function (arg0, arg1) {
         getObject(arg0).randomFillSync(takeObject(arg1));
     }, arguments) };
-    imports.wbg.__wbg_getRandomValues_504510b5564925af = function() { return handleError(function (arg0, arg1) {
+    imports.wbg.__wbg_getRandomValues_260cc23a41afad9a = function() { return handleError(function (arg0, arg1) {
         getObject(arg0).getRandomValues(getObject(arg1));
     }, arguments) };
     imports.wbg.__wbg_self_7eede1f4488bf346 = function() { return handleError(function () {
@@ -3947,6 +3955,10 @@ function getImports() {
         const ret = getObject(arg0).call(getObject(arg1));
         return addHeapObject(ret);
     }, arguments) };
+    imports.wbg.__wbindgen_object_clone_ref = function(arg0) {
+        const ret = getObject(arg0);
+        return addHeapObject(ret);
+    };
     imports.wbg.__wbg_self_e7c1f827057f6584 = function() { return handleError(function () {
         const ret = self.self;
         return addHeapObject(ret);
