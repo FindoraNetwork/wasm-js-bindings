@@ -951,9 +951,10 @@ export class TransactionBuilder {
 * @param am: amount to pay
 * @param kp: owner's XfrKeyPair
 * @param {XfrKeyPair} kp
+* @param {string | undefined} memo
 * @returns {TransactionBuilder}
 */
-  add_fee_relative_auto(kp: XfrKeyPair): TransactionBuilder;
+  add_fee_relative_auto(kp: XfrKeyPair, memo?: string): TransactionBuilder;
 /**
 * Use this func to get the necessary infomations for generating `Relative Inputs`
 *
@@ -966,9 +967,10 @@ export class TransactionBuilder {
 * As the last operation of any transaction,
 * add a static fee to the transaction.
 * @param {FeeInputs} inputs
+* @param {string | undefined} memo
 * @returns {TransactionBuilder}
 */
-  add_fee(inputs: FeeInputs): TransactionBuilder;
+  add_fee(inputs: FeeInputs, memo?: string): TransactionBuilder;
 /**
 * A simple fee checker for mainnet v1.0.
 *
@@ -1214,9 +1216,10 @@ export class TransferOperationBuilder {
 * @param {string} code
 * @param {boolean} conf_amount
 * @param {boolean} conf_type
+* @param {string | undefined} memo
 * @returns {TransferOperationBuilder}
 */
-  add_output_with_tracing(amount: bigint, recipient: XfrPublicKey, tracing_policies: TracingPolicies, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
+  add_output_with_tracing(amount: bigint, recipient: XfrPublicKey, tracing_policies: TracingPolicies, code: string, conf_amount: boolean, conf_type: boolean, memo?: string): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to add an output to a transfer operation builder.
 *
@@ -1231,9 +1234,10 @@ export class TransferOperationBuilder {
 * @param {string} code
 * @param {boolean} conf_amount
 * @param {boolean} conf_type
+* @param {string | undefined} memo
 * @returns {TransferOperationBuilder}
 */
-  add_output_no_tracing(amount: bigint, recipient: XfrPublicKey, code: string, conf_amount: boolean, conf_type: boolean): TransferOperationBuilder;
+  add_output_no_tracing(amount: bigint, recipient: XfrPublicKey, code: string, conf_amount: boolean, conf_type: boolean, memo?: string): TransferOperationBuilder;
 /**
 * Wraps around TransferOperationBuilder to ensure the transfer inputs and outputs are balanced.
 * This function will add change outputs for all unspent portions of input records.
