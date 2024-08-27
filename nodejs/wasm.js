@@ -37,18 +37,6 @@ function addHeapObject(obj) {
 
 function getObject(idx) { return heap[idx]; }
 
-function dropObject(idx) {
-    if (idx < 132) return;
-    heap[idx] = heap_next;
-    heap_next = idx;
-}
-
-function takeObject(idx) {
-    const ret = getObject(idx);
-    dropObject(idx);
-    return ret;
-}
-
 let WASM_VECTOR_LEN = 0;
 
 let cachedTextEncoder = new TextEncoder('utf-8');
@@ -111,6 +99,18 @@ function getInt32Memory0() {
         cachedInt32Memory0 = new Int32Array(wasm.memory.buffer);
     }
     return cachedInt32Memory0;
+}
+
+function dropObject(idx) {
+    if (idx < 132) return;
+    heap[idx] = heap_next;
+    heap_next = idx;
+}
+
+function takeObject(idx) {
+    const ret = getObject(idx);
+    dropObject(idx);
+    return ret;
 }
 
 function debugString(val) {
@@ -3864,10 +3864,6 @@ module.exports.__wbindgen_string_new = function(arg0, arg1) {
     return addHeapObject(ret);
 };
 
-module.exports.__wbindgen_object_drop_ref = function(arg0) {
-    takeObject(arg0);
-};
-
 module.exports.__wbindgen_json_serialize = function(arg0, arg1) {
     const obj = getObject(arg1);
     const ret = JSON.stringify(obj === undefined ? null : obj);
@@ -3875,6 +3871,10 @@ module.exports.__wbindgen_json_serialize = function(arg0, arg1) {
     const len0 = WASM_VECTOR_LEN;
     getInt32Memory0()[arg0 / 4 + 1] = len0;
     getInt32Memory0()[arg0 / 4 + 0] = ptr0;
+};
+
+module.exports.__wbindgen_object_drop_ref = function(arg0) {
+    takeObject(arg0);
 };
 
 module.exports.__wbindgen_json_parse = function(arg0, arg1) {
@@ -3946,6 +3946,11 @@ module.exports.__wbg_getRandomValues_3aa56aa6edec874c = function() { return hand
     getObject(arg0).getRandomValues(getObject(arg1));
 }, arguments) };
 
+module.exports.__wbg_static_accessor_MODULE_ef3aa2eb251158a5 = function() {
+    const ret = module;
+    return addHeapObject(ret);
+};
+
 module.exports.__wbg_self_7eede1f4488bf346 = function() { return handleError(function () {
     const ret = self.self;
     return addHeapObject(ret);
@@ -3964,11 +3969,6 @@ module.exports.__wbg_msCrypto_511eefefbfc70ae4 = function(arg0) {
 module.exports.__wbindgen_is_undefined = function(arg0) {
     const ret = getObject(arg0) === undefined;
     return ret;
-};
-
-module.exports.__wbg_static_accessor_MODULE_ef3aa2eb251158a5 = function() {
-    const ret = module;
-    return addHeapObject(ret);
 };
 
 module.exports.__wbg_require_900d5c3984fe7703 = function(arg0, arg1, arg2) {

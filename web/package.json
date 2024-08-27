@@ -1,5 +1,6 @@
 {
   "name": "wasm",
+  "type": "module",
   "collaborators": [
     "FindoraNetwork"
   ],
@@ -15,7 +16,7 @@
     "wasm.js",
     "wasm.d.ts"
   ],
-  "module": "wasm.js",
+  "main": "wasm.js",
   "types": "wasm.d.ts",
   "sideEffects": [
     "./snippets/*"
